@@ -1,0 +1,11 @@
+@FrenCircle.API_HostAddress = http://localhost:5251
+
+### SERVER TICK WITH FORMATTING
+GET {{FrenCircle.API_HostAddress}}/api/test/tick
+Accept: application/json
+
+### LOGIN
+GET {{FrenCircle.API_HostAddress}}/api/account/login
+Accept: application/json
+
+
