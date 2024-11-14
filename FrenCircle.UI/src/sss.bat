@@ -1,1 +1,1 @@
-npm uninstall @angular/platform-browser-dynamic/testing @angular/platform-browser/testing @angular/core/testing --save-dev
+ng g c components/shared/back-to-top
