@@ -7,16 +7,20 @@ import { filter } from 'rxjs';
 	selector: 'app-root',
 	standalone: true,
 	imports: [RouterOutlet, NavbarComponent, RouterModule],
-	templateUrl: './app.component.html',
-	styleUrl: './app.component.css'
+	template: `
+		<app-navbar></app-navbar>
+		<router-outlet></router-outlet>
+	`
 })
 export class AppComponent {
 	constructor(private router: Router,) {
 		this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe((event: NavigationEnd) => {
-			window.scrollTo({
-				top: 0,
-				behavior: 'smooth',
-			});
+			if (typeof window !== 'undefined') {
+				window.scrollTo({
+					top: 0,
+					behavior: 'smooth',
+				});
+			}
 			console.log("route changed");
 		});
 	}

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Meta } from '@angular/platform-browser';
+import { Meta, Title } from '@angular/platform-browser';
 
 @Component({
 	selector: 'app-about',
@@ -9,7 +9,8 @@ import { Meta } from '@angular/platform-browser';
 	styleUrl: './about.component.css'
 })
 export class AboutComponent {
-	constructor(private meta: Meta) {
+	constructor(private meta: Meta, private title: Title) {
+		this.title.setTitle('FrenCircle | About');
 		this.meta.addTag({ name: 'description', content: 'A Micro blogging platform' });
 		this.meta.addTag({ name: 'keywords', content: 'social,community,frencircle,posts,microblog,microstory' });
 		this.meta.addTag({ property: 'og:title', content: 'About : FrenCircle' });

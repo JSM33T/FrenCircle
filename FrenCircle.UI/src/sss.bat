@@ -1,1 +1,1 @@
-ng serve
+npm uninstall @angular/platform-browser-dynamic/testing @angular/platform-browser/testing @angular/core/testing --save-dev
