@@ -7,11 +7,13 @@ import { BackToTopComponent } from "./components/shared/back-to-top/back-to-top.
 @Component({
 	selector: 'app-root',
 	standalone: true,
-	imports: [RouterOutlet, NavbarComponent, RouterModule, BackToTopComponent],
+	imports: [NavbarComponent, RouterModule, BackToTopComponent],
 	template: `
+	<main class="page-wrapper">
 		<app-navbar></app-navbar>
 		<router-outlet></router-outlet>
 		<app-back-to-top></app-back-to-top>
+	</main>
 	`
 })
 export class AppComponent {

@@ -1,1 +1,1 @@
-ng g c components/shared/back-to-top
+ng add taiga-ui

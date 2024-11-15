@@ -28,7 +28,6 @@ export function initBackToTop() {
 		showProgress();
 	});
 
-	// Add click event listener to scroll to top
 	button.addEventListener('click', (e: Event) => {
 		e.preventDefault();
 		window.scrollTo({
