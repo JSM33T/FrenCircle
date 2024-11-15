@@ -56,6 +56,26 @@ CREATE TABLE tblAccountVerifications (
     
 );
 
+GO
+
+-- =======================================
+-- Fren : Get Verification Data From FrenID
+-- =======================================
+
+CREATE PROCEDURE sproc_GetVerificationsByFrenId
+    @FrenId INT
+AS
+BEGIN
+    SELECT	
+		FrenId, OTP, UK, ValidTill, IsVerified, CreatedAt
+    FROM
+		tblAccountVerifications  
+	WITH(NOLOCK)
+    WHERE 
+		FrenId = @FrenId;
+END
+
+GO
 -- =======================================
 -- Fren : Global Settings | Key-Value
 -- =======================================
@@ -71,3 +91,23 @@ CREATE TABLE tblGlobalSettings (
     CreatedAt		DATETIME			NOT NULL		DEFAULT GETDATE()
 
 );
+GO
+
+-- =======================================
+-- Sproc: Create User
+-- =======================================
+
+CREATE PROCEDURE sproc_AddNewFren
+    @Username NVARCHAR(128),
+    @FirstName NVARCHAR(128),
+    @LastName NVARCHAR(128),
+    @Bio NVARCHAR(512),
+    @Avatar NVARCHAR(512),
+    @NickName NVARCHAR(128),
+    @DateOfBirth DATETIME,
+    @Gender NVARCHAR(1)
+AS
+BEGIN
+    INSERT INTO tblFrens (Username, FirstName, LastName, Bio, Avatar, NickName, DateBorN, Gender)
+    VALUES (@Username, @FirstName, @LastName, @Bio, @Avatar, @NickName, @DateOfBirth, @Gender);
+END

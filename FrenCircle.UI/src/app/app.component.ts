@@ -5,10 +5,10 @@ import { filter } from 'rxjs';
 import { BackToTopComponent } from "./components/shared/back-to-top/back-to-top.component";
 
 @Component({
-	selector: 'app-root',
-	standalone: true,
-	imports: [NavbarComponent, RouterModule, BackToTopComponent],
-	template: `
+  selector: 'app-root',
+  standalone: true,
+  imports: [NavbarComponent, RouterModule, BackToTopComponent],
+  template: `
 	<main class="page-wrapper">
 		<app-navbar></app-navbar>
 		<router-outlet></router-outlet>
@@ -17,15 +17,15 @@ import { BackToTopComponent } from "./components/shared/back-to-top/back-to-top.
 	`
 })
 export class AppComponent {
-	constructor(private router: Router,) {
-		this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe((event: NavigationEnd) => {
-			if (typeof window !== 'undefined') {
-				window.scrollTo({
-					top: 0,
-					behavior: 'smooth',
-				});
-			}
-			console.log("route changed");
-		});
-	}
+  constructor(private router: Router,) {
+    this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe((event: NavigationEnd) => {
+      if (typeof window !== 'undefined') {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth',
+        });
+      }
+      console.log("route changed");
+    });
+  }
 }

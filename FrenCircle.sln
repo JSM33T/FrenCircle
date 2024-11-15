@@ -15,6 +15,8 @@ Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "FrenCircle.UI", "FrenCircle
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "FrenCircle.Scripts", "FrenCircle.Scripts\FrenCircle.Scripts.pyproj", "{D8A0FD09-D5AA-4DB3-85DD-1F130FAE191D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FrenCircle.Services", "FrenCircle.Services\FrenCircle.Services.csproj", "{1202F1C2-78FA-4F4C-9EE2-CDC9B1D655A7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +45,10 @@ Global
 		{B87CBCD7-BDC5-4C8C-83B2-E2BD8D84ABC2}.Release|Any CPU.Deploy.0 = Release|Any CPU
 		{D8A0FD09-D5AA-4DB3-85DD-1F130FAE191D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D8A0FD09-D5AA-4DB3-85DD-1F130FAE191D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1202F1C2-78FA-4F4C-9EE2-CDC9B1D655A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1202F1C2-78FA-4F4C-9EE2-CDC9B1D655A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1202F1C2-78FA-4F4C-9EE2-CDC9B1D655A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1202F1C2-78FA-4F4C-9EE2-CDC9B1D655A7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

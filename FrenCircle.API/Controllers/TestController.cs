@@ -1,20 +1,23 @@
 ﻿using FrenCircle.API.Controllers.Base;
+using FrenCircle.Entities.Mail;
 using FrenCircle.Entities.Shared;
-using Microsoft.AspNetCore.Http;
+using FrenCircle.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using System.Net.Mail;
-using System.Reflection;
 
 namespace FrenCircle.API.Controllers
 {
     [Route("api/test")]
     [ApiController]
-    public class TestController : FoundationController
+    public class TestController(
+                IOptionsMonitor<FCConfig> config,
+                ILogger<FoundationController> logger,
+                IHttpContextAccessor httpContextAccessor,
+                IMessageService messageService
+            )
+     : FoundationController(config, logger, httpContextAccessor)
     {
-        public TestController(IOptionsMonitor<FCConfig> config, ILogger<FoundationController> logger, IHttpContextAccessor httpContextAccessor) : base(config, logger, httpContextAccessor)
-        {
-        }
+        private readonly IMessageService _messageService= messageService;
 
         [HttpGet("tick")]
         public async Task<IActionResult> HeartBeat()
@@ -30,10 +33,20 @@ namespace FrenCircle.API.Controllers
             });
         }
 
-        [HttpPost("sendEmail")]
-        public async Task<IActionResult> SendEmail([FromBody] string ss)
+        [HttpPost("sendmail")]
+        public async Task<IActionResult> SendEmail(SendMailRequest mailRequest)
         {
-            return Ok($"Email has been sent,{ss}");
+            return await ExecuteActionAsync(async () =>
+            {
+                int statCode = StatusCodes.Status200OK;
+                string message = "Mail Sent";
+                List<string> hints = [];
+
+                await _messageService.SendMail(mailRequest);
+
+
+                return (statCode, 0, message, hints);
+            });
         }
     }
 }

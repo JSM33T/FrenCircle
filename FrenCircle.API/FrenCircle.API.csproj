@@ -27,6 +27,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\FrenCircle.Entities\FrenCircle.Entities.csproj" />
 		<ProjectReference Include="..\FrenCircle.Repositories\FrenCircle.Repositories.csproj" />
+		<ProjectReference Include="..\FrenCircle.Services\FrenCircle.Services.csproj" />
 		<ProjectReference Include="..\FrenCircle.Validators\FrenCircle.Validators.csproj" />
 	</ItemGroup>
 
