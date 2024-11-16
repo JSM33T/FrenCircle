@@ -6,11 +6,15 @@ CREATE TABLE tblFrens(
 
 	FrenId		INT					IDENTITY(1,1)	PRIMARY KEY,
 
-	Username	NVARCHAR(128)		NOT NULL,
+	Username	NVARCHAR(128)		NOT NULL CONSTRAINT UK_tblFrens_Username UNIQUE ,
 
 	FirstName	NVARCHAR(128)		NOT NULL,
 
 	LastName	NVARCHAR(128),
+
+	[Password]	NVARCHAR(128),
+
+	Email		NVARCHAR(256)		NOT NULL CONSTRAINT UK_tblFrens_Email UNIQUE ,
 
 	Bio			NVARCHAR(512),
 
@@ -97,17 +101,32 @@ GO
 -- Sproc: Create User
 -- =======================================
 
-CREATE PROCEDURE sproc_AddNewFren
+CREATE OR ALTER PROCEDURE sproc_InsertFren
     @Username NVARCHAR(128),
     @FirstName NVARCHAR(128),
-    @LastName NVARCHAR(128),
-    @Bio NVARCHAR(512),
-    @Avatar NVARCHAR(512),
-    @NickName NVARCHAR(128),
-    @DateOfBirth DATETIME,
-    @Gender NVARCHAR(1)
+	@Email	NVARCHAR(256),
+    @LastName NVARCHAR(128) = '',
+    @Bio NVARCHAR(512) = '',
+	@Password NVARCHAR(128),
+    @Avatar NVARCHAR(512) = '',
+    @NickName NVARCHAR(128) = '',
+    @DateBorn DATETIME = NULL,
+    @Gender NVARCHAR(1) = 'n',
+    @IsVerified BIT = 0,
+    @TimeSpent INT  = '100',
+	@OTP INT,
+	@ValidTill DATETIME
+
 AS
 BEGIN
-    INSERT INTO tblFrens (Username, FirstName, LastName, Bio, Avatar, NickName, DateBorN, Gender)
-    VALUES (@Username, @FirstName, @LastName, @Bio, @Avatar, @NickName, @DateOfBirth, @Gender);
+    SET NOCOUNT ON;
+
+    INSERT INTO tblFrens (Username, FirstName, LastName,[Password], Bio,Email, Avatar, NickName, DateBorn, Gender, IsVerified, TimeSpent, [UID], CreatedAt)
+    VALUES (@Username, @FirstName, @LastName,@Password, @Bio,@Email, @Avatar, @NickName, @DateBorn, @Gender, @IsVerified, @TimeSpent, NEWID(), GETDATE());
+	
+	-- Insert into AccountVerifications table
+    INSERT INTO tblAccountVerifications (FrenId, OTP, UK, ValidTill, CreatedAt)
+    VALUES (SCOPE_IDENTITY(), @OTP, NEWID(), @ValidTill, GETDATE());
+
+    SELECT SCOPE_IDENTITY() AS FrenId; -- Return the ID of the newly inserted Fren
 END
