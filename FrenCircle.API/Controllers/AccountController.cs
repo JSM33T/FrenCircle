@@ -31,49 +31,52 @@ namespace FrenCircle.API.Controllers
         #region User Login
         public async Task<IActionResult> Login(FrenLoginRequest loginRequest)
         {
+            APIResponse<Fren> frenResponse = new(default, "", null, []);
             return await ExecuteActionAsync(async () =>
             {
-                int statCode = default;
-                string message = string.Empty;
-                List<string> hints = [];
-                Fren? fren = null;
+                frenResponse.Data = await _userRepository.GetUserByCredentials(loginRequest);
 
-                fren = await _userRepository.GetUserByCredentials(loginRequest);
-
-                if (fren == null)
+                if (frenResponse.Data == null)
                 {
-                    statCode = StatusCodes.Status404NotFound;
-                    message = "Invalid Credendial";
-                }
-                else
-                {
-                    if (!fren.IsVerified)
-                    {
-                        statCode = StatusCodes.Status401Unauthorized;
-                        message = "Account awaits verification ";
-                    }
-                    else
-                    {
-                        await _userService.LoginFren(fren);
-
-                        statCode = StatusCodes.Status200OK;
-                        message = "Logged in successfully";
-                    }
+                    frenResponse.Status = StatusCodes.Status404NotFound;
+                    frenResponse.Message = "Invalid Credendial";
+                    return frenResponse;
                 }
 
+                if (!frenResponse.Data.IsVerified)
+                {
 
-                hints.Add("Please check your creds");
+                    frenResponse.Status = StatusCodes.Status401Unauthorized;
+                    frenResponse.Message = "Account awaits verification ";
+                    return frenResponse;
+                }
 
-                return (statCode, 0, message, hints);
+                await _userService.LoginFren(frenResponse.Data);
+
+                frenResponse.Status = StatusCodes.Status200OK;
+                frenResponse.Message = "Logged in successfully";
+
+                return (frenResponse);
             });
         }
         #endregion
 
 
         [HttpPost("signup")]
-        public async Task<IActionResult> Signup()
+        [AllowAnonymous]
+        public async Task<IActionResult> Signup(FrenSignUpRequest signUpRequest)
         {
-            return Ok("dummy");
+            APIResponse<Fren> resp = new(default, string.Empty, null, []);
+            
+            return await ExecuteActionAsync(async () =>
+            {
+                await _userRepository.SignUpFren(signUpRequest);
+
+                resp.Message = "Signed up. Please verify your account";
+                resp.Status = StatusCodes.Status200OK;
+
+                return (resp);
+            });
         }
 
         [HttpPost("verify")]

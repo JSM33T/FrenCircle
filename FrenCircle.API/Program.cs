@@ -5,6 +5,7 @@ using FluentValidation.AspNetCore;
 using FrenCircle.API.Middlewares;
 using FrenCircle.Entities.Shared;
 using FrenCircle.Repositories;
+using FrenCircle.Services;
 using Jsm33t.Entities.Shared;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.DataProtection;
@@ -36,6 +37,8 @@ builder.Services.AddFluentValidationAutoValidation()
 
 builder.Services.AddControllers();
 
+#region Config with Change Tracking
+
 if (builder.Environment.IsDevelopment())
 {
     builder.Configuration.AddJsonFile("appsettings.Development.json", optional: true, reloadOnChange: true);
@@ -45,6 +48,8 @@ else
     builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 }
 
+#endregion
+
 var fCConfigSection = builder.Configuration.GetSection("fCConfig");
 FCConfig fCConfig = builder.Configuration.GetSection("fCConfig").Get<FCConfig>();
 
@@ -52,9 +57,23 @@ builder.Services.Configure<FCConfig>(fCConfigSection);
 
 builder.Services.AddScoped<IDbConnection>(sp => new SqlConnection(fCConfig?.ConnectionString));
 
-builder.Services.AddScoped<IGlobalRepository, GlobalRepository>();
 
-#region Auth
+#region Repositories
+
+builder.Services.AddScoped<IGlobalRepository, GlobalRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+#endregion
+
+#region Services
+
+builder.Services.AddScoped<IMessageService, MessageService>();
+builder.Services.AddScoped<IUserService, UserService>();
+
+#endregion
+
+#region Authentication
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -71,7 +90,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 #endregion
-
 
 builder.Services.AddMemoryCache();
 

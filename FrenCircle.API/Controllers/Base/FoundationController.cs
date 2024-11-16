@@ -12,17 +12,15 @@ namespace FrenCircle.API.Controllers.Base
         protected readonly IOptionsMonitor<FCConfig> _config;
         protected readonly ILogger _logger;
         protected readonly IHttpContextAccessor _httpContextAccessor;
-        //private readonly ITelegramService _telegramService;
 
         public FoundationController(IOptionsMonitor<FCConfig> config, ILogger<FoundationController> logger, IHttpContextAccessor httpContextAccessor)
         {
             _config = config;
             _logger = logger;
-           // _telegramService = telegramService;
             _httpContextAccessor = httpContextAccessor;
         }
 
-        protected async Task<IActionResult> ExecuteActionAsync<T>(Func<Task<(int statusCode, T result, string message, List<string> errors)>> action)
+        protected async Task<IActionResult> ExecuteActionAsync<T>(Func<Task<APIResponse<T>>> action)
         {
             var stopwatch = Stopwatch.StartNew();
             var request = _httpContextAccessor.HttpContext.Request;
@@ -32,9 +30,8 @@ namespace FrenCircle.API.Controllers.Base
 
             try
             {
-                var (statusCode, result, message, errors) = await action();
-                //await Task.Delay(1000);
-                return AcResponse(statusCode, message, result, errors);
+                var response = await action();
+                return AcResponse(response.Status, response.Message, response.Data, response.Hints);
             }
             catch (Exception ex)
             {
@@ -44,7 +41,7 @@ namespace FrenCircle.API.Controllers.Base
             finally
             {
                 stopwatch.Stop();
-                _logger.LogInformation(" executed in {Duration} ms. User: {User}. URL: {Url}. Query: {Query} UserAgent: {UserAgent}", stopwatch.ElapsedMilliseconds, user, request.Path, request.QueryString, request.Headers.UserAgent);
+                _logger.LogInformation("executed in {Duration} ms. User: {User}. URL: {Url}. Query: {Query} UserAgent: {UserAgent}", stopwatch.ElapsedMilliseconds, user, request.Path, request.QueryString, request.Headers.UserAgent);
             }
         }
 

@@ -22,30 +22,29 @@ namespace FrenCircle.API.Controllers
         [HttpGet("tick")]
         public async Task<IActionResult> HeartBeat()
         {
+            APIResponse<string> resp = new(default, "", "", []);
             return await ExecuteActionAsync(async () =>
             {
-                int statCode = StatusCodes.Status200OK;
-                string message = "API server is up and healthy";
-                List<string> errors = [];
-                //User_ClaimsResponse userClaims = null;
+                resp.Status = StatusCodes.Status200OK;
+                resp.Message = "API server is up and healthy"; ;
 
-                return (statCode, 0, message, errors);
+                return (resp);
             });
         }
 
         [HttpPost("sendmail")]
         public async Task<IActionResult> SendEmail(SendMailRequest mailRequest)
         {
+            APIResponse<string> resp = new(default, "", "", []);
+
             return await ExecuteActionAsync(async () =>
             {
-                int statCode = StatusCodes.Status200OK;
-                string message = "Mail Sent";
-                List<string> hints = [];
+                resp.Status = StatusCodes.Status200OK;
+                resp.Message = "Mail Sent";
 
                 await _messageService.SendMail(mailRequest);
 
-
-                return (statCode, 0, message, hints);
+                return (resp);
             });
         }
     }

@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace FrenCircle.Repositories
 {
-    internal class UserRepository : IUserRepository
+    public class UserRepository : IUserRepository
     {
         protected readonly IOptionsMonitor<FCConfig> _config;
         private readonly IDbConnection _dbConnection;
@@ -27,7 +27,6 @@ namespace FrenCircle.Repositories
             _conStr = _config.CurrentValue.ConnectionString;
             _dbConnection = dbConnection;
         }
-
 
         public async Task<Fren?> GetUserByCredentials(FrenLoginRequest loginRequest)
         {
@@ -44,6 +43,36 @@ namespace FrenCircle.Repositories
             }
 
             return fren;
+        }
+
+        public async Task<FrenLoginResponse?> LoginUser(FrenLoginRequest loginRequest)
+        {
+            FrenLoginResponse? ss = default;
+            Fren? user = await GetUserByCredentials(loginRequest);
+            return ss;
+
+        }
+
+        public async Task SignUpFren(FrenSignUpRequest signUpRequest)
+        {
+          
+
+            using (IDbConnection db = new SqlConnection(_conStr))
+            {
+                var parameters = new
+                {
+                    signUpRequest.Username,
+                    signUpRequest.FirstName,
+                    signUpRequest.LastName,
+                    signUpRequest.Email,
+                    signUpRequest.Password,
+                    OTP = 111111,
+                    ValidTill = DateTime.Now.AddHours(10),
+
+                };
+
+                await db.ExecuteAsync("sproc_InsertFren", parameters, commandType: CommandType.StoredProcedure);
+            }
         }
     }
 }

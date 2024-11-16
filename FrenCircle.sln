@@ -7,15 +7,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FrenCircle.API", "FrenCircl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FrenCircle.Entities", "FrenCircle.Entities\FrenCircle.Entities.csproj", "{A1169D96-3594-4460-B7D2-25E93A2D6D71}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FrenCircle.Validators", "FrenCircle.Validators\FrenCircle.Validators.csproj", "{A47C7A1F-1C08-4E02-A145-A91D2CADB3DE}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FrenCircle.Repositories", "FrenCircle.Repositories\FrenCircle.Repositories.csproj", "{941AA250-17B9-4D18-9D09-CAE1B5526C39}"
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "FrenCircle.UI", "FrenCircle.UI\FrenCircle.UI.esproj", "{B87CBCD7-BDC5-4C8C-83B2-E2BD8D84ABC2}"
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "FrenCircle.Scripts", "FrenCircle.Scripts\FrenCircle.Scripts.pyproj", "{D8A0FD09-D5AA-4DB3-85DD-1F130FAE191D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FrenCircle.Services", "FrenCircle.Services\FrenCircle.Services.csproj", "{1202F1C2-78FA-4F4C-9EE2-CDC9B1D655A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FrenCircle.Services", "FrenCircle.Services\FrenCircle.Services.csproj", "{1202F1C2-78FA-4F4C-9EE2-CDC9B1D655A7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,10 +29,6 @@ Global
 		{A1169D96-3594-4460-B7D2-25E93A2D6D71}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A1169D96-3594-4460-B7D2-25E93A2D6D71}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A1169D96-3594-4460-B7D2-25E93A2D6D71}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A47C7A1F-1C08-4E02-A145-A91D2CADB3DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A47C7A1F-1C08-4E02-A145-A91D2CADB3DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A47C7A1F-1C08-4E02-A145-A91D2CADB3DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A47C7A1F-1C08-4E02-A145-A91D2CADB3DE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{941AA250-17B9-4D18-9D09-CAE1B5526C39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{941AA250-17B9-4D18-9D09-CAE1B5526C39}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{941AA250-17B9-4D18-9D09-CAE1B5526C39}.Release|Any CPU.ActiveCfg = Release|Any CPU
