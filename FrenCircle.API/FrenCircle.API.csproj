@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
-		<Nullable>disable</Nullable>
+		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<UserSecretsId>8eed5fbe-893b-42fc-843f-11920c842ec3</UserSecretsId>
 		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
@@ -13,7 +13,6 @@
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8" />
 		<PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.1" />
 		<PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
-		<PackageReference Include="Markdig" Version="0.37.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="Serilog" Version="4.0.1" />
 		<PackageReference Include="Serilog.AspNetCore" Version="8.0.2" />
@@ -28,6 +27,7 @@
 		<ProjectReference Include="..\FrenCircle.Entities\FrenCircle.Entities.csproj" />
 		<ProjectReference Include="..\FrenCircle.Repositories\FrenCircle.Repositories.csproj" />
 		<ProjectReference Include="..\FrenCircle.Services\FrenCircle.Services.csproj" />
+		<ProjectReference Include="..\FrenCircle.Validators\FrenCircle.Validators.csproj" />
 	</ItemGroup>
 
 </Project>

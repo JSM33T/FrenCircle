@@ -22,7 +22,9 @@ CREATE TABLE tblFrens(
 
 	NickName	NVARCHAR(128),
 
-	DateBorN	DATETIME,
+	DateBorn	DATETIME,
+
+	OTP			NVARCHAR(6)			NOT NULL,
 
 	Gender		NVARCHAR(1),
 
@@ -35,49 +37,6 @@ CREATE TABLE tblFrens(
 	[UID]		UNIQUEIDENTIFIER	NOT NULL		DEFAULT NEWID()
 
 );
-
-
--- =======================================
--- Fren : Manage User Verifications
--- =======================================
-
-CREATE TABLE tblAccountVerifications (
-
-    Id			INT				IDENTITY(1,1)	PRIMARY KEY,      
-
-    FrenId		INT					NOT NULL		FOREIGN KEY (FrenId)	REFERENCES tblFrens(FrenId)		ON DELETE CASCADE,
-	
-    OTP			NVARCHAR(6)			NOT NULL,
-
-	UK			UNIQUEIDENTIFIER	NOT NULL DEFAULT(NEWID()),
-	
-    ValidTill	DATETIME			NOT NULL, 
-	
-    IsVerified	BIT					NOT NULL		DEFAULT 0, 
-	
-    CreatedAt	DATETIME			NOT NULL		DEFAULT GETDATE(),
-
-    
-);
-
-GO
-
--- =======================================
--- Fren : Get Verification Data From FrenID
--- =======================================
-
-CREATE PROCEDURE sproc_GetVerificationsByFrenId
-    @FrenId INT
-AS
-BEGIN
-    SELECT	
-		FrenId, OTP, UK, ValidTill, IsVerified, CreatedAt
-    FROM
-		tblAccountVerifications  
-	WITH(NOLOCK)
-    WHERE 
-		FrenId = @FrenId;
-END
 
 GO
 -- =======================================
@@ -98,7 +57,7 @@ CREATE TABLE tblGlobalSettings (
 GO
 
 -- =======================================
--- Sproc: Create User
+-- Sproc: Create User	EXEC sproc_InsertFren 'jsm33t','jassi','jskainthofficial@gmail.com','singh','bio here','password','avatar.png','jassi','2024/04/04','M',0,100,111111,'2024/12/12'
 -- =======================================
 
 CREATE OR ALTER PROCEDURE sproc_InsertFren
@@ -121,12 +80,55 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    INSERT INTO tblFrens (Username, FirstName, LastName,[Password], Bio,Email, Avatar, NickName, DateBorn, Gender, IsVerified, TimeSpent, [UID], CreatedAt)
-    VALUES (@Username, @FirstName, @LastName,@Password, @Bio,@Email, @Avatar, @NickName, @DateBorn, @Gender, @IsVerified, @TimeSpent, NEWID(), GETDATE());
-	
-	-- Insert into AccountVerifications table
-    INSERT INTO tblAccountVerifications (FrenId, OTP, UK, ValidTill, CreatedAt)
-    VALUES (SCOPE_IDENTITY(), @OTP, NEWID(), @ValidTill, GETDATE());
+    INSERT INTO tblFrens (Username, FirstName, LastName,[Password], Bio,Email, Avatar, NickName, DateBorn, Gender, IsVerified, TimeSpent, [UID], CreatedAt,OTP)
+    VALUES (@Username, @FirstName, @LastName,@Password, @Bio,@Email, @Avatar, @NickName, @DateBorn, @Gender, @IsVerified, @TimeSpent, NEWID(), GETDATE(),@OTP);
 
     SELECT SCOPE_IDENTITY() AS FrenId; -- Return the ID of the newly inserted Fren
+END
+
+GO
+
+-- =======================================
+-- Fren : Login If Verified
+-- =======================================
+
+CREATE OR ALTER PROCEDURE sproc_FrenLogin
+    @Username NVARCHAR(128),
+	@Password	NVARCHAR(128)
+AS
+BEGIN
+    SELECT	*
+    FROM
+		tblFrens  
+	WITH(NOLOCK)
+    WHERE 
+		Username = @Username and Password = @Password;
+END
+GO
+
+ --=======================================
+ --Fren : VerifyFren	EXEC sproc_VerifyFren 'jsm33t','111111'
+ --=======================================
+
+CREATE OR ALTER PROCEDURE sproc_VerifyFren
+    @Username NVARCHAR(128),
+	@OTP	NVARCHAR(4)
+AS
+BEGIN
+
+	DECLARE @FrenId INT;
+
+	UPDATE	tblFrens
+	SET IsVerified = 1
+	WHERE FrenId = @FrenId
+	AND OTP = @OTP
+
+	IF @@ROWCOUNT = 0
+    BEGIN  
+        SELECT 0 AS Result;
+    END
+    ELSE
+    BEGIN
+        SELECT 1 AS Result;
+    END
 END

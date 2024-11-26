@@ -7,5 +7,6 @@ namespace FrenCircle.Repositories
         public Task<Fren?> GetUserByCredentials(FrenLoginRequest loginRequest);
         public Task<FrenLoginResponse?> LoginUser(FrenLoginRequest loginRequest);
         public Task SignUpFren(FrenSignUpRequest signUpRequest);
+        public Task<int> VerifyFren(FrenVerificationRequest verificationRequest);
     }
 }

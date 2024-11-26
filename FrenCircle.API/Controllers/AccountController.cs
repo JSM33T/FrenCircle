@@ -6,6 +6,7 @@ using FrenCircle.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using static System.Net.WebRequestMethods;
 
 namespace FrenCircle.API.Controllers
 {
@@ -26,7 +27,7 @@ namespace FrenCircle.API.Controllers
         private readonly IUserRepository _userRepository = userRepository;
         private readonly IUserService _userService = userService;
 
-        [HttpGet("login")]
+        [HttpPost("login")]
         [AllowAnonymous]
         #region User Login
         public async Task<IActionResult> Login(FrenLoginRequest loginRequest)
@@ -45,10 +46,7 @@ namespace FrenCircle.API.Controllers
 
                 if (!frenResponse.Data.IsVerified)
                 {
-
-                    frenResponse.Status = StatusCodes.Status401Unauthorized;
-                    frenResponse.Message = "Account awaits verification ";
-                    return frenResponse;
+                    return new(StatusCodes.Status400BadRequest, "Account awaits verification", null, []);
                 }
 
                 await _userService.LoginFren(frenResponse.Data);
@@ -67,9 +65,14 @@ namespace FrenCircle.API.Controllers
         public async Task<IActionResult> Signup(FrenSignUpRequest signUpRequest)
         {
             APIResponse<Fren> resp = new(default, string.Empty, null, []);
-            
+
+            Random random = new();
+            int otp = random.Next(1000, 9999);
+
             return await ExecuteActionAsync(async () =>
             {
+                signUpRequest.OTP = otp;
+
                 await _userRepository.SignUpFren(signUpRequest);
 
                 resp.Message = "Signed up. Please verify your account";
@@ -80,9 +83,29 @@ namespace FrenCircle.API.Controllers
         }
 
         [HttpPost("verify")]
-        public async Task<IActionResult> Verify()
+        public async Task<IActionResult> Verify(FrenVerificationRequest verificationRequest)
         {
-            return Ok("dummy");
+            APIResponse<Fren> resp = new(default, string.Empty, null, []);
+
+            return await ExecuteActionAsync(async () =>
+            {
+
+                int res = await _userRepository.VerifyFren(verificationRequest);
+
+                if (res == 1)
+                {
+                    resp.Message = "User verified";
+                    resp.Status = StatusCodes.Status200OK;
+                }
+                else
+                {
+                    resp.Message = "Invalid OTP";
+                    resp.Status = StatusCodes.Status400BadRequest;
+                }
+
+
+                return (resp);
+            });
         }
 
         [HttpPost("recover")]

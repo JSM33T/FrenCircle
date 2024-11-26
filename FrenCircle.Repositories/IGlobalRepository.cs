@@ -2,6 +2,6 @@
 {
     public interface IGlobalRepository
     {
-        public Task<string> GetGLobalValue(string Key);
+        public Task<string> GetGlobalValue(string key);
     }
 }

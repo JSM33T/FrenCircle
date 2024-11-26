@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-
 namespace FrenCircle.API.Middlewares
 {
     public class FCValidationMiddleware(RequestDelegate next)

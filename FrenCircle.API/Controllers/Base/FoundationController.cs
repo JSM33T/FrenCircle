@@ -1,5 +1,4 @@
 ﻿using FrenCircle.Entities.Shared;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Diagnostics;
@@ -23,7 +22,7 @@ namespace FrenCircle.API.Controllers.Base
         protected async Task<IActionResult> ExecuteActionAsync<T>(Func<Task<APIResponse<T>>> action)
         {
             var stopwatch = Stopwatch.StartNew();
-            var request = _httpContextAccessor.HttpContext.Request;
+            var request = _httpContextAccessor?.HttpContext?.Request;
             var user = _httpContextAccessor.HttpContext.User.Identity.IsAuthenticated
                         ? _httpContextAccessor.HttpContext.User.Identity.Name
                         : "Anonymous";

@@ -1,18 +1,14 @@
-//using Jsm33t.Repositories;
-//using Jsm33t.Services;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using FrenCircle.API.Middlewares;
 using FrenCircle.Entities.Shared;
 using FrenCircle.Repositories;
+using FrenCircle.Repositories.Database;
 using FrenCircle.Services;
 using Jsm33t.Entities.Shared;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.DataProtection;
-using Microsoft.Data.SqlClient;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
-using System.Data;
 using System.Reflection;
 using System.Text;
 using System.Threading.RateLimiting;
@@ -32,7 +28,7 @@ builder.Host.UseSerilog();
 #region Fluent Validatoins
 builder.Services.AddFluentValidationAutoValidation()
                 .AddFluentValidationClientsideAdapters();
-//builder.Services.AddValidatorsFromAssembly(Assembly.Load("FC.Validators"));
+builder.Services.AddValidatorsFromAssembly(Assembly.Load("FrenCircle.Validators"));
 #endregion
 
 builder.Services.AddControllers();
@@ -55,8 +51,10 @@ FCConfig fCConfig = builder.Configuration.GetSection("fCConfig").Get<FCConfig>()
 
 builder.Services.Configure<FCConfig>(fCConfigSection);
 
-builder.Services.AddScoped<IDbConnection>(sp => new SqlConnection(fCConfig?.ConnectionString));
+//builder.Services.AddScoped<IDbConnection>(sp => new SqlConnection(fCConfig?.ConnectionString));
 
+builder.Services.AddSingleton<IDbConnectionFactory>(sp =>
+        new MsSqlDbConnectionFactory(fCConfig?.ConnectionString));
 
 #region Repositories
 

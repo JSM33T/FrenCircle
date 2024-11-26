@@ -1,36 +1,24 @@
 ﻿
 using Dapper;
-using FrenCircle.Entities.Shared;
-using Microsoft.Data.SqlClient;
+using FrenCircle.Repositories.Database;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using System.Data;
 
 namespace FrenCircle.Repositories
 {
-    public class GlobalRepository : IGlobalRepository
+    public class GlobalRepository(ILogger<GlobalRepository> logger, IDbConnectionFactory dbConnectionFactory) : IGlobalRepository
     {
+        private readonly IDbConnectionFactory _dbConnectionFactory = dbConnectionFactory;
+        protected readonly ILogger _logger = logger;
 
-        protected readonly IOptionsMonitor<FCConfig> _config;
-        private readonly IDbConnection _dbConnection;
-        protected readonly ILogger _logger;
-        private string _conStr;
-
-        public GlobalRepository(IOptionsMonitor<FCConfig> config, ILogger<GlobalRepository> logger, IDbConnection dbConnection)
+        public async Task<string> GetGlobalValue(string key)
         {
-            _config = config;
-            _logger = logger;
-            _conStr = _config.CurrentValue.ConnectionString;
-            _dbConnection = dbConnection;
-        }
+            using IDbConnection db = await _dbConnectionFactory.CreateConnectionAsync();
 
-        public async Task<string> GetGLobalValue(string Key)
-        {
-            using IDbConnection db = new SqlConnection(_conStr);
+            var val = await db.QueryFirstOrDefaultAsync<string>("SELECT [Value] FROM tblGlobalSettings WITH(NOLOCK) WHERE [Key] = @Key", new { Key = key });
 
-            string? Val = await db.QueryFirstAsync<string>("SELECT [Value] FROM tblGlobalSettings WITH(NOLOCK) WHERE [Key] = 'default'");
+            return val ?? string.Empty;
 
-            return  Val;
         }
     }
 }
