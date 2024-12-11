@@ -1,0 +1,219 @@
+<header class="navbar navbar-expand-lg fixed-top bg-light">
+    <div class="container">
+        <!-- Navbar brand (Logo) -->
+        <a class="navbar-brand pe-sm-3" routerLink="/">
+            <span class="text-primary flex-shrink-0 me-2">
+                <span class="text-primary flex-shrink-0 me-2">
+                    <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="75.000000pt" height="24.000000pt" viewBox="0 0 1000.000000 300.000000" preserveAspectRatio="xMidYMid meet" style="margin-left: 0px">
+                        <g transform="translate(0.000000,275.000000) scale(0.100000,-0.100000)" fill="currentColor" stroke="none">
+                            <path d="M520 2725 c0 -3 0 -104 0 -225 0 -121 0 -224 0 -230 0 -6 84 -10 230 -10 l231 0 -3 -787 c-4 -900 0 -858 -87 -944 -71 -71 -168 -85 -263 -38 -43 22 -73 62 -104 138 l-23 56 -250 3 c-138 1 -251 -1 -251 -5 0 -5 11 -48 24 -98 47 -173 117 -297 228 -401 188 -175 476 -231 735 -142 132 45 199 87 281 173 103 108 159 228 187 400 12 75 15 262 15 1103 l0 1012 -475 0 c-261 0 -475 -2 -475 -5z"></path>
+                            <path d="M2305 2734 c-326 -53 -572 -272 -639 -571 -21 -92 -21 -270 0 -371 33 -164 134 -314 272 -405 79 -53 217 -116 397 -182 201 -74 271 -111 341 -180 74 -73 96 -129 96 -242 -1 -96 -31 -162 -107 -231 -73 -67 -154 -97 -260 -96 -102 1 -167 28 -229 94 -61 66 -88 121 -111 232 l-5 28 -256 0 -257 0 7 -60 c21 -187 95 -345 226 -484 176 -186 400 -275 664 -263 198 9 362 65 508 176 127 96 233 262 280 436 31 118 31 338 -1 450 -82 290 -258 442 -689 594 -95 34 -198 74 -230 90 -70 35 -146 115 -161 167 -14 52 -14 147 1 198 18 60 99 138 163 157 100 29 212 9 275 -48 54 -48 76 -86 97 -168 l19 -70 244 0 244 0 -3 49 c-8 132 -80 311 -171 423 -96 119 -250 219 -395 258 -60 16 -263 28 -320 19z"></path>
+                            <path d="M3447 2481 l-187 -269 2 -417 3 -417 160 233 160 234 3 -907 c1 -533 6 -908 11 -908 5 0 168 233 362 518 775 1134 880 1287 889 1290 7 2 10 -320 10 -912 l0 -916 250 0 250 0 0 1370 0 1370 -232 0 -233 0 -390 -560 c-214 -307 -393 -559 -397 -559 -5 -1 -8 251 -8 559 l0 560 -232 0 -233 -1 -188 -268z"></path>
+                            <path d="M5445 2727 c-3 -7 -4 -114 -3 -237 l3 -225 483 -3 482 -2 0 -330 0 -330 -272 -2 -273 -3 0 -235 0 -235 273 -3 272 -2 0 -320 c0 -249 -3 -320 -12 -320 -7 0 -220 0 -473 0 -253 0 -466 -4 -473 -8 -9 -7 -12 -61 -10 -238 l3 -229 738 -3 737 -2 -2 1367 -3 1368 -733 3 c-588 2 -734 0 -737 -11z"></path>
+                            <path d="M7002 2503 l3 -238 478 -3 477 -2 0 -330 0 -330 -267 -2 -268 -3 -3 -237 -2 -238 270 0 270 0 -2 -320 -3 -321 -475 -2 -475 -2 -3 -237 -2 -238 735 0 735 0 0 1370 0 1370 -735 0 -735 0 2 -237z"></path>
+                            <path d="M8557 2723 c-4 -3 -7 -618 -7 -1365 l0 -1358 255 0 255 0 0 1130 0 1130 253 2 252 3 3 233 2 232 -503 0 c-277 0 -507 -3 -510 -7z"></path>
+                        </g>
+                    </svg>
+                </span>
+            </span>
+        </a>
+
+        <app-theme-toggle class="form-check form-switch mode-switch order-lg-2 me-3 me-lg-4 ms-auto" data-bs-toggle="mode"></app-theme-toggle>
+
+        <!-- User signed in state. Account dropdown on screens > 576px -->
+        <div class="dropdown nav d-none d-sm-block order-lg-3">
+            @if (isLoggedIn) {
+            <a class="nav-link d-flex align-items-center p-0" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                <img class="border rounded-circle" src="{{ user.pfp }}" width="48" alt="{{ user.firstname }}" />
+                <div class="ps-2">
+                    <div class="fs-xs lh-1 opacity-60">Hello,</div>
+                    <div class="fs-sm dropdown-toggle">{{ user.firstname }}</div>
+                </div>
+            </a>
+            <div class="dropdown-menu dropdown-menu-end my-1">
+                <h6 class="dropdown-header fs-xs fw-medium text-body-secondary text-uppercase pb-1">Account</h6>
+                <a class="dropdown-item disabled" href="account-overview.html">
+                    <i class="ai-user-check fs-lg opacity-70 me-2"></i>
+                    Profile
+                </a>
+                <a class="dropdown-item disabled" href="account-settings.html">
+                    <i class="ai-settings fs-lg opacity-70 me-2"></i>
+                    Settings
+                </a>
+                <a class="dropdown-item disabled" href="account-billing.html">
+                    <i class="ai-heart fs-base opacity-70 me-2 mt-n1"></i>
+                    Favs
+                </a>
+                <div class="dropdown-divider"></div>
+                <h6 class="dropdown-header fs-xs fw-medium text-body-secondary text-uppercase pb-1">Config</h6>
+                <a class="dropdown-item disabled" href="account-orders.html">
+                    <i class="ai-cart fs-lg opacity-70 me-2"></i>
+                    Themes
+                </a>
+                <a class="dropdown-item disabled" href="account-earnings.html">
+                    <i class="ai-activity fs-lg opacity-70 me-2"></i>
+                    Accessibility
+                </a>
+                <div class="dropdown-divider"></div>
+                <button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#logoutModal">
+                    <i class="ai-logout fs-lg opacity-70 me-2"></i>
+                    Sign out
+                </button>
+            </div>
+            } @else {
+            <a class="nav-link d-flex align-items-center p-0" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                <!-- <img class="border rounded-circle" src="{{ assets }}/assets/images/home/avatar.jpg" width="48" alt="guest" /> -->
+                <img class="border rounded-circle" src="{{ user.pfp }}" width="48" alt="guest" />
+                <div class="ps-2">
+                    <div class="fs-xs lh-1 opacity-60">Hello,</div>
+                    <div class="fs-sm dropdown-toggle">Guest</div>
+                </div>
+            </a>
+            <div class="dropdown-menu dropdown-menu-end my-1">
+                <h6 class="dropdown-header fs-xs fw-medium text-body-secondary text-uppercase pb-1">Account</h6>
+                <a class="dropdown-item" type="button" routerLink="/account/login">
+                    <i class="ai-user-check fs-lg opacity-70 me-2"></i>
+                    Login/Signup
+                </a>
+            </div>
+            }
+        </div>
+        <!-- Mobile menu toggler (Hamburger) -->
+        <button class="navbar-toggler ms-sm-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navbar collapse (Main navigation) -->
+        <nav class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav navbar-nav-scroll me-auto" style="--ar-scroll-height: 520px">
+                <li class="nav-item">
+                    <a class="nav-link" (click)="navToggler()" routerLink="/">Home</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Studio</a>
+                    <div class="dropdown-menu overflow-hidden p-0">
+                        <div class="d-lg-flex">
+                            <div class="mega-dropdown-column pt-1 pt-lg-3 pb-lg-4">
+                                <ul class="list-unstyled mb-0">
+                                    <li>
+                                        <a class="dropdown-item" routerLink="/studio" (click)="navToggler()">/</a>
+                                        <span class="mega-dropdown-column position-absolute top-0 end-0 h-100 bg-size-cover bg-repeat-0 rounded-3 rounded-start-0" style="background-image: url({{assets}}/assets/img/megamenu/landings.jpg);"></span>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" routerLink="/studio/music" (click)="navToggler()">Music</a>
+                                        <span class="mega-dropdown-column position-absolute top-0 end-0 h-100 bg-size-cover bg-repeat-0 z-2 opacity-0" style="background-image: url({{assets}}/assets/img/megamenu/marketing-agency.jpg);"></span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="mega-dropdown-column pb-2 pt-lg-3 pb-lg-4">
+                                <ul class="list-unstyled mb-0">
+                                    <li>
+                                        <a class="dropdown-item" routerLink="/studio/apps">Apps</a>
+                                        <span class="mega-dropdown-column position-absolute top-0 end-0 h-100 bg-size-cover bg-repeat-0 z-2 opacity-0" style="background-image: url({{assets}}/assets/img/megamenu/creative-agency.jpg);"></span>
+                                </ul>
+                                <ul class="list-unstyled mb-0">
+                                    <li>
+                                        <a class="dropdown-item disabled" href="landing-creative-agency.html">Artifacts</a>
+                                        <span class="mega-dropdown-column position-absolute top-0 end-0 h-100 bg-size-cover bg-repeat-0 z-2 opacity-0" style="background-image: url({{assets}}/assets/img/megamenu/creative-agency.jpg);"></span>
+                                </ul>
+                            </div>
+                            <div class="mega-dropdown-column position-relative border-start z-3"></div>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" (click)="navToggler()" routerLink="/gallery">Gallery</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" (click)="navToggler()" routerLink="/blogs">Blogs</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" (click)="navToggler()" routerLink="/about">About</a>
+                </li>
+
+                @if (isLoggedIn) {
+                <!-- User signed in state. Account dropdown on screens > 576px -->
+                <li class="nav-item dropdown d-sm-none border-top mt-2 pt-2">
+                    <a class="nav-link" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img class="border rounded-circle" src="{{ user.pfp }}" width="48" alt="guest" />
+                        <div class="ps-2">
+                            <div class="fs-xs lh-1 opacity-60">Hello,</div>
+                            <div class="fs-sm dropdown-toggle">{{ user.firstname }}</div>
+                        </div>
+                    </a>
+                    <div class="dropdown-menu">
+                        <h6 class="dropdown-header fs-xs fw-medium text-body-secondary text-uppercase pb-1">Account</h6>
+                        <a class="dropdown-item disabled" href="account-overview.html">
+                            <i class="ai-user-check fs-lg opacity-70 me-2"></i>
+                            Profile
+                        </a>
+                        <a class="dropdown-item disabled" href="account-settings.html">
+                            <i class="ai-settings fs-lg opacity-70 me-2"></i>
+                            Settings
+                        </a>
+                        <a class="dropdown-item disabled" href="account-billing.html">
+                            <i class="ai-heart fs-base opacity-70 me-2 mt-n1"></i>
+                            Favs
+                        </a>
+                        <h6 class="dropdown-header fs-xs fw-medium text-body-secondary text-uppercase pt-3 pb-1">Config</h6>
+                        <a class="dropdown-item disabled" href="account-orders.html">
+                            <i class="ai-cart fs-lg opacity-70 me-2"></i>
+                            Themes
+                        </a>
+                        <a class="dropdown-item disabled" href="account-earnings.html">
+                            <i class="ai-activity fs-lg opacity-70 me-2"></i>
+                            Accesibility
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#logoutModal">
+                            <i class="ai-logout fs-lg opacity-70 me-2"></i>
+                            Sign out
+                        </button>
+                    </div>
+                </li>
+                } @else {
+                <li class="nav-item dropdown d-sm-none border-top mt-2 pt-2">
+                    <a class="nav-link" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img class="border rounded-circle" src="{{ user.pfp }}" width="48" alt="Isabella Bocouse" />
+                        <div class="ps-2">
+                            <div class="fs-xs lh-1 opacity-60">Hello,</div>
+                            <div class="fs-sm dropdown-toggle">Guest</div>
+                        </div>
+                    </a>
+                    <div class="dropdown-menu">
+                        <h6 class="dropdown-header fs-xs fw-medium text-body-secondary text-uppercase pb-1">Account</h6>
+                        <a class="dropdown-item" type="button" routerLink="/account/login">
+                            <i class="ai-user-check fs-lg opacity-70 me-2"></i>
+                            Login/Signup
+                        </a>
+                    </div>
+                </li>
+                }
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<!-- Modal markup -->
+
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-md modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Share It</h4>
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body py-4">
+                <p class="mb-3 fs-md">Logout?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary w-100 w-sm-auto mb-3 mb-sm-0" type="button" data-bs-dismiss="modal">Cancel</button>
+                <button class="btn btn-danger w-100 w-sm-auto ms-sm-3" type="button" (click)="logout()">
+                    <i class="ai-copy me-2 ms-n1"></i>
+                    Log out
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

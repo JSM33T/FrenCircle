@@ -1,0 +1,235 @@
+<!--
+
+      ___   ________  ___      ___   _______   _______  ___________  
+     |"  | /"       )|"  \    /"  | /" __   ) /" __   )("     _   ") 
+     ||  |(:   \___/  \   \  //   |(__/ _) ./(__/ _) ./ )__/  \\__/  
+     |:  | \___  \    /\\  \/.    |    /  //     /  //     \\_ /     
+  ___|  /   __/  \\  |: \.        | __ \_ \\  __ \_ \\     |.  |     
+ /  :|_/ ) /" \   :) |.  \    /:  |(: \__) :\(: \__) :\    \:  |     
+(_______/ (_______/  |___|\__/|___| \_______) \_______)     \__|     
+
+                                                                        v.2.0.0
+
+ ========================    
+ by  Jass | @jsm33t
+ ========================
+
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>JSM33T</title>
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" id="font-data">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" />
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="  Jassi's digital webspace. Music,Apps,Blogs,Artifacts and much more. Join now for exclusive artifacts straight into your mail boxes" />
+    <meta name="keywords" content="JSM33T, Jass, Blogs, Studio, Apps, Technology, Artifacts,music,jassi" />
+    <meta name="author" content="Jass" />
+    <meta name="robots" content="index, follow" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicons/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicons/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicons/favicon-16x16.png" />
+    <!-- <link rel="manifest" href="/assets/favicons/site.webmanifest" /> -->
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="JSM33T's web sace" />
+    <meta property="og:description" content="JSM33T - a creative space for blogs, studios, apps, and more." />
+    <meta property="og:url" content="https://jsm33t.me" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="JSM33T" />
+
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Jassi's web space" />
+
+    <meta name="twitter:description" content="Explore webspace - a creative space for blogs, studios, apps, and more." />
+    <meta name="twitter:site" content="@jsm33t" />
+
+    <!-- Additional Meta Tags -->
+    <meta property="og:locale" content="en_US" />
+    <meta property="article:author" content="Jass" />
+    <meta property="article:publisher" content="https://jsm33t.me" />
+    <meta name="theme-color" content="#1976d2" />
+    <style>
+        .page-loading {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            -webkit-transition: all 0.4s 0.2s ease-in-out;
+            transition: all 0.4s 0.2s ease-in-out;
+            background-color: #fff;
+            opacity: 0;
+            visibility: hidden;
+            z-index: 9999;
+        }
+
+        [data-bs-theme="dark"] .page-loading {
+            background-color: #121519;
+        }
+
+        .page-loading.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .page-loading-inner {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            -webkit-transform: translateY(-50%);
+            transform: translateY(-50%);
+            -webkit-transition: opacity 0.2s ease-in-out;
+            transition: opacity 0.2s ease-in-out;
+            opacity: 0;
+        }
+
+        .page-loading.active>.page-loading-inner {
+            opacity: 1;
+        }
+
+        .page-loading-inner>span {
+            display: block;
+            font-family: "Poppins", sans-serif;
+            font-size: 1rem;
+            font-weight: normal;
+            color: #6f788b;
+        }
+
+        [data-bs-theme="dark"] .page-loading-inner>span {
+            color: #fff;
+            opacity: 0.6;
+        }
+
+        .page-spinner {
+            display: inline-block;
+            width: 2.75rem;
+            height: 2.75rem;
+            margin-bottom: 0.75rem;
+            vertical-align: text-bottom;
+            background-color: #d7dde2;
+            border-radius: 50%;
+            opacity: 0;
+            -webkit-animation: spinner 0.75s linear infinite;
+            animation: spinner 0.75s linear infinite;
+        }
+
+        [data-bs-theme="dark"] .page-spinner {
+            background-color: rgba(255, 255, 255, 0.25);
+        }
+
+        @-webkit-keyframes spinner {
+            0% {
+                -webkit-transform: scale(0);
+                transform: scale(0);
+            }
+
+            50% {
+                opacity: 1;
+                -webkit-transform: none;
+                transform: none;
+            }
+        }
+
+        @keyframes spinner {
+            0% {
+                -webkit-transform: scale(0);
+                transform: scale(0);
+            }
+
+            50% {
+                opacity: 1;
+                -webkit-transform: none;
+                transform: none;
+            }
+        }
+    </style>
+
+    <style id="scrollbar">
+        body::-webkit-scrollbar {
+            width: 0px;
+        }
+
+        *::-webkit-scrollbar {
+            width: 0px;
+        }
+
+        *::-webkit-scrollbar-track {
+            border-radius: 10px;
+        }
+
+        *::-webkit-scrollbar-thumb {
+            height: 56px;
+            border-radius: 8px;
+            border: 0px solid transparent;
+            background-clip: content-box;
+            background-color: #808080;
+        }
+
+        *::-webkit-scrollbar-thumb:hover {
+            background-color: #555;
+        }
+    </style>
+    <style id="theme-data">
+        :root {
+            --ar-primary: #586889;
+            --ar-primary-rgb: 88, 104, 137;
+            --ar-border-radius: 0rem;
+            --ar-link-color: #586889;
+            --ar-link-hover-color: #3f4f70;
+            --ar-body-font-family: 'Montserrat', sans-serif;
+        }
+
+        .btn-primary {
+            --ar-btn-bg: #586889;
+            --ar-btn-border-color: #586889;
+            --ar-btn-hover-bg: #3f4f70;
+            --ar-btn-hover-border-color: #3f4f70;
+            --ar-btn-active-bg: #3f4f70;
+            --ar-btn-active-border-color: #3f4f70;
+            --ar-btn-disabled-bg: #586889;
+            --ar-btn-disabled-border-color: #586889;
+        }
+
+        .btn-outline-primary {
+            --ar-btn-color: #586889;
+            --ar-btn-border-color: #586889;
+            --ar-btn-hover-bg: #586889;
+            --ar-btn-hover-border-color: #586889;
+            --ar-btn-active-bg: #586889;
+            --ar-btn-active-border-color: #586889;
+            --ar-btn-disabled-color: #586889;
+            --ar-btn-disabled-border-color: #586889;
+        }
+
+        .accordion-button:not(.collapsed)::after {
+            --ar-accordion-btn-active-icon: url("data:image/svg+xml,%3csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%20fill='%23586889'%3e%3cpath%20d='M.5%206.3c.6-.6%201.6-.6%202.3%200l9.3%209.3%209.3-9.3c.6-.6%201.6-.6%202.3%200%20.6.6.6%201.6%200%202.3L13.3%2018.8c-.6.6-1.6.6-2.3%200L.8%208.5c-.9-.8-.9-1.6-.3-2.2z'/%3e%3c/svg%3e");
+        }
+    </style>
+    <style id="font-size">
+        :root {
+            --ar-root-font-size: .475rem;
+        }
+    </style>
+</head>
+
+<body>
+    <app-root></app-root>
+</body>
+
+</html>

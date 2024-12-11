@@ -1,0 +1,7 @@
+.ngx-draggable {
+    cursor: move;
+  }
+  
+  .ngx-dragging {
+    cursor: grabbing !important;
+  }
