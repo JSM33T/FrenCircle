@@ -1,10 +1,24 @@
 -- Table: tblLogins
+-- Description: Stores login details for users, linking them to specific login providers.
+
 CREATE TABLE [dbo].[tblLogins] (
-    [Id]            INT PRIMARY KEY, -- Auto-increment if needed
-    [FrenId]        INT NOT NULL, -- FK reference to tblFrens
-    [AuthSource]    NVARCHAR(50) NOT NULL, -- FK reference to tblLoginProviders.ProviderId
-    [AuthSourceUID] NVARCHAR(256) NOT NULL,
-    [DateAdded]     DATETIME NOT NULL DEFAULT GETDATE(),
+    [Id]            INT PRIMARY KEY,               -- Unique identifier for the login record.
+
+    [FrenId]        INT NOT NULL,                  -- Foreign key referencing tblFrens(Id).
+
+    [ProviderId]    INT NOT NULL,                  -- Foreign key referencing tblLoginProviders(Id).
+
+    [ProviderUId]   NVARCHAR(256),                 -- Unique identifier provided by the login provider.
+
+    [ProviderKey]   NVARCHAR(256),                 -- Key or token for the provider.
+
+    [DateAdded]     DATETIME NOT NULL DEFAULT GETDATE(), -- Record creation timestamp.
+
+    [IsActive]      BIT NOT NULL DEFAULT 0,        -- Status indicating active login (1 = active, 0 = inactive).
+
+    -- Foreign Key Constraints
+    
     CONSTRAINT FK_tblLogins_Fren FOREIGN KEY ([FrenId]) REFERENCES [dbo].[tblFrens]([Id]),
-    CONSTRAINT FK_tblLogins_AuthSource FOREIGN KEY ([AuthSource]) REFERENCES [dbo].[tblLoginProviders]([ProviderId])
+
+    CONSTRAINT FK_tblLogins_ProviderId FOREIGN KEY ([ProviderId]) REFERENCES [dbo].[tblLoginProviders]([Id])
 );
