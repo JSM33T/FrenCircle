@@ -11,7 +11,7 @@ import { environment } from '../../../../environments/environment';
 })
 export class HomeParallaxComponent {
 
-  homeAssets : string = environment.urls.cdnUrl + "/assets/graphics/images/homeparallax";
+  homeAssets : string ="./assets/graphics/home";
   @ViewChild('parallaxContainer', { static: true }) parallaxContainer!: ElementRef;
 
   constructor(private parallaxService: ParallaxService) {}

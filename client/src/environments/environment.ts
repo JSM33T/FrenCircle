@@ -2,7 +2,7 @@ export const environment = {
 	production: false,
 	featureToggle: {
 		loader: true,
-		loaderTime: 500,
+		loaderTime: 0,
 	},
 	urls: {
 		apiUrl: 'https://localhost:7254',
