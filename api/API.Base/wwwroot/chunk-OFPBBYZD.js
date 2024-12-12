@@ -1,1 +1,0 @@
-import"./chunk-MFFLFG5Q.js";var t=[{path:"",loadComponent:()=>import("./chunk-PD6KEVK3.js").then(o=>o.StudiohomeComponent)},{path:"music",loadComponent:()=>import("./chunk-JEYUHA2N.js").then(o=>o.MusicComponent)},{path:"apps",loadComponent:()=>import("./chunk-LZ4ZDO3E.js").then(o=>o.AppsComponent)}];export{t as STUDIO_ROUTES};
