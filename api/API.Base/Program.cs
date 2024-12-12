@@ -63,6 +63,7 @@ builder.Services.AddScoped<IMessageRepository, MessageRepository>();
 
 //Register services
 builder.Services.AddScoped<ICommonService, CommonService>();
+builder.Services.AddScoped<IMailService, MailService>();
 builder.Services.AddScoped<IRateLimitService, RateLimitService>();
 
 builder.Services.AddScoped<IDbConnection>(sp => new SqlConnection(Jsm33tConfig.ConnectionString));
