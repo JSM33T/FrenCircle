@@ -1,5 +1,5 @@
-﻿using API.Entities.Dedicated;
-using API.Infra;
+﻿using API.Contracts.Services;
+using API.Entities.Dedicated;
 
 namespace API.Repositories
 {

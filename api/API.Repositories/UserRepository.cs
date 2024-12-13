@@ -1,12 +1,5 @@
-﻿using API.Entities.Dedicated;
-using API.Infra;
-using Dapper;
-using FluentValidation;
-using Microsoft.Data.SqlClient;
-using Microsoft.IdentityModel.Tokens;
-using System.ComponentModel.DataAnnotations;
-using System.Data;
-using System.Data.Common;
+﻿using API.Contracts.Services;
+using API.Entities.Dedicated;
 
 namespace API.Repositories
 {

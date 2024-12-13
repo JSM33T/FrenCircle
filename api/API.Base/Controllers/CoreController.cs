@@ -1,4 +1,5 @@
-﻿using API.Infra;
+﻿using API.Contracts.Services;
+using API.Infra;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +15,7 @@ namespace API.Base.Controllers
         {
             _mailService = mailService;
         }
+
         [HttpGet("mailkaro")]
         [Authorize]
         public async Task<IActionResult> Falana()

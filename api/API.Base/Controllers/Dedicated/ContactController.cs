@@ -1,4 +1,5 @@
-﻿using API.Entities.Dedicated;
+﻿using API.Contracts.Services;
+using API.Entities.Dedicated;
 using API.Entities.Shared;
 using API.Infra;
 using API.Repositories;

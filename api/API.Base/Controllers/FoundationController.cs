@@ -1,4 +1,5 @@
-﻿using API.Entities.Shared;
+﻿using API.Contracts.Services;
+using API.Entities.Shared;
 using API.Infra;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

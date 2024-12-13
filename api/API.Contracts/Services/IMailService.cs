@@ -1,4 +1,4 @@
-﻿namespace API.Infra
+﻿namespace API.Contracts.Services
 {
     /// <summary>
     /// Represents a service for sending and managing emails.

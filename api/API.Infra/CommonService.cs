@@ -1,4 +1,6 @@
 ﻿
+using API.Contracts.Services;
+
 namespace API.Infra
 {
     public class CommonService : ICommonService

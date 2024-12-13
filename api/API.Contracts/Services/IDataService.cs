@@ -1,6 +1,6 @@
 ﻿using System.Data;
 
-namespace API.Infra
+namespace API.Contracts.Services
 {
     public interface IDataService
     {
