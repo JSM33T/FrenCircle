@@ -1,14 +1,94 @@
-CREATE OR ALTER PROCEDURE sproc_AddFrenAndLogin
-    @FirstName      NVARCHAR(100),
-    @Username       NVARCHAR(100),
-    @Email          NVARCHAR(100),
-    @PasswordHash   NVARCHAR(256),
-    @Salt           NVARCHAR(256),
+-- CREATE OR ALTER PROCEDURE sproc_AddFrenWithLogin
+--     @FirstName NVARCHAR(50),
+--     @LastName NVARCHAR(50) = NULL,
+--     @Username NVARCHAR(50),
+--     @Avatar NVARCHAR(255) = NULL,
+--     @RoleId INT = 3, -- Default to Member
+--     @IsActive BIT = 0,
+--     @ProviderId INT,
+--     @ProviderUId NVARCHAR(256),
+--     @ProviderKey NVARCHAR(256),
+--     @LoginIsActive BIT = 0
+-- AS
+-- BEGIN
+--     SET NOCOUNT ON;
 
-    @ProviderUId    NVARCHAR(256),
-    @ProviderKey    NVARCHAR(256)
+--     BEGIN TRANSACTION;
 
-    @LoginProvider  INT = 0
+--     BEGIN TRY
+
+-- 	 DECLARE @FrenID INT;
+--         DECLARE @LoginID INT;
+
+-- 	 SELECT @FrenId = ISNULL(MAX([Id]), 0) + 1 FROM tblFrens;
+-- 	 SELECT @LoginId = ISNULL(MAX([Id]), 0) + 1 FROM tblLogins;
+
+--         -- Insert into tblFrens
+--         INSERT INTO [dbo].[tblFrens] (Id,
+--             [FirstName], [LastName], [Username], [Email], 
+--             [IsActive]
+--         )
+       
+--         VALUES (@FrenId,
+--             @FirstName, @LastName, @Username, @ProviderUId,
+--             @IsActive
+--         );
+
+--         -- Insert into tblLogins
+--         INSERT INTO [dbo].[tblLogins] (
+--            Id, [FrenId], [ProviderId], [ProviderUId], [ProviderKey], [IsActive]
+--         )
+--         VALUES (
+--            @LoginId,@FrenID, @ProviderId, @ProviderUId, @ProviderKey, @LoginIsActive
+--         );
+
+--         -- Commit the transaction
+--         COMMIT TRANSACTION;
+--     END TRY
+--     BEGIN CATCH
+--         -- Rollback the transaction if there is an error
+--         ROLLBACK TRANSACTION;
+
+--         -- Re-throw the error for handling outside
+--         THROW;
+--     END CATCH;
+-- END;
+-- GO
+
+
+
+-- -- EXEC sproc_AddFrenWithLogin
+-- --     @FirstName = 'Alice',
+-- --     @LastName = 'Johnson',
+-- --     @Username = 'alicej',
+-- --     @Avatar = NULL,
+-- --     @RoleId = 3,
+-- --     @IsActive = 1,
+-- --     @ProviderId = 2, -- Assuming 'Google'
+-- --     @ProviderUId = 'alice.johnson@gmail.com',
+-- --     @ProviderKey = 'google-key',
+-- --     @LoginIsActive = 0
+
+
+USE [fb_frencircle]
+GO
+/****** Object:  StoredProcedure [dbo].[sproc_AddFrenWithLogin]    Script Date: 13-12-2024 9.55.44 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER   PROCEDURE [dbo].[sproc_AddFrenWithLogin]
+    @FirstName NVARCHAR(50),
+    @LastName NVARCHAR(50) = NULL,
+    @Username NVARCHAR(50),
+    @Avatar NVARCHAR(255) = NULL,
+    @RoleId INT = 3, -- Default to Member
+    @IsActive BIT = 0,
+    @ProviderId INT,
+    @ProviderUId NVARCHAR(256),
+    @ProviderKey NVARCHAR(256),
+    @LoginIsActive BIT = 0,
+	 @ReturnValue INT OUTPUT -- Output parameter for the return value
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -17,59 +97,41 @@ BEGIN
 
     BEGIN TRY
 
-        DECLARE @FrenID INT;
+	 DECLARE @FrenID INT;
         DECLARE @LoginID INT;
 
-        SELECT @FrenID = ISNULL(MAX([Id]), 0) + 1 FROM tblFrens;
-        SELECT @LoginID = ISNULL(MAX([Id]), 0) + 1 FROM tblLogins;
+	 SELECT @FrenId = ISNULL(MAX([Id]), 0) + 1 FROM tblFrens;
+	 SELECT @LoginId = ISNULL(MAX([Id]), 0) + 1 FROM tblLogins;
 
         -- Insert into tblFrens
-        INSERT INTO tblFrens 
-            (
-                Id,
-                FirstName,
-                Username,
-                Email,
-                [Key],
-                PasswordHash,
-                Salt
-            )
-        VALUES 
-            (
-                @FrenID,
-                @FirstName,
-                @Username,
-                @Email,
-                NEWID(),
-                CASE WHEN @LoginProvider = 0 THEN @PasswordHash ELSE NULL END,
-                CASE WHEN @LoginProvider = 0 THEN @Salt ELSE NULL END
-            );
+        INSERT INTO [dbo].[tblFrens] (Id,
+            [FirstName], [LastName], [Username], [Email], 
+            [IsActive]
+        )
+       
+        VALUES (@FrenId,
+            @FirstName, @LastName, @Username, @ProviderUId,
+            @IsActive
+        );
 
-        INSERT INTO tblLogins
-            (
-                Id,
-                FrenId,
-                ProviderId,
-                ProviderUId,
-                ProviderKey,
-                DateAdded
-            )
-        VALUES
-            (
-                @LoginID,
-                @FrenID,
-                @LoginProvider,
-                @Email,
-                @ProviderKey ,
-                GETDATE()
-            );
+        -- Insert into tblLogins
+        INSERT INTO [dbo].[tblLogins] (
+           Id, [FrenId], [ProviderId], [ProviderUId], [ProviderKey], [IsActive]
+        )
+        VALUES (
+           @LoginId,@FrenID, @ProviderId, @ProviderUId, @ProviderKey, @LoginIsActive
+        );
 
+        -- Commit the transaction
         COMMIT TRANSACTION;
-
+		 SET @ReturnValue = 0; -- Success
     END TRY
-
     BEGIN CATCH
+        -- Rollback the transaction if there is an error
         ROLLBACK TRANSACTION;
+
+        -- Re-throw the error for handling outside
         THROW;
-    END CATCH
+		 SET @ReturnValue = 1; -- Success
+    END CATCH;
 END;

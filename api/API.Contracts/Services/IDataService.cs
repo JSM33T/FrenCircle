@@ -29,6 +29,8 @@ namespace API.Contracts.Services
         /// <param name="parameters">Optional parameters to pass to the command.</param>
         /// <returns>A task representing the asynchronous operation, with an integer result indicating the number of affected rows.</returns>
         Task<int> ExecuteAsync(string query, object parameters = null);
+
+        Task<int> ExecuteStoredProcedureAsync(string storedProcedureName, object parameters = null);
     }
 
 }

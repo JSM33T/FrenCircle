@@ -62,11 +62,9 @@ GO
 -- Table: tblLoginProviders
 -- Description: Stores information about login providers for authentication mechanisms.
 
-CREATE TABLE [dbo].[tblLoginProviders] (
+CREATE TABLE [dbo].[tblAuthProviders] (
 
     [Id]            INT PRIMARY KEY,           -- Unique identifier for the login provider.
-
-    [ProviderId]    NVARCHAR(50) NOT NULL,     -- Short identifier for the provider (e.g., 'google').
 
     [ProviderName]  NVARCHAR(50) NOT NULL,     -- Display name of the provider (e.g., 'Google').
 
@@ -76,39 +74,37 @@ CREATE TABLE [dbo].[tblLoginProviders] (
 -- Seed Data
 -- Adds initial login providers to the tblLoginProviders table.
 
-INSERT INTO [dbo].[tblLoginProviders] ([Id], [ProviderId], [ProviderName], [IsActive])
+INSERT INTO [dbo].[tblAuthProviders] ([Id], [ProviderName], [IsActive])
 VALUES
-    (1, 'google', 'Google', 1),       -- Google login provider.
+    (1, 'Default Email Provider', 1),    -- Default FC login provider.
 
-    (2, 'facebook', 'Facebook', 1),  -- Facebook login provider.
-
-    (3, 'twitter', 'Twitter', 1),    -- Twitter login provider.
-
-    (4, 'microsoft', 'Microsoft', 1) -- Microsoft login provider.
+    (2, 'Google', 1)  -- Google login provider.
 
 GO
 -- Table: tblLogins
 -- Description: Stores login details for users, linking them to specific login providers.
 
 CREATE TABLE [dbo].[tblLogins] (
-    [Id]            INT PRIMARY KEY,               -- Unique identifier for the login record.
+    [Id]            INT PRIMARY KEY,                                -- Unique identifier for the login record.
 
-    [FrenId]        INT NOT NULL,                  -- Foreign key referencing tblFrens(Id).
+    [FrenId]        INT                 NOT NULL,                   -- Foreign key referencing tblFrens(Id).
 
-    [ProviderId]    INT NOT NULL,                  -- Foreign key referencing tblLoginProviders(Id).
+    [ProviderId]    INT                 NOT NULL,                   -- Foreign key referencing tblLoginProviders(Id).
 
-    [ProviderUId]   NVARCHAR(256),                 -- Unique identifier provided by the login provider.
+    [ProviderUId]   NVARCHAR(256),                                  -- Unique identifier provided by the login provider.
 
-    [ProviderKey]   NVARCHAR(256),                 -- Key or token for the provider.
+    [ProviderKey]   NVARCHAR(256),                              -- Key or token for the provider.
 
-    [DateAdded]     DATETIME NOT NULL DEFAULT GETDATE(), -- Record creation timestamp.
+    [SessionKey]    UNIQUEIDENTIFIER    NOT NULL DEFAULT(NEWID()),        
 
-    [IsActive]      BIT NOT NULL DEFAULT 0,        -- Status indicating active login (1 = active, 0 = inactive).
+    [DateAdded]     DATETIME            NOT NULL DEFAULT GETDATE(), -- Record creation timestamp.
+
+    [IsActive]      BIT                 NOT NULL DEFAULT 0,         -- Status indicating active login (1 = active, 0 = inactive).
 
     -- Foreign Key Constraints
     
     CONSTRAINT FK_tblLogins_Fren FOREIGN KEY ([FrenId]) REFERENCES [dbo].[tblFrens]([Id]),
 
-    CONSTRAINT FK_tblLogins_ProviderId FOREIGN KEY ([ProviderId]) REFERENCES [dbo].[tblLoginProviders]([Id])
+    CONSTRAINT FK_tblLogins_ProviderId FOREIGN KEY ([ProviderId]) REFERENCES [dbo].[tblAuthProviders]([Id])
 );
 GO

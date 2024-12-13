@@ -124,5 +124,29 @@ namespace API.Base.Controllers.Dedicated
             }, "GoogleLogin");
         }
 
+
+        [HttpPost]
+        public async Task<IActionResult> SignFrenUp(Fren fren)
+        {
+            return await ExecuteActionAsync(async () =>
+            {
+                int statCode = default;
+                string message = string.Empty;
+                List<string> hints = [];
+                User_ClaimsResponse userClaims = new();
+
+                //var userId = User.Identity.Name;
+                var userId = 1;
+
+
+              
+
+
+                return (statCode, userClaims, message, hints);
+           
+
+            }, "Signup");
+        }
+
     }
 }

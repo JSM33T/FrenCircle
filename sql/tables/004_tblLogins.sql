@@ -10,9 +10,7 @@ CREATE TABLE [dbo].[tblLogins] (
 
     [ProviderUId]   NVARCHAR(256),                                  -- Unique identifier provided by the login provider.
 
-    [KeyHash]       NVARCHAR(256),                                  -- Key or token for the provider.
-
-    [Salt]          NVARCHAR(256),                                  -- Key or token for the provider.
+    [ProviderKey]   NVARCHAR(256),                              -- Key or token for the provider.
 
     [SessionKey]    UNIQUEIDENTIFIER    NOT NULL DEFAULT(NEWID()),        
 
@@ -24,5 +22,5 @@ CREATE TABLE [dbo].[tblLogins] (
     
     CONSTRAINT FK_tblLogins_Fren FOREIGN KEY ([FrenId]) REFERENCES [dbo].[tblFrens]([Id]),
 
-    CONSTRAINT FK_tblLogins_ProviderId FOREIGN KEY ([ProviderId]) REFERENCES [dbo].[tblLoginProviders]([Id])
+    CONSTRAINT FK_tblLogins_ProviderId FOREIGN KEY ([ProviderId]) REFERENCES [dbo].[tblAuthProviders]([Id])
 );

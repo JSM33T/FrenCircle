@@ -34,15 +34,39 @@ namespace API.Repositories
 
         public async Task<Fren> AddUserAsync(Fren member)
         {
-            member.Id = (await GetNextId() + 1);
+            //member.Id = (await GetNextId() + 1);
 
-            var query = @"
-                INSERT INTO [dbo].[tblMembers] 
-                (Id, FirstName, LastName, Username, Email, Avatar, Role, GoogleId, IsActive, ExpPoints, TimeSpent, DateAdded, DateEdited) 
-                VALUES 
-                (@Id, @FirstName, @LastName, @Username, @Email, @Avatar, @Role, @GoogleId, @IsActive, @ExpPoints, @TimeSpent, @DateAdded, @DateEdited)";
+            //var query = @"
+            //    INSERT INTO [dbo].[tblMembers] 
+            //    (Id, FirstName, LastName, Username, Email, Avatar, Role, GoogleId, IsActive, ExpPoints, TimeSpent, DateAdded, DateEdited) 
+            //    VALUES 
+            //    (@Id, @FirstName, @LastName, @Username, @Email, @Avatar, @Role, @GoogleId, @IsActive, @ExpPoints, @TimeSpent, @DateAdded, @DateEdited)";
 
-            await _dataService.ExecuteAsync(query, member);
+            //await _dataService.ExecuteAsync(query, member);
+            //return member;
+
+            var parameters = new
+            {
+                FirstName = member.FirstName,
+                LastName = member.LastName,
+                Username = member.Username,
+                Avatar = (string)null,
+                RoleId = 3,
+                IsActive = 0,
+                ProviderId = 1,
+                ProviderUId = member.Email,
+                ProviderKey = "assdsd",
+                LoginIsActive = 0
+            };
+
+            // If you want to capture an output parameter, modify the method call
+            int result = await _dataService.ExecuteStoredProcedureAsync(
+                "sproc_AddFrenWithLogin",
+                parameters
+            );
+
+            member.Id = result;
+
             return member;
         }
 

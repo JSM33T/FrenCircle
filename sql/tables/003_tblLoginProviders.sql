@@ -17,4 +17,4 @@ INSERT INTO [dbo].[tblAuthProviders] ([Id], [ProviderName], [IsActive])
 VALUES
     (1, 'Default Email Provider', 1),    -- Default FC login provider.
 
-    (2, 'Google', 1),  -- Google login provider.
+    (2, 'Google', 1)  -- Google login provider.
