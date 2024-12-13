@@ -30,4 +30,5 @@ def combine_sql_scripts(directory, output_file):
     print(f"Combined script saved to {output_file}")
 
 # Specify the directory and output file
-combine_sql_scripts(directory='../sql/tables', output_file='combined_script.sql')
+combine_sql_scripts(directory='../sql/tables', output_file='../sql/master/tables.sql')
+combine_sql_scripts(directory='../sql/sprocs', output_file='../sql/master/sprocs.sql')

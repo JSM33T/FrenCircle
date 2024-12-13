@@ -40,8 +40,6 @@ BEGIN
     END CATCH
 END;
 
-
-
 -- Sample Execution
 /*
 EXEC sproc_AddFrenAndLogin 
@@ -50,3 +48,4 @@ EXEC sproc_AddFrenAndLogin
     @Email = N'john.doe@example.com', 
     @PasswordHash = N'hashed_password_value';
 */
+GO

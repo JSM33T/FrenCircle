@@ -2,19 +2,23 @@
 -- Description: Stores login details for users, linking them to specific login providers.
 
 CREATE TABLE [dbo].[tblLogins] (
-    [Id]            INT PRIMARY KEY,               -- Unique identifier for the login record.
+    [Id]            INT PRIMARY KEY,                                -- Unique identifier for the login record.
 
-    [FrenId]        INT NOT NULL,                  -- Foreign key referencing tblFrens(Id).
+    [FrenId]        INT                 NOT NULL,                   -- Foreign key referencing tblFrens(Id).
 
-    [ProviderId]    INT NOT NULL,                  -- Foreign key referencing tblLoginProviders(Id).
+    [ProviderId]    INT                 NOT NULL,                   -- Foreign key referencing tblLoginProviders(Id).
 
-    [ProviderUId]   NVARCHAR(256),                 -- Unique identifier provided by the login provider.
+    [ProviderUId]   NVARCHAR(256),                                  -- Unique identifier provided by the login provider.
 
-    [ProviderKey]   NVARCHAR(256),                 -- Key or token for the provider.
+    [KeyHash]       NVARCHAR(256),                                  -- Key or token for the provider.
 
-    [DateAdded]     DATETIME NOT NULL DEFAULT GETDATE(), -- Record creation timestamp.
+    [Salt]          NVARCHAR(256),                                  -- Key or token for the provider.
 
-    [IsActive]      BIT NOT NULL DEFAULT 0,        -- Status indicating active login (1 = active, 0 = inactive).
+    [SessionKey]    UNIQUEIDENTIFIER    NOT NULL DEFAULT(NEWID()),        
+
+    [DateAdded]     DATETIME            NOT NULL DEFAULT GETDATE(), -- Record creation timestamp.
+
+    [IsActive]      BIT                 NOT NULL DEFAULT 0,         -- Status indicating active login (1 = active, 0 = inactive).
 
     -- Foreign Key Constraints
     
