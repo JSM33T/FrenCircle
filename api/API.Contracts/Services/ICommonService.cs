@@ -2,6 +2,8 @@
 {
     public interface ICommonService
     {
-        public Task<bool> SendNotification(string Identifier, string Message);
+        public string GetUsername();
+
+        public string GetUserId();
     }
 }

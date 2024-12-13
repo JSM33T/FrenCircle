@@ -12,10 +12,10 @@ namespace API.Repositories
             _dataService = dataService;
         }
 
-        public async Task<Member> GetUserDetailsByIdAsync(int userId)
+        public async Task<Fren> GetUserDetailsByIdAsync(int userId)
         {
             string query = "SELECT * FROM tblMembers WHERE Id = @Id";
-            return await _dataService.QueryFirstOrDefaultAsync<Member>(query, new { UserId = userId });
+            return await _dataService.QueryFirstOrDefaultAsync<Fren>(query, new { UserId = userId });
         }
 
         public async Task<int> GetNextId()
@@ -24,15 +24,15 @@ namespace API.Repositories
             return await _dataService.QueryFirstOrDefaultAsync<int>(query);
         }
 
-        public async Task<Member> GetUserByProp(string propertyName, object value)
+        public async Task<Fren> GetUserByProp(string propertyName, object value)
         {
             string query = $"SELECT * FROM tblMembers WHERE {propertyName} = @Value";
             int count = await _dataService.ExecuteAsync(query, new { Value = value });
 
-            return await _dataService.QueryFirstOrDefaultAsync<Member>(query, new { Value = value });
+            return await _dataService.QueryFirstOrDefaultAsync<Fren>(query, new { Value = value });
         }
 
-        public async Task<Member> AddUserAsync(Member member)
+        public async Task<Fren> AddUserAsync(Fren member)
         {
             member.Id = (await GetNextId() + 1);
 

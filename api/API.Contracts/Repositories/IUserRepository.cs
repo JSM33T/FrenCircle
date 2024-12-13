@@ -7,20 +7,23 @@ namespace API.Repositories
         /// <summary>
         /// Retrieves user details by ID.
         /// </summary>
-        Task<Member> GetUserDetailsByIdAsync(int userId);
+        Task<Fren> GetUserDetailsByIdAsync(int userId);
 
         /// <summary>
         /// Gets a user if present based on a specific property and value.
         /// </summary>
-        Task<Member> GetUserByProp(string propertyName, object value);
+        Task<Fren> GetUserByProp(string propertyName, object value);
 
         /// <summary>
         /// Adds a new user to the repository.
         /// </summary>
         /// <param name="member">The member entity containing the user details to be added.</param>
-        Task<Member> AddUserAsync(Member member);
-
-
+        Task<Fren> AddUserAsync(Fren member);
+        
+        /// <summary>
+        /// Adds a new user to the repository.
+        /// </summary>
+        /// <param name="id">The member id of the active user present.</param>
         Task UpdateTimeSpent(int Id);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace API.Entities.Dedicated
 {
-    public class Member
+    public class Fren
     {
         public int Id { get; set; }               // The unique identifier for the member
         public string FirstName { get; set; }      // Member's first name

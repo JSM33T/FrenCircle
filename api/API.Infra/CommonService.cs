@@ -1,14 +1,25 @@
 ﻿
 using API.Contracts.Services;
+using Microsoft.AspNetCore.Http;
 
 namespace API.Infra
 {
     public class CommonService : ICommonService
     {
-        public async Task<bool> SendNotification(string Identifier, string Message)
-        {
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-            return true;
+        public CommonService(IHttpContextAccessor httpContextAccessor)
+        {
+            _httpContextAccessor = httpContextAccessor;
+        }
+        public string GetUserId()
+        {
+            return _httpContextAccessor.HttpContext?.User.FindFirst("UserId")?.Value;
+        }
+
+        public string GetUsername()
+        {
+            return _httpContextAccessor.HttpContext?.User.Identity.Name;
         }
     }
 }

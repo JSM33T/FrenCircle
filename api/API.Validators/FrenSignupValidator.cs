@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace API.Validators
 {
-    public class MemberSignupValidator : AbstractValidator<MemberSignup>
+    public class FrenSignupValidator : AbstractValidator<FrenSignup>
     {
-        public MemberSignupValidator()
+        public FrenSignupValidator()
         {
             RuleFor(m => m.FirstName)
                 .NotEmpty()

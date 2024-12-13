@@ -30,8 +30,4 @@
 		<ProjectReference Include="..\API.Validators\API.Validators.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="wwwroot\" />
-	</ItemGroup>
-
 </Project>

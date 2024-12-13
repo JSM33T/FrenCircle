@@ -43,7 +43,7 @@ namespace API.Base.Controllers.Dedicated
                 Payload payload = await GoogleJsonWebSignature.ValidateAsync(request.IdToken, settings);
 
 
-                Member member = await _userRepo.GetUserByProp("Email", payload.Email);
+                Fren member = await _userRepo.GetUserByProp("Email", payload.Email);
 
                 if (member == null)
                 {

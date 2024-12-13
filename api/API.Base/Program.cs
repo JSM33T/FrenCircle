@@ -36,6 +36,8 @@ builder.Services.AddValidatorsFromAssembly(Assembly.Load("API.Validators"));
 
 builder.Services.AddControllers();
 
+builder.Services.AddHttpContextAccessor();
+
 if (builder.Environment.IsDevelopment())
 {
     builder.Configuration.AddJsonFile("appsettings.Development.json", optional: true, reloadOnChange: true);
@@ -57,10 +59,6 @@ builder.Services.AddScoped<IDataService>(provider =>
 
 //Register repositories
 builder.Services.AddScoped<IUserRepository, UserRepository>();
-//Register repositories
-builder.Services.AddScoped<IMessageRepository, MessageRepository>();
-
-
 
 //Register services
 builder.Services.AddScoped<ICommonService, CommonService>();
@@ -70,20 +68,20 @@ builder.Services.AddScoped<IRateLimitService, RateLimitService>();
 builder.Services.AddScoped<IDbConnection>(sp => new SqlConnection(Jsm33tConfig.ConnectionString));
 
 #region Auth
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = false,
-            ValidateAudience = false,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            ValidIssuer = Jsm33tConfig.JwtSettings.ValidIssuer,
-            ValidAudience = Jsm33tConfig.JwtSettings.ValidAudience,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Jsm33tConfig.JwtSettings.IssuerSigningKey))
-        };
-    });
+//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+//    .AddJwtBearer(options =>
+//    {
+//        options.TokenValidationParameters = new TokenValidationParameters
+//        {
+//            ValidateIssuer = false,
+//            ValidateAudience = false,
+//            ValidateLifetime = true,
+//            ValidateIssuerSigningKey = true,
+//            ValidIssuer = Jsm33tConfig?.JwtSettings.ValidIssuer,
+//            ValidAudience = Jsm33tConfig?.JwtSettings.ValidAudience,
+//            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Jsm33tConfig.JwtSettings.IssuerSigningKey))
+//        };
+//    });
 
 #endregion
 
@@ -173,7 +171,7 @@ app.UseHttpsRedirection();
 
 app.UseMiddleware<AcValidationMiddleware>();
 app.UseStaticFiles();
-app.MapFallbackToFile("index.html");
+app.MapFallbackToFile("client/index.html");
 app.UseRateLimiter();
 
 app.UseAuthentication();
