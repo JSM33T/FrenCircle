@@ -1,0 +1,154 @@
+<div class="container pt-5 pb-lg-5 pb-md-4 pb-2 my-5">
+    <div class="row mb-md-2 mb-xl-4">
+        <!-- Blog posts -->
+        <div class="col-lg-9 col-xl-8 pe-lg-4 pe-xl-0">
+            <h1 class="pb-3 pb-lg-4">Wall</h1>
+            <div class="masonry-grid mb-2 mb-md-4 pb-lg-3" data-columns="1">
+                <div class="masonry-grid row">
+                    <div *ngFor="let post of posts" class="masonry-grid-item">
+                        <div class="card border-0 bg-secondary">
+                            <a [routerLink]="['/post', post.postSlug]">
+                                <img class="card-img-top" src="{{post.postDescription}}" alt="Post image">
+                            </a>
+                            <div class="card-body pb-4">
+                                <div class="d-flex align-items-center mb-4 mt-n1">
+                                    <span class="fs-sm text-body-secondary">{{ post.dateAdded}}</span>
+                                    <span class="fs-xs opacity-20 mx-3">|</span>
+                                    <a class="badge text-nav fs-xs border" href="#">{{ post.categoryTitle }}</a>
+                                </div>
+                                <h3 class="h4 card-title">
+                                    <a [routerLink]="['/post', post.postSlug]">{{ post.postTitle }}</a>
+                                </h3>
+                                <p class="card-text">Vulputate auctor lacus imperdiet facilisi tristique nisl pulvinar porta diam duis odio</p>
+                            </div>
+                            <div class="card-footer pt-3">
+                                <a class="d-flex align-items-center text-decoration-none pb-2" href="#">
+                                    <img class="rounded-circle" src="assets/img/avatar/06.jpg" width="48" alt="Post author">
+                                    <h6 class="ps-3 mb-0">Jenny Wilson</h6>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Sidebar (offcanvas on sreens < 992px) -->
+        <aside class="col-lg-3 offset-xl-1">
+            <div class="offcanvas-lg offcanvas-end" id="sidebarBlog">
+                <div class="offcanvas-header">
+                    <h4 class="offcanvas-title">Sidebar</h4>
+                    <button class="btn-close ms-auto" type="button" data-bs-dismiss="offcanvas" data-bs-target="#sidebarBlog" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+
+                    <!-- Search box -->
+                    <div class="position-relative mb-4 mb-lg-5">
+                        <i class="ai-search position-absolute top-50 start-0 translate-middle-y ms-3"></i>
+                        <input class="form-control ps-5" type="search" placeholder="Enter keyword">
+                    </div>
+
+                    <!-- Category links -->
+                    <h4 class="pt-1 pt-lg-0 mt-lg-n2">Categories:</h4>
+                    <ul class="nav flex-column mb-lg-5 mb-4">
+                        <li class="mb-2">
+                            <a class="nav-link d-flex p-0 active" href="#">
+                                All categories
+                                <span class="fs-sm text-body-secondary ms-2">(110)</span>
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a class="nav-link d-flex p-0" href="#">
+                                Inspiration
+                                <span class="fs-sm text-body-secondary ms-2">(34)</span>
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a class="nav-link d-flex p-0" href="#">
+                                Brand strategy
+                                <span class="fs-sm text-body-secondary ms-2">(8)</span>
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a class="nav-link d-flex p-0" href="#">
+                                Advertisement
+                                <span class="fs-sm text-body-secondary ms-2">(45)</span>
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a class="nav-link d-flex p-0" href="#">
+                                Ecommerce
+                                <span class="fs-sm text-body-secondary ms-2">(17)</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="nav-link d-flex p-0" href="#">
+                                Travel &amp; Vacation
+                                <span class="fs-sm text-body-secondary ms-2">(6)</span>
+                            </a>
+                        </li>
+                    </ul>
+
+                    <!-- Featured posts widget -->
+                    <h4 class="pt-3 pt-lg-0 pb-1">Filters:</h4>
+                    <div class="mb-lg-5 mb-4">
+                        <article class="position-relative d-flex align-items-center mb-4">
+                            <img class="rounded" src="assets/img/blog/sidebar/01.jpg" width="92" alt="Post image">
+                            <div class="ps-3">
+                                <h4 class="h6 mb-2">
+                                    <a class="stretched-link" href="blog-single-v1.html">Instagram trends that will definitely work</a>
+                                </h4>
+                                <span class="fs-sm text-body-secondary">13 hours ago</span>
+                            </div>
+                        </article>
+                        <article class="position-relative d-flex align-items-center mb-4">
+                            <img class="rounded" src="assets/img/blog/sidebar/02.jpg" width="92" alt="Post image">
+                            <div class="ps-3">
+                                <h4 class="h6 mb-2">
+                                    <a class="stretched-link" href="blog-single-v2.html">A session with a psychologist</a>
+                                </h4>
+                                <span class="fs-sm text-body-secondary">May 12, 2022</span>
+                            </div>
+                        </article>
+                        <article class="position-relative d-flex align-items-center">
+                            <img class="rounded" src="assets/img/blog/sidebar/03.jpg" width="92" alt="Post image">
+                            <div class="ps-3">
+                                <h4 class="h6 mb-2">
+                                    <a class="stretched-link" href="blog-single-v3.html">How to look for inspiration for new goals</a>
+                                </h4>
+                                <span class="fs-sm text-body-secondary">June 10, 2022</span>
+                            </div>
+                        </article>
+                    </div>
+
+                    <!-- Social buttons -->
+                    <h4 class="pt-3 pt-lg-0 pb-1">Updates:</h4>
+                    <div class="d-flex mt-n3 ms-n3 mb-lg-5 mb-4 pb-3 pb-lg-0">
+                        <a class="btn btn-secondary btn-icon btn-sm btn-instagram rounded-circle mt-3 ms-3" href="#" aria-label="Instagram">
+                            <i class="ai-instagram"></i>
+                        </a>
+                        <a class="btn btn-secondary btn-icon btn-sm btn-facebook rounded-circle mt-3 ms-3" href="#" aria-label="Facebook">
+                            <i class="ai-facebook"></i>
+                        </a>
+                        <a class="btn btn-secondary btn-icon btn-sm btn-telegram rounded-circle mt-3 ms-3" href="#" aria-label="Telegram">
+                            <i class="ai-telegram"></i>
+                        </a>
+                        <a class="btn btn-secondary btn-icon btn-sm btn-x rounded-circle mt-3 ms-3" href="#" aria-label="X">
+                            <i class="ai-x"></i>
+                        </a>
+                    </div>
+                    <!-- Banner -->
+                    <div class="position-relative mb-3">
+                        <div class="position-absolute w-100 text-center top-0 start-50 translate-middle-x pt-4" style="max-width: 15rem;" data-bs-theme="light">
+                            <h3 class="h2 pt-3 mb-0">Your banner here!</h3>
+                        </div>
+                        <img class="rounded-5" src="assets/img/blog/sidebar/banner.jpg" alt="Banner">
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </div>
+    <!-- Sidebar toggle button -->
+    <button class="d-lg-none btn btn-sm fs-sm btn-primary w-100 rounded-0 fixed-bottom" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarBlog">
+        <i class="ai-layout-column me-2"></i>
+        Sidebar
+    </button>

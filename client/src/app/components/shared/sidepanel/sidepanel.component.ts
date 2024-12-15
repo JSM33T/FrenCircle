@@ -1,7 +1,5 @@
 import { Component, NgZone, OnInit } from '@angular/core';
-import { NgxDraggableDomModule } from 'ngx-draggable-dom';
 import { ThemeEngineService } from '../../../services/themeEngine/themeengine.service';
-import { AnimatorService } from '../../../services/animator/animator.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, Observable } from 'rxjs';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -13,7 +11,7 @@ import { ResponseHandlerService } from '../../../services/HttpServices/response-
 @Component({
 	selector: 'app-sidepanel',
 	standalone: true,
-	imports: [NgxDraggableDomModule, ReactiveFormsModule, NgIf],
+	imports: [ReactiveFormsModule, NgIf],
 	templateUrl: './sidepanel.component.html',
 	styleUrl: './sidepanel.component.css',
 })

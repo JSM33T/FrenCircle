@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HomeParallaxComponent } from './home-parallax.component';
+import { ShowcaseComponent } from './showcase.component';
 
-describe('HomeParallaxComponent', () => {
-  let component: HomeParallaxComponent;
-  let fixture: ComponentFixture<HomeParallaxComponent>;
+describe('ShowcaseComponent', () => {
+  let component: ShowcaseComponent;
+  let fixture: ComponentFixture<ShowcaseComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HomeParallaxComponent]
+      imports: [ShowcaseComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(HomeParallaxComponent);
+    fixture = TestBed.createComponent(ShowcaseComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

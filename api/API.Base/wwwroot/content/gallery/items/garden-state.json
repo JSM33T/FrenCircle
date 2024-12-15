@@ -1,0 +1,41 @@
+{
+  "title": "Melancholy",
+  "type": "album",
+  "description2": "some description",
+  "images": [
+    "https://example.com/images/app1.jpg",
+    "https://example.com/images/app2.jpg"
+  ],
+  "sections": [
+    {
+      "title": "Interior",
+      "description": "All about interiors",
+      "images": [
+        {
+          "title": "320kbps"
+        },
+        {
+          "title": "320kbps"
+        },
+        {
+          "title": "320kbps"
+        }
+      ]
+    },
+    {
+      "title": "Interior",
+      "description": "All about interiors",
+      "images": [
+        {
+          "title": "320kbps"
+        },
+        {
+          "title": "320kbps"
+        },
+        {
+          "title": "320kbps"
+        }
+      ]
+    }
+  ]
+}

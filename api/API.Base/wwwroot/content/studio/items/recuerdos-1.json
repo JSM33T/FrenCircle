@@ -1,0 +1,31 @@
+[
+  {
+    "title": "Melancholy",
+    "type": "album",
+    "description2": "- title: Singularity (Original Mix)\n  type: single\n  description: An original orchestral soundtrack \n somethign in this new line\n  images:\n    - 'https://example.com/images/app1.jpg'\n    - 'https://example.com/images/app2.jpg'\n  videos:\n    - something nice\n  links:\n    - title: Spotify\n      description: download from spotify\n      buttons:\n        - title: 320kbps\n          link: 'https://kajshdkjashdjks.mp3'\n        - title: something\n          link: 'https://kajshdkjashdjks.mp3'\n    - title: Download mp3\n      url: 'https://example.com/notes-app'\n    - title: Download mp3\n      url: 'https://example.com/notes-app'\n",
+    "images": [
+      "https://example.com/images/app1.jpg",
+      "https://example.com/images/app2.jpg"
+    ],
+    "links": [
+      {
+        "title": "Spotify",
+        "description": "download from spotify",
+        "buttons": [
+          {
+            "title": "320kbps",
+            "link": "https://kajshdkjashdjks.mp3"
+          },
+          {
+            "title": "something",
+            "link": "https://kajshdkjashdjks.mp3"
+          }
+        ]
+      },
+      {
+        "title": "Download mp3",
+        "url": "https://example.com/notes-app"
+      }
+    ]
+  }
+]

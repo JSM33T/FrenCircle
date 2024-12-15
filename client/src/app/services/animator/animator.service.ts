@@ -17,7 +17,7 @@ export class AnimatorService {
   initAos(element?: ElementRef): void {
     AOS.init({
       disable: false,
-      startEvent: 'DOMContentLoaded' // Starts animation after DOMContentLoaded
+      startEvent: 'DOMContentLoaded'
     });
   }
 

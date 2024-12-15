@@ -1,0 +1,7 @@
+
+CREATE TABLE tblPostFrenMap (
+
+	Id	INT PRIMARY KEY,
+	PostId	INT FOREIGN KEY(PostId) REFERENCES tblPosts(Id),
+	FrenId INT FOREIGN KEY(FrenId) REFERENCES tblFrens(Id),
+);

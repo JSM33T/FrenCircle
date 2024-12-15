@@ -1,0 +1,45 @@
+<section class="container pt-5 mt-lg-3 mt-xl-4 mt-xxl-5">
+    <div class="row align-items-center pt-md-4 mt-2 mt-sm-3">
+        <div *ngIf="stuff.length > 0; else noData">
+            <div *ngFor="let item of stuff">
+                <h2>{{ item.title }}</h2>
+                <p>{{ item.description }}</p>
+    
+                <div *ngIf="item.images && item.images.length > 0">
+                    <h3>Images:</h3>
+                    <ul>
+                        <li *ngFor="let img of item.images">
+                            <img [src]="img" alt="{{ item.title }}" />
+                        </li>
+                    </ul>
+                </div>
+    
+                <div *ngIf="item.links && item.links.length > 0">
+                    <h3>Links:</h3>
+                    <ul>
+                        <li *ngFor="let link of item.links">
+                            <strong>{{ link.title }}:</strong>
+                            <p>{{ link.description }}</p>
+    
+                            <div *ngIf="link.buttons && link.buttons.length > 0">
+                                <ul>
+                                    <li *ngFor="let button of link.buttons">
+                                        <a [href]="button.link" target="_blank">{{ button.title }}</a>
+                                    </li>
+                                </ul>
+                            </div>
+    
+                            <div *ngIf="link.url">
+                                <a [href]="link.url" target="_blank">Download</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    
+        <ng-template #noData>
+            <p>No media items found.</p>
+        </ng-template>
+    </div>
+</section>
