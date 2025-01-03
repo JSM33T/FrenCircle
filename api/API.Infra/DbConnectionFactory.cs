@@ -3,13 +3,10 @@ using System.Data;
 
 namespace API.Infra
 {
-    public class DbConnectionFactory : IDbConnectionFactory
+    public class DbConnectionFactory(string connectionString) : IDbConnectionFactory
     {
-        private readonly string _connectionString;
-        public DbConnectionFactory(string connectionString)
-        {
-            _connectionString = connectionString;
-        }
+        private readonly string _connectionString = connectionString;
+
         public async Task<IDbConnection> CreateConnectionAsync(CancellationToken token = default)
         {
             var connection = new SqlConnection(_connectionString);

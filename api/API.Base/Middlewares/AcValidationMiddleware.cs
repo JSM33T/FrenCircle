@@ -27,7 +27,7 @@ namespace API.Base.Middlewares
                 if (!string.IsNullOrEmpty(originalBodyText) && originalBodyText.Contains("\"traceId\""))
                 {
                     var originalResponse = JsonConvert.DeserializeObject<ValidationProblemDetails>(originalBodyText);
-                    var errorMessages = [];
+                    List<string> errorMessages = [];
 
                     foreach (var error in originalResponse!.Errors)
                     {
