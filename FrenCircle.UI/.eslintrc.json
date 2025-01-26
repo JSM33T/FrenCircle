@@ -1,0 +1,35 @@
+{
+	"extends": [
+		"eslint:recommended",
+		"plugin:@typescript-eslint/recommended",
+		"plugin:html/recommended",
+		"plugin:prettier/recommended"
+	],
+	"parser": "@typescript-eslint/parser",
+	"parserOptions": {
+		"ecmaVersion": 2020,
+		"sourceType": "module"
+	},
+	"plugins": [
+		"@typescript-eslint",
+		"html",
+		"prettier"
+	],
+	"rules": {
+		"@typescript-eslint/no-explicit-any": "warn",
+		"prettier/prettier": [
+			"error",
+			{
+				"singleQuote": true,
+				"trailingComma": "all",
+				"printWidth": 256,
+				"tabWidth": 4,
+				"semi": true
+			}
+		],
+		"@typescript-eslint/indent": [
+			"error",
+			4
+		]
+	}
+}

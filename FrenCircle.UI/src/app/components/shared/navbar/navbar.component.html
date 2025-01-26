@@ -1,0 +1,245 @@
+<header>
+    <!-- Navbar. Remove 'fixed-top' class to make the navigation bar scrollable with the page -->
+    <div class="navbar navbar-expand-lg fixed-top navbar-stuck">
+        <div class="container">
+
+            <!-- Navbar brand (Logo) -->
+            <a class="navbar-brand pe-sm-3" routerLink="">
+                <span class="text-primary flex-shrink-0 me-2">
+                    <span class="text-primary flex-shrink-0 me-2">
+                        <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="75.000000pt" height="24.000000pt" viewBox="0 0 1000.000000 300.000000" preserveAspectRatio="xMidYMid meet" style="margin-left: 0px">
+                            <g transform="translate(0.000000,275.000000) scale(0.100000,-0.100000)" fill="currentColor" stroke="none">
+                                <path d="M520 2725 c0 -3 0 -104 0 -225 0 -121 0 -224 0 -230 0 -6 84 -10 230 -10 l231 0 -3 -787 c-4 -900 0 -858 -87 -944 -71 -71 -168 -85 -263 -38 -43 22 -73 62 -104 138 l-23 56 -250 3 c-138 1 -251 -1 -251 -5 0 -5 11 -48 24 -98 47 -173 117 -297 228 -401 188 -175 476 -231 735 -142 132 45 199 87 281 173 103 108 159 228 187 400 12 75 15 262 15 1103 l0 1012 -475 0 c-261 0 -475 -2 -475 -5z"></path>
+                                <path d="M2305 2734 c-326 -53 -572 -272 -639 -571 -21 -92 -21 -270 0 -371 33 -164 134 -314 272 -405 79 -53 217 -116 397 -182 201 -74 271 -111 341 -180 74 -73 96 -129 96 -242 -1 -96 -31 -162 -107 -231 -73 -67 -154 -97 -260 -96 -102 1 -167 28 -229 94 -61 66 -88 121 -111 232 l-5 28 -256 0 -257 0 7 -60 c21 -187 95 -345 226 -484 176 -186 400 -275 664 -263 198 9 362 65 508 176 127 96 233 262 280 436 31 118 31 338 -1 450 -82 290 -258 442 -689 594 -95 34 -198 74 -230 90 -70 35 -146 115 -161 167 -14 52 -14 147 1 198 18 60 99 138 163 157 100 29 212 9 275 -48 54 -48 76 -86 97 -168 l19 -70 244 0 244 0 -3 49 c-8 132 -80 311 -171 423 -96 119 -250 219 -395 258 -60 16 -263 28 -320 19z"></path>
+                                <path d="M3447 2481 l-187 -269 2 -417 3 -417 160 233 160 234 3 -907 c1 -533 6 -908 11 -908 5 0 168 233 362 518 775 1134 880 1287 889 1290 7 2 10 -320 10 -912 l0 -916 250 0 250 0 0 1370 0 1370 -232 0 -233 0 -390 -560 c-214 -307 -393 -559 -397 -559 -5 -1 -8 251 -8 559 l0 560 -232 0 -233 -1 -188 -268z"></path>
+                                <path d="M5445 2727 c-3 -7 -4 -114 -3 -237 l3 -225 483 -3 482 -2 0 -330 0 -330 -272 -2 -273 -3 0 -235 0 -235 273 -3 272 -2 0 -320 c0 -249 -3 -320 -12 -320 -7 0 -220 0 -473 0 -253 0 -466 -4 -473 -8 -9 -7 -12 -61 -10 -238 l3 -229 738 -3 737 -2 -2 1367 -3 1368 -733 3 c-588 2 -734 0 -737 -11z"></path>
+                                <path d="M7002 2503 l3 -238 478 -3 477 -2 0 -330 0 -330 -267 -2 -268 -3 -3 -237 -2 -238 270 0 270 0 -2 -320 -3 -321 -475 -2 -475 -2 -3 -237 -2 -238 735 0 735 0 0 1370 0 1370 -735 0 -735 0 2 -237z"></path>
+                                <path d="M8557 2723 c-4 -3 -7 -618 -7 -1365 l0 -1358 255 0 255 0 0 1130 0 1130 253 2 252 3 3 233 2 232 -503 0 c-277 0 -507 -3 -510 -7z"></path>
+                            </g>
+                        </svg>
+                    </span>
+                </span>
+            </a>
+
+            <!-- Theme switcher -->
+
+            <app-theme-toggle class="form-check form-switch mode-switch order-lg-2 me-3 me-lg-4 ms-auto" data-bs-toggle="mode"></app-theme-toggle>
+
+
+
+            <!-- Mobile menu toggler (Hamburger) -->
+            <button class="navbar-toggler ms-sm-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Navbar collapse (Main navigation) -->
+            <nav class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav navbar-nav-scroll me-auto" style="--ar-scroll-height: 520px;">
+                    <!-- <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle active" href="#" data-bs-toggle="dropdown" aria-expanded="false">Landings</a>
+                        <div class="dropdown-menu overflow-hidden p-0">
+                            <div class="d-lg-flex">
+                                <div class="mega-dropdown-column pt-1 pt-lg-3 pb-lg-4">
+                                    <ul class="list-unstyled mb-0">
+                                        <li>
+                                            <a class="dropdown-item" href="index.html">Template Intro Page</a>
+                                            <span class="mega-dropdown-column position-absolute top-0 end-0 h-100 bg-size-cover bg-repeat-0 rounded-3 rounded-start-0" style="background-image: url(assets/img/megamenu/landings.jpg);"></span>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="landing-mobile-app-showcase.html">Mobile App Showcase</a>
+                                            <span class="mega-dropdown-column position-absolute top-0 end-0 h-100 bg-size-cover bg-repeat-0 z-2 opacity-0" style="background-image: url(assets/img/megamenu/mobile-app.jpg);"></span>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="landing-product.html">Product Landing</a>
+                                            <span class="mega-dropdown-column position-absolute top-0 end-0 h-100 bg-size-cover bg-repeat-0 z-2 opacity-0" style="background-image: url(assets/img/megamenu/product-landing.jpg);"></span>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="landing-saas-v1.html">SaaS v.1</a>
+                                            <span class="mega-dropdown-column position-absolute top-0 end-0 h-100 bg-size-cover bg-repeat-0 z-2 opacity-0" style="background-image: url(assets/img/megamenu/saas-1.jpg);"></span>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="landing-saas-v2.html">SaaS v.2</a>
+                                            <span class="mega-dropdown-column position-absolute top-0 end-0 h-100 bg-size-cover bg-repeat-0 z-2 opacity-0" style="background-image: url(assets/img/megamenu/saas-2.jpg);"></span>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="landing-saas-v3.html">SaaS v.3</a>
+                                            <span class="mega-dropdown-column position-absolute top-0 end-0 h-100 bg-size-cover bg-repeat-0 z-2 opacity-0" style="background-image: url(assets/img/megamenu/saas-3.jpg);"></span>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="landing-saas-v4.html">
+                                                SaaS v.4
+                                                <span class="text-danger fs-xs ms-2">New</span>
+                                            </a>
+                                            <span class="mega-dropdown-column position-absolute top-0 end-0 h-100 bg-size-cover bg-repeat-0 z-2 opacity-0" style="background-image: url(assets/img/megamenu/saas-4.jpg);"></span>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="landing-shop-v1.html">Shop Homepage v.1</a>
+                                            <span class="mega-dropdown-column position-absolute top-0 end-0 h-100 bg-size-cover bg-repeat-0 z-2 opacity-0" style="background-image: url(assets/img/megamenu/shop-homepage-1.jpg);"></span>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="landing-shop-v2.html">
+                                                Shop Homepage v.2
+                                                <span class="text-danger fs-xs ms-2">New</span>
+                                            </a>
+                                            <span class="mega-dropdown-column position-absolute top-0 end-0 h-100 bg-size-cover bg-repeat-0 z-2 opacity-0" style="background-image: url(assets/img/megamenu/shop-homepage-2.jpg);"></span>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="landing-marketing-agency.html">Marketing Agency</a>
+                                            <span class="mega-dropdown-column position-absolute top-0 end-0 h-100 bg-size-cover bg-repeat-0 z-2 opacity-0" style="background-image: url(assets/img/megamenu/marketing-agency.jpg);"></span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="mega-dropdown-column pb-2 pt-lg-3 pb-lg-4">
+                                    <ul class="list-unstyled mb-0">
+                                        <li>
+                                            <a class="dropdown-item" href="landing-creative-agency.html">Creative Agency</a>
+                                            <span class="mega-dropdown-column position-absolute top-0 end-0 h-100 bg-size-cover bg-repeat-0 z-2 opacity-0" style="background-image: url(assets/img/megamenu/creative-agency.jpg);"></span>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="landing-conference.html">Conference (Event)</a>
+                                            <span class="mega-dropdown-column position-absolute top-0 end-0 h-100 bg-size-cover bg-repeat-0 z-2 opacity-0" style="background-image: url(assets/img/megamenu/conference.jpg);"></span>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="landing-web-studio.html">Web Studio</a>
+                                            <span class="mega-dropdown-column position-absolute top-0 end-0 h-100 bg-size-cover bg-repeat-0 z-2 opacity-0" style="background-image: url(assets/img/megamenu/web-studio.jpg);"></span>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="landing-corporate.html">Corporate</a>
+                                            <span class="mega-dropdown-column position-absolute top-0 end-0 h-100 bg-size-cover bg-repeat-0 z-2 opacity-0" style="background-image: url(assets/img/megamenu/corporate.jpg);"></span>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="landing-insurance.html">
+                                                Insurance Company
+                                                <span class="text-danger fs-xs ms-2">New</span>
+                                            </a>
+                                            <span class="mega-dropdown-column position-absolute top-0 end-0 h-100 bg-size-cover bg-repeat-0 z-2 opacity-0" style="background-image: url(assets/img/megamenu/insurance.jpg);"></span>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="landing-business-consulting.html">Business Consulting</a>
+                                            <span class="mega-dropdown-column position-absolute top-0 end-0 h-100 bg-size-cover bg-repeat-0 z-2 opacity-0" style="background-image: url(assets/img/megamenu/business-consulting.jpg);"></span>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="landing-coworking-space.html">Coworking Space</a>
+                                            <span class="mega-dropdown-column position-absolute top-0 end-0 h-100 bg-size-cover bg-repeat-0 z-2 opacity-0" style="background-image: url(assets/img/megamenu/coworking.jpg);"></span>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="landing-yoga-studio.html">Yoga Studio</a>
+                                            <span class="mega-dropdown-column position-absolute top-0 end-0 h-100 bg-size-cover bg-repeat-0 z-2 opacity-0" style="background-image: url(assets/img/megamenu/yoga-studio.jpg);"></span>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="landing-influencer.html">Influencer</a>
+                                            <span class="mega-dropdown-column position-absolute top-0 end-0 h-100 bg-size-cover bg-repeat-0 z-2 opacity-0" style="background-image: url(assets/img/megamenu/influencer.jpg);"></span>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="landing-blog.html">Blog Homepage</a>
+                                            <span class="mega-dropdown-column position-absolute top-0 end-0 h-100 bg-size-cover bg-repeat-0 z-2 opacity-0" style="background-image: url(assets/img/megamenu/blog-homepage.jpg);"></span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="mega-dropdown-column position-relative border-start z-3"></div>
+                            </div>
+                        </div>
+                    </li> -->
+                    <!-- <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">Pages</a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown">
+                                <a class="dropdown-item dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Portfolio</a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="portfolio-list-v1.html">List View v.1</a></li>
+                                    <li><a class="dropdown-item" href="portfolio-list-v2.html">List View v.2</a></li>
+                                    <li><a class="dropdown-item" href="portfolio-grid-v1.html">Grid View v.1</a></li>
+                                    <li><a class="dropdown-item" href="portfolio-grid-v2.html">Grid View v.2</a></li>
+                                    <li><a class="dropdown-item" href="portfolio-slider.html">Slider View</a></li>
+                                    <li><a class="dropdown-item" href="portfolio-single-v1.html">Single Project v.1</a></li>
+                                    <li><a class="dropdown-item" href="portfolio-single-v2.html">Single Project v.2</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a class="dropdown-item dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="shop-catalog.html">Catalog (Listing)</a></li>
+                                    <li><a class="dropdown-item" href="shop-single.html">Product Page</a></li>
+                                    <li><a class="dropdown-item" href="shop-checkout.html">Checkout</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a class="dropdown-item dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Blog</a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="blog-grid-sidebar.html">Grid View with Sidebar</a></li>
+                                    <li><a class="dropdown-item" href="blog-grid.html">Grid View no Sidebar</a></li>
+                                    <li><a class="dropdown-item" href="blog-list-sidebar.html">List View with Sidebar</a></li>
+                                    <li><a class="dropdown-item" href="blog-list.html">List View no Sidebar</a></li>
+                                    <li><a class="dropdown-item" href="blog-single-v1.html">Single post v.1</a></li>
+                                    <li><a class="dropdown-item" href="blog-single-v2.html">Single post v.2</a></li>
+                                    <li><a class="dropdown-item" href="blog-single-v3.html">Single post v.3</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a class="dropdown-item dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">About</a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="about-agency.html">About - Agency</a></li>
+                                    <li><a class="dropdown-item" href="about-product.html">About - Product</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a class="dropdown-item dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Services</a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="services-v1.html">Services v.1</a></li>
+                                    <li><a class="dropdown-item" href="services-v2.html">Services v.2</a></li>
+                                    <li><a class="dropdown-item" href="services-v3.html">Services v.3</a></li>
+                                </ul>
+                            </li>
+                            <li><a class="dropdown-item" href="pricing.html">Pricing</a></li>
+                            <li class="dropdown">
+                                <a class="dropdown-item dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Contacts</a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="contacts-v1.html">Contacts v.1</a></li>
+                                    <li><a class="dropdown-item" href="contacts-v2.html">Contacts v.2</a></li>
+                                    <li><a class="dropdown-item" href="contacts-v3.html">Contacts v.3</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a class="dropdown-item dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Specialty Pages</a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="coming-soon-v1.html">Coming Soon v.1</a></li>
+                                    <li><a class="dropdown-item" href="coming-soon-v2.html">Coming Soon v.2</a></li>
+                                    <li><a class="dropdown-item" href="404-v1.html">404 Error v.1</a></li>
+                                    <li><a class="dropdown-item" href="404-v2.html">404 Error v.2</a></li>
+                                    <li><a class="dropdown-item" href="404-v3.html">404 Error v.3</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">Account</a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown">
+                                <a class="dropdown-item dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Auth pages</a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="account-signin.html">Sign In</a></li>
+                                    <li><a class="dropdown-item" href="account-signup.html">Sign Up</a></li>
+                                    <li><a class="dropdown-item" href="account-signinup.html">Sign In / Up</a></li>
+                                    <li><a class="dropdown-item" href="account-password-recovery.html">Password Recovery</a></li>
+                                </ul>
+                            </li>
+                            <li><a class="dropdown-item" href="account-overview.html">Overview</a></li>
+                            <li><a class="dropdown-item" href="account-settings.html">Settings</a></li>
+                            <li><a class="dropdown-item" href="account-billing.html">Billing</a></li>
+                            <li><a class="dropdown-item" href="account-orders.html">Orders</a></li>
+                            <li><a class="dropdown-item" href="account-earnings.html">Earnings</a></li>
+                            <li><a class="dropdown-item" href="account-chat.html">Chat (Messages)</a></li>
+                            <li><a class="dropdown-item" href="account-favorites.html">Favorites (Wishlist)</a></li>
+                        </ul>
+                    </li> -->
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink="">Home</a>
+                    </li>
+                    <!-- <li class="nav-item">
+                        <a class="nav-link" routerLink="about">About</a>
+                    </li> -->
+                </ul>
+            </nav>
+        </div>
+    </div>
+</header>

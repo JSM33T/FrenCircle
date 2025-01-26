@@ -1,0 +1,17 @@
+<!-- <ngx-loading-bar></ngx-loading-bar> -->
+
+<div class="page-loading active" [class.active]="isLoading">
+    <div class="page-loading-inner">
+        <div class="page-spinner"></div>
+        <span>Initializing...</span>
+    </div>
+</div>
+
+<ngx-loading-bar></ngx-loading-bar>
+
+<main class="page-wrapper">
+    <app-navbar></app-navbar>
+    <app-sidepanel></app-sidepanel>
+    <router-outlet></router-outlet>
+    <app-back-to-top></app-back-to-top>
+</main>

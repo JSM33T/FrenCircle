@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="FluentValidation" Version="11.11.0" />
+		<PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
+		<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\FrenCircle.Repositories\FrenCircle.Repositories.csproj" />
+		<ProjectReference Include="..\FrenCircle.Validatiors\FrenCircle.Validators.csproj" />
+		<ProjectReference Include="..\FrenCircle.Entities\FrenCircle.Entities.csproj" />
+		<ProjectReference Include="..\FrenCircle.Helpers\FrenCircle.Helpers.csproj" />
+	</ItemGroup>
+
+</Project>

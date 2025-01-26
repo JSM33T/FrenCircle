@@ -1,0 +1,11 @@
+<nav aria-label="breadcrumb">
+    <ol class="pt-lg-3 pb-lg-4 pb-2 breadcrumb">
+        <li *ngFor="let crumb of breadcrumbs; let last = last" class="breadcrumb-item" [class.active]="last">
+            <a *ngIf="!last; else lastCrumb" [routerLink]="crumb.url" data-aos="flip-down" data-aos-duration="500">{{
+                crumb.label }}</a>
+            <ng-template #lastCrumb>
+                <span data-aos="flip-down" data-aos-duration="900">{{ crumb.label }}</span>
+            </ng-template>
+        </li>
+    </ol>
+</nav>

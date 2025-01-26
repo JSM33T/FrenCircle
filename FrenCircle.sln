@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35514.174
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FrenCircle.Base", "FrenCircle.Base\FrenCircle.Base.csproj", "{B584A4B8-9EE7-4763-99E1-DE8B12A55EBB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FrenCircle.Entities", "FrenCircle.Entities\FrenCircle.Entities.csproj", "{C5EAE009-ACFD-472A-BC03-13D943A81B0D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FrenCircle.Helpers", "FrenCircle.Helpers\FrenCircle.Helpers.csproj", "{8D19AC28-E258-4A98-AB80-2BC0E9A26388}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FrenCircle.Validators", "FrenCircle.Validatiors\FrenCircle.Validators.csproj", "{CB459DEC-06AB-47B3-83E1-AA161354915C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FrenCircle.Infra", "FrenCircle.Infra\FrenCircle.Infra.csproj", "{0601DA27-346A-4B4C-9699-557606777477}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FrenCircle.Repositories", "FrenCircle.Repositories\FrenCircle.Repositories.csproj", "{B517512A-E4D6-45AE-9913-E8012D7465D4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B584A4B8-9EE7-4763-99E1-DE8B12A55EBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B584A4B8-9EE7-4763-99E1-DE8B12A55EBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B584A4B8-9EE7-4763-99E1-DE8B12A55EBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B584A4B8-9EE7-4763-99E1-DE8B12A55EBB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5EAE009-ACFD-472A-BC03-13D943A81B0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5EAE009-ACFD-472A-BC03-13D943A81B0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5EAE009-ACFD-472A-BC03-13D943A81B0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5EAE009-ACFD-472A-BC03-13D943A81B0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D19AC28-E258-4A98-AB80-2BC0E9A26388}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D19AC28-E258-4A98-AB80-2BC0E9A26388}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D19AC28-E258-4A98-AB80-2BC0E9A26388}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D19AC28-E258-4A98-AB80-2BC0E9A26388}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CB459DEC-06AB-47B3-83E1-AA161354915C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CB459DEC-06AB-47B3-83E1-AA161354915C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CB459DEC-06AB-47B3-83E1-AA161354915C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CB459DEC-06AB-47B3-83E1-AA161354915C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0601DA27-346A-4B4C-9699-557606777477}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0601DA27-346A-4B4C-9699-557606777477}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0601DA27-346A-4B4C-9699-557606777477}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0601DA27-346A-4B4C-9699-557606777477}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B517512A-E4D6-45AE-9913-E8012D7465D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B517512A-E4D6-45AE-9913-E8012D7465D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B517512A-E4D6-45AE-9913-E8012D7465D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B517512A-E4D6-45AE-9913-E8012D7465D4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
