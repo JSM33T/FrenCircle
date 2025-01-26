@@ -24,7 +24,7 @@ namespace FrenCircle.Base.Controllers
             }
 
 
-            Message message = MessageDtoMappers.MAP_AddMessageRequest_Message(messageRequest);
+            var message = MessageDtoMappers.MAP_AddMessageRequest_Message(messageRequest);
 
             if (await _messageRepository.IsMessagePresent(message))
                 return RESP_ConflictResponse("Message already present");
