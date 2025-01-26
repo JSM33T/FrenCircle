@@ -42,7 +42,7 @@ app.UseStaticFiles();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
-app.UseMiddleware<FCRequestMiddleware>();
+app.UseMiddleware<FcRequestMiddleware>();
 app.MapControllers();
 app.MapFallbackToFile("index.html");
 app.UseSignalRConfiguration();

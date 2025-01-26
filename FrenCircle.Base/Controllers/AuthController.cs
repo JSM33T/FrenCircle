@@ -5,7 +5,7 @@ namespace FrenCircle.Base.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthController : FCBaseController
+    public class AuthController : FcBaseController
     {
     }
 }

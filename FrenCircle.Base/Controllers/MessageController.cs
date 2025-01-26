@@ -8,7 +8,7 @@ namespace FrenCircle.Base.Controllers
 {
     [Route("api/message")]
     [ApiController]
-    public class MessageController(IMessageRepository messageRepository,IRateLimiter rateLimiter) : FCBaseController
+    public class MessageController(IMessageRepository messageRepository,IRateLimiter rateLimiter) : FcBaseController
     {
         private readonly IMessageRepository _messageRepository = messageRepository;
 
@@ -20,7 +20,7 @@ namespace FrenCircle.Base.Controllers
 
             if (_rateLimiter.IsRateLimited("GLOBAL", 5, 60))
             {
-                return RESP_ForbiddenResponse("Daddy chil....");
+                return RESP_ForbiddenResponse("Daddy chill....");
             }
 
 

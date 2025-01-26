@@ -2,7 +2,7 @@
 
 namespace FrenCircle.Base.Middlewares
 {
-    public class FCRequestMiddleware(RequestDelegate next)
+    public class FcRequestMiddleware(RequestDelegate next)
     {
         private readonly RequestDelegate _next = next;
 

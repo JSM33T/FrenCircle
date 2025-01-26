@@ -10,8 +10,7 @@ namespace FrenCircle.Helpers.Mappers
             {
                 Name = messageRequest.Name ?? string.Empty,
                 Email = messageRequest.Email,
-                Text = messageRequest.Text,
-                DateAdded = DateTime.UtcNow
+                Text = messageRequest.Text
             };
         }
 
