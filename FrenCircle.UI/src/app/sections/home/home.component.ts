@@ -10,7 +10,10 @@ import { OffCanvasService } from '../../services/DOMServices/off-canvas.service'
     styleUrl: './home.component.css',
 })
 export class HomeComponent {
-    constructor(private metaService: MetaTagsService, private offCanvasService: OffCanvasService) { }
+    constructor(
+        private metaService: MetaTagsService,
+        private offCanvasService: OffCanvasService,
+    ) {}
 
     ngOnInit(): void {
         console.log('home reached');
@@ -24,6 +27,6 @@ export class HomeComponent {
     }
 
     something() {
-        this.offCanvasService.showOffcanvas("customizer");
+        this.offCanvasService.showOffcanvas('customizer');
     }
 }

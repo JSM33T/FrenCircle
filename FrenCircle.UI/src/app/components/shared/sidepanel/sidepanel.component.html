@@ -7,12 +7,7 @@
     <div class="offcanvas-body card-container">
         <!-- <app-audiostream></app-audiostream> -->
 
-        <div class="card text-center card border-0 bg-secondary mb-2 wip widget" [dndDraggable]="true"
-            [dndDraggable]="true"
-            [dndDropzone]="['card']"
-            dndEffectAllowed="move"
-            (dndMoved)="onDrag(0)"
-            (dndDrop)="onDrop($event, 0)">
+        <div class="card text-center card border-0 bg-secondary mb-2 wip widget">
             <div class="card-header py-2">Themes</div>
             <div class="card-body py-2">
                 <div class="row row-cols-2 g-3 mb-5" id="theme-colors">
@@ -46,12 +41,7 @@
             </div>
         </div>
 
-        <div class="card text-center card border-0 bg-secondary mb-2 wip widget" dndDraggable
-            [dndDraggable]="true"
-            [dndDropzone]="['card']"
-            dndEffectAllowed="move"
-            (dndMoved)="onDrag(1)"
-            (dndDrop)="onDrop($event, 1)">
+        <div class="card text-center card border-0 bg-secondary mb-2 wip widget">
             <div class="card-header py-2">Fonts</div>
             <div class="card-body py-2">
                 <div class="row row-cols-2 g-3 mb-5" id="theme-colors">
@@ -60,6 +50,8 @@
                 </div>
             </div>
         </div>
+
+
         <div class="offcanvas-header border-top d-none">
             <button class="btn btn-secondary w-100 me-3" type="button">
                 <i class="ai-undo fs-lg me-2 ms-n1"></i>
@@ -74,7 +66,7 @@
 </div>
 
 <!-- Customizer toggler -->
-<a class="position-fixed top-50 bg-light text-dark fw-medium border rounded-pill shadow text-decoration-none"
+<a class="position-fixed top-50 bg-light text-dark fw-medium border rounded-pill shadow text-decoration-none" cdkDrag cdkDragHandle
     href="#customizer" data-bs-toggle="offcanvas"
     style="right: -1.75rem; margin-top: -1rem; padding: .25rem .75rem; transform: rotate(-90deg); font-size: calc(var(--ar-body-font-size) * .8125); letter-spacing: .075rem; z-index: 1030;">
     <i class="ai-settings text-primary fs-base me-1 ms-n1"></i>
