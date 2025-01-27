@@ -4,10 +4,15 @@
         <h4 class="offcanvas-title">Panel</h4>
         <button class="btn-close" type="button" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
-    <div class="offcanvas-body">
-        <app-audiostream></app-audiostream>
+    <div class="offcanvas-body card-container">
+        <!-- <app-audiostream></app-audiostream> -->
 
-        <div class="card text-center card border-0 bg-secondary mb-2 wip">
+        <div class="card text-center card border-0 bg-secondary mb-2 wip widget" [dndDraggable]="true"
+            [dndDraggable]="true"
+            [dndDropzone]="['card']"
+            dndEffectAllowed="move"
+            (dndMoved)="onDrag(0)"
+            (dndDrop)="onDrop($event, 0)">
             <div class="card-header py-2">Themes</div>
             <div class="card-body py-2">
                 <div class="row row-cols-2 g-3 mb-5" id="theme-colors">
@@ -41,6 +46,20 @@
             </div>
         </div>
 
+        <div class="card text-center card border-0 bg-secondary mb-2 wip widget" dndDraggable
+            [dndDraggable]="true"
+            [dndDropzone]="['card']"
+            dndEffectAllowed="move"
+            (dndMoved)="onDrag(1)"
+            (dndDrop)="onDrop($event, 1)">
+            <div class="card-header py-2">Fonts</div>
+            <div class="card-body py-2">
+                <div class="row row-cols-2 g-3 mb-5" id="theme-colors">
+
+                    <span>Coming soon..</span>
+                </div>
+            </div>
+        </div>
         <div class="offcanvas-header border-top d-none">
             <button class="btn btn-secondary w-100 me-3" type="button">
                 <i class="ai-undo fs-lg me-2 ms-n1"></i>

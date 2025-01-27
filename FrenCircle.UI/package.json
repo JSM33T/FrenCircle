@@ -23,6 +23,7 @@
     "@ngx-loading-bar/router": "^7.0.0",
     "aos": "^2.3.4",
     "bootstrap": "^5.3.3",
+    "ngx-drag-drop": "^19.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "vite": "^6.0.11",
