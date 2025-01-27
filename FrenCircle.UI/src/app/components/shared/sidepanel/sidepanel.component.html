@@ -66,9 +66,17 @@
 </div>
 
 <!-- Customizer toggler -->
-<a class="position-fixed top-50 bg-light text-dark fw-medium border rounded-pill shadow text-decoration-none" cdkDrag cdkDragHandle
-    href="#customizer" data-bs-toggle="offcanvas"
+<span class="position-fixed top-50 bg-light text-dark fw-medium border rounded-pill shadow" cdkDrag
     style="right: -1.75rem; margin-top: -1rem; padding: .25rem .75rem; transform: rotate(-90deg); font-size: calc(var(--ar-body-font-size) * .8125); letter-spacing: .075rem; z-index: 1030;">
-    <i class="ai-settings text-primary fs-base me-1 ms-n1"></i>
-    Settings
-</a>
+
+    <a href="#customizer" data-bs-toggle="offcanvas" class="text-decoration-none">
+        <i class="ai-settings fs-lg text-primary fs-base me-1 ms-n1"></i>
+        &nbsp;&nbsp;&nbsp;
+    </a>
+
+
+    <svg width="24px" fill="currentColor" viewBox="0 0 24 24" cdkDragHandle>
+        <path d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z"></path>
+        <path d="M0 0h24v24H0z" fill="none"></path>
+    </svg>
+</span>
