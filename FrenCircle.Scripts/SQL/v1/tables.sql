@@ -7,10 +7,12 @@ CREATE TABLE Messages (
 
     [Text]         NVARCHAR(MAX)    NOT NULL,
 
+    [Origin]        NVARCHAR(MAX)    NOT NULL DEFAULT 'na',
+
     [DateAdded]    DATETIME         NOT NULL DEFAULT GETDATE(),
 
     CONSTRAINT     UC_Message_Email UNIQUE ([Email])
-);
+);  
 
 CREATE INDEX IX_Messages_Email ON Messages(Email);
 
@@ -25,11 +27,13 @@ CREATE TABLE Users (
 
     [Email]             NVARCHAR(256)       NOT NULL,
     
-    [Bio]               NVARCHAR(512)       NOT NULL    DEFAULT('')
+    [Bio]               NVARCHAR(512)       NOT NULL    DEFAULT(''),
     
     [PasswordHash]      NVARCHAR(256)       NOT NULL,
     
     [Salt]              NVARCHAR(256)       NOT NULL,
+    
+    [UId]               UNIQUEIDENTIFIER    NOT NULL    DEFAULT (NEWID()),
     
     [TimeSpent]         DATETIME            NOT NULL    DEFAULT(60),
 

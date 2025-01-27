@@ -2,6 +2,7 @@
 using FrenCircle.Helpers.Mappers;
 using FrenCircle.Infra;
 using FrenCircle.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FrenCircle.Base.Controllers
@@ -33,6 +34,7 @@ namespace FrenCircle.Base.Controllers
 
         }
 
+        [Authorize(Roles = "ADMIN")]
         [HttpGet("getall")]
         public async Task<IActionResult> GetAllMessages() =>
             RESP_Success(await _messageRepository.GetAllMessages(),"Message submitted");

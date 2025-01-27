@@ -30,7 +30,6 @@ export class ContactComponent {
         this.messageForm = this.fb.group({
             name: new FormControl(''),
             email: new FormControl(''),
-            topic: new FormControl('general'),
             origin: new FormControl(''),
             text: new FormControl(''),
         });
@@ -40,10 +39,11 @@ export class ContactComponent {
         this.isLoading = true;
 
         this.apiService
-            .post<any>('api/contact/sendmessage', this.messageForm.value)
+            .post<any>('api/message/send', this.messageForm.value)
             .subscribe({
                 next: (response) => {
                     this.mdlService.apiToaster(response);
+                    this.messageForm.reset();
                 },
                 error: (error) => {
                     console.log(error);

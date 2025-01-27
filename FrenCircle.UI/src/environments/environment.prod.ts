@@ -5,7 +5,7 @@ export const environment = {
         loaderTime: 1500,
     },
     urls: {
-        apiUrl: 'https://jsm33t.me',
+        apiUrl: 'https://frencircle.com',
         cdnUrl: 'https://cdn.jassi.me',
     },
     keys: {
