@@ -5,8 +5,6 @@ using FrenCircle.Base.Middlewares;
 using FrenCircle.Entities;
 using FrenCircle.Infra;
 using FrenCircle.Repositories;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);

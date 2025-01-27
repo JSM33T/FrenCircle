@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using FrenCircle.Entities.Data;
 
-namespace FrenCircle.Validatiors
+namespace FrenCircle.Validators
 {
     public class AddMessageRequestValidators : AbstractValidator<AddMessageRequest>
     {

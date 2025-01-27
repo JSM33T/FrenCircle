@@ -17,12 +17,10 @@ namespace FrenCircle.Base.Controllers
         [HttpPost("send")]
         public async Task<IActionResult> AddMessage(AddMessageRequest messageRequest)
         {
-
             if (_rateLimiter.IsRateLimited("GLOBAL", 5, 60))
             {
                 return RESP_ForbiddenResponse("Daddy chill....");
             }
-
 
             var message = MessageDtoMappers.MAP_AddMessageRequest_Message(messageRequest);
 

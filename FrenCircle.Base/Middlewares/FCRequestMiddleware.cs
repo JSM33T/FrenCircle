@@ -5,7 +5,6 @@ namespace FrenCircle.Base.Middlewares
     public class FcRequestMiddleware(RequestDelegate next)
     {
         private readonly RequestDelegate _next = next;
-
         public async Task InvokeAsync(HttpContext context)
         {
             var originalBodyStream = context.Response.Body;

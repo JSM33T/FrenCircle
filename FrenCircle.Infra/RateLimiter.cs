@@ -1,6 +1,5 @@
 ﻿namespace FrenCircle.Infra
 {
-
     public interface IRateLimiter
     {
         /// <summary>
@@ -16,7 +15,7 @@
     public class RateLimiter : IRateLimiter
     {
         private static readonly Dictionary<string, Dictionary<string, DateTime>> UserSpecificAccessTimes = new();
-        private static readonly object Lock = new();
+        private static readonly Lock Lock = new();
 
         public bool IsRateLimited(string userId, int maxRequests, int timeWindowSeconds)
         {

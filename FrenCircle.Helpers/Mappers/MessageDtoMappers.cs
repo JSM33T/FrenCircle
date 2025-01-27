@@ -2,7 +2,7 @@
 
 namespace FrenCircle.Helpers.Mappers
 {
-    public static class MessageDtoMappers
+    public static partial class MessageDtoMappers
     {
         public static Message MAP_AddMessageRequest_Message(AddMessageRequest messageRequest)
         {
