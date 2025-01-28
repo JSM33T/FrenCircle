@@ -1,6 +1,6 @@
 ﻿namespace FrenCircle.Entities
 {
-    public class FCConfig
+    public class FcConfig
     {
         public required string ConnectionString { get; set; }
         public required string SqliteConnection { get; set; }

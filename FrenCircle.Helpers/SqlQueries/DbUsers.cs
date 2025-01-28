@@ -2,15 +2,23 @@
 {
     public static class DbUsers
     {
-        public static string Add => @"
-        INSERT INTO Messages (Name, Email, Text, DateAdded)
-        VALUES (@Name, @Email, @Text, GETDATE());
-        SELECT CAST(SCOPE_IDENTITY() AS INT);";
+        public const string Add = @"
+        INSERT INTO Users (FirstName, LastName, UserName, Email, Bio, PasswordHash, Salt, TimeSpent, DateUpdated, LastSeen, DateAdded)
+        VALUES (@FirstName, @LastName, @UserName, @Email, @Bio, @PasswordHash, @Salt, @TimeSpent, @DateUpdated, @LastSeen, @DateAdded);";
 
-        public static string Getall => @"
-        SELECT * FROM Messages";
+        public const string Login = @"
+        SELECT * FROM Users 
+        WHERE UserName = @Username;";
 
-        public static string CheckByEmail => @"
-        SELECT TOP 1 * FROM Messages WHERE Email = @Email AND Text = @Text";
+        public const string GetAll = @"
+        SELECT * FROM Users;";
+
+        public const string CheckByUsername = @"
+        SELECT * FROM Users 
+        WHERE UserName = @Username;";
+
+        public const string CheckByEmail = @"
+        SELECT * FROM Users 
+        WHERE Email = @Email;";
     }
 }

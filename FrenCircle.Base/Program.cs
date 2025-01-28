@@ -5,23 +5,50 @@ using FrenCircle.Base.Middlewares;
 using FrenCircle.Entities;
 using FrenCircle.Infra;
 using FrenCircle.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var key = Encoding.ASCII.GetBytes("iureowtueorituowierutoi4354======");
 
 builder.Services.AddControllers();
 
 builder.Services.AddOpenApi();
 
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = "www.something.com",
+        ValidAudience = "www.something.com",
+        IssuerSigningKey = new SymmetricSecurityKey(key)
+    };
+});
+
+builder.Services.AddAuthorization();
+
 builder.ConfigureSignalRServices();
 
-builder.Services.Configure<FCConfig>(builder.Configuration.GetSection("FCConfig"));
+builder.Services.Configure<FcConfig>(builder.Configuration.GetSection("FCConfig"));
 
 builder.Services.AddSingleton<IRateLimiter, RateLimiter>();
 
 builder.Services.AddScoped<IDapperFactory, DapperFactory>();
 
 builder.Services.AddScoped<IMessageRepository, MessageRepository>();
+builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 
 #region Fluent Validatoins
 builder.Services.AddFluentValidationAutoValidation()
@@ -39,7 +66,9 @@ if (app.Environment.IsDevelopment())
 app.UseStaticFiles();
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
+
 app.UseMiddleware<FcRequestMiddleware>();
 app.MapControllers();
 app.MapFallbackToFile("index.html");

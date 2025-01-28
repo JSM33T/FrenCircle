@@ -28,7 +28,7 @@ namespace FrenCircle.Infra
         /// <returns>A Task representing the asynchronous operation that returns a list of data records.</returns>
         public Task<IEnumerable<T>> GetDataList<T>(string query, object? parameters = null);
     }
-    public class DapperFactory(IOptions<FCConfig> config) : IDapperFactory
+    public class DapperFactory(IOptions<FcConfig> config) : IDapperFactory
     {
         private readonly string _connectionString = config.Value.ConnectionString;
         

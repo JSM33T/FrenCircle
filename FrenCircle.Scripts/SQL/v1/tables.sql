@@ -43,6 +43,10 @@ CREATE TABLE Users (
 
     [DateAdded]         DATETIME            NOT NULL    DEFAULT GETDATE(),
 
+    OTP                 INT ,
+
+    OTPDate             DATETIME,
+
     CONSTRAINT          UC_Users_UserName   UNIQUE ([UserName]),
 
     CONSTRAINT          UC_Users_Email      UNIQUE ([Email])

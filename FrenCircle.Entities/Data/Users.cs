@@ -10,6 +10,8 @@
         public required string Bio { get; set; } = "";
         public required string PasswordHash { get; set; }
         public required string Salt { get; set; }
+        public int OTP { get; set; }
+        public DateTime OTPDate { get; set; }
         public DateTime TimeSpent { get; set; } = DateTime.Now.AddMinutes(60);
         public DateTime DateUpdated { get; set; } = DateTime.Now;
         public DateTime LastSeen { get; set; } = DateTime.Now;
@@ -23,6 +25,12 @@
         public required string UserName { get; set; }
         public required string Email { get; set; }
         public string? Bio { get; set; }
+        public required string Password { get; set; }
+    }
+
+    public class LoginUserRequest
+    {
+        public required string UserName { get; set; }
         public required string Password { get; set; }
     }
 }

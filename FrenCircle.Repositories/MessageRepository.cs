@@ -33,7 +33,7 @@ namespace FrenCircle.Repositories
     {
         public async Task AddMessage(Message message)
         {
-            var query = DB_MESSAGE.ADD;
+            var query = DbMessage.Add;
 
             var id = await dapperFactory.GetData<int>(query, new
             {
@@ -47,14 +47,14 @@ namespace FrenCircle.Repositories
 
         public async Task<List<Message>> GetAllMessages()
         {
-            var query = DB_MESSAGE.GETALL;
+            var query = DbMessage.Getall;
             var messages = await dapperFactory.GetDataList<Message>(query);
             return messages.ToList();
         }
 
         public async Task<bool> IsMessagePresent(Message message)
         {
-            var query = DB_MESSAGE.CHECK_BY_EMAIL;
+            var query = DbMessage.CheckByEmail;
             var existingMessage = await dapperFactory.GetData<Message>(query, new { message.Email, message.Text });
             return existingMessage != null;
         }

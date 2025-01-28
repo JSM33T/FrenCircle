@@ -9,7 +9,10 @@ namespace FrenCircle.Base.Controllers
     {
         private ObjectResult FcResponse<T>(APIResponse<T?> apiResponse) =>
             StatusCode(apiResponse.Status, apiResponse);
-        
+
+        protected ObjectResult RESP_Custom<T>(APIResponse<T> apiResponse) =>
+            FcResponse(apiResponse);
+
         protected ObjectResult RESP_Success<T>(T data, string message = "Success") =>
             FcResponse(new APIResponse<T?>(200, message, data, []));
 
