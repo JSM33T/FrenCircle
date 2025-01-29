@@ -34,7 +34,7 @@ namespace FrenCircle.Repositories
         /// <param name="username">The username of the user.</param>
         /// <param name="password">The password of the user.</param>
         /// <returns>A Task that indicates whether the user's credentials are valid.</returns>
-        Task<bool> VerifyUser(string username, string password);
+        Task<bool> VerifyUser(VerifyRequest verifyRequest);
 
         /// <summary>
         /// Retrieves a list of all users from the repository.
@@ -51,7 +51,8 @@ namespace FrenCircle.Repositories
 
         Task<bool> IsUserPresentByEmail(string email);
 
-        Task<bool> VerifyAccount(string username,int otp);
+        Task<bool> GenerateAndSaveOTP(string email);
+
     }
 
     public class AccountRepository(IDapperFactory dapperFactory) : IAccountRepository
@@ -63,6 +64,9 @@ namespace FrenCircle.Repositories
             var user = UserDtoMappers.MAP_AddUserRequest_User(userRequest);
 
             (user.PasswordHash, user.Salt) = PasswordHasher.HashPassword(userRequest.Password);
+
+            user.Otp = 1111;
+            user.OtpTimeStamp = DateTime.Now;
 
             var id = await dapperFactory.GetData<int>(query, new
             {
@@ -76,7 +80,9 @@ namespace FrenCircle.Repositories
                 user.TimeSpent,
                 user.DateUpdated,
                 user.LastSeen,
-                user.DateAdded
+                user.DateAdded,
+                user.Otp,
+                user.OtpTimeStamp
             });
 
             user.Id = id;
@@ -93,15 +99,35 @@ namespace FrenCircle.Repositories
             return user;
         }
 
-        public async Task<bool> VerifyUser(string username, string password)
+        public async Task<bool> GenerateAndSaveOTP(string email)
         {
-            var query = DbUsers.Login;
-            var user = await dapperFactory.GetData<User>(query, new { Username = username });
+            // Generate a random 6-digit OTP
+            var random = new Random();
+            var otp = random.Next(100000, 999999).ToString();
 
-            if (user == null)
+            // Set OTP expiration (e.g., 5 minutes from now)
+            var otpDate = DateTime.UtcNow.AddMinutes(30);
+
+            // Save OTP and OTPDate to the database
+            var query = "UPDATE Users SET OTP = @OTP, OTPTimeStamp = @OTPDate WHERE Email = @Email";
+            var affectedRows = await dapperFactory.Execute(query, new { OTP = otp, OTPDate = otpDate, Email = email });
+
+            return affectedRows > 0;
+        }
+        
+        public async Task<bool> VerifyUser(VerifyRequest verifyRequest)
+        {
+            var query = "SELECT OTP, OTPTimeStamp FROM Users WHERE UserName = @Email";
+            var user = await dapperFactory.GetData<User>(query, new { Email = verifyRequest.Email });
+
+            if (user == null || user.Otp != verifyRequest.Otp || user.OtpTimeStamp < DateTime.UtcNow)
+            {
                 return false;
+            }
+            var updateQuery = "UPDATE Users SET OTP = NULL, OTPTimeStamp = NULL,IsActive = 1 WHERE Email = @Email";
+            await dapperFactory.Execute(updateQuery, new { Email = verifyRequest.Email });
 
-            return PasswordHasher.VerifyPassword(password, user.PasswordHash, user.Salt);
+            return true;
         }
 
         public async Task<List<User>> GetAllUsers()

@@ -9,7 +9,7 @@ namespace FrenCircle.Base.Controllers
         [HttpGet]
         public Task<IActionResult> ServerStat()
         {
-            return Task.FromResult<IActionResult>(RESP_Success("||","Server is up!!"));
+            return Task.FromResult<IActionResult>(RESP_Success("||", "Server is up!!"));
         }
     }
 }

@@ -14,7 +14,6 @@ namespace FrenCircle.Helpers.Mappers
                 Email = addUserRequest.Email,
                 Bio = addUserRequest.Bio ?? string.Empty,
                 PasswordHash = null,
-                Salt = null
             };
             
             return user;

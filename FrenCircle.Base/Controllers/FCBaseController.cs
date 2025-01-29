@@ -1,5 +1,6 @@
 ﻿using FrenCircle.Entities;
 using Microsoft.AspNetCore.Mvc;
+
 // ReSharper disable HeapView.ObjectAllocation.Evident
 
 namespace FrenCircle.Base.Controllers

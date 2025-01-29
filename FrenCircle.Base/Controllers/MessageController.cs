@@ -9,11 +9,11 @@ namespace FrenCircle.Base.Controllers
 {
     [Route("api/message")]
     [ApiController]
-    public class MessageController(IMessageRepository messageRepository,IRateLimiter rateLimiter) : FcBaseController
+    public class MessageController(IMessageRepository messageRepository, IRateLimiter rateLimiter) : FcBaseController
     {
         private readonly IMessageRepository _messageRepository = messageRepository;
 
-        private readonly IRateLimiter _rateLimiter =  rateLimiter;
+        private readonly IRateLimiter _rateLimiter = rateLimiter;
 
         [HttpPost("send")]
         public async Task<IActionResult> AddMessage(AddMessageRequest messageRequest)
@@ -31,13 +31,11 @@ namespace FrenCircle.Base.Controllers
             await _messageRepository.AddMessage(message);
 
             return RESP_Success("Message submitted");
-
         }
 
         [Authorize(Roles = "ADMIN")]
         [HttpGet("getall")]
         public async Task<IActionResult> GetAllMessages() =>
-            RESP_Success(await _messageRepository.GetAllMessages(),"Message submitted");
-
+            RESP_Success(await _messageRepository.GetAllMessages(), "Message submitted");
     }
 }

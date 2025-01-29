@@ -31,6 +31,31 @@ namespace FrenCircle.Base.Controllers
 
             return RESP_Success("Succssfylly registered");
         }
+        
+        [HttpPost("generate-otp")]
+        public async Task<IActionResult> GenerateOTP(VerifyRequest verifyRequest)
+        {
+            if (string.IsNullOrEmpty(verifyRequest.Email))
+                return RESP_BadRequestResponse("Email is required.");
+
+            var success = await accountRepository.GenerateAndSaveOTP(verifyRequest.Email);
+
+            if (!success)
+                return RESP_NotFoundResponse("User not found.");
+
+            // In a real-world scenario, send the OTP to the user's email
+            return RESP_Success("OTP generated and sent to your email.");
+        }
+        
+        [HttpPost("verify")]
+        public async Task<IActionResult> VerifyUser(VerifyRequest verifyRequest)
+        {
+            APIResponse<int> aPIResponse = new(StatusCodes.Status409Conflict, "Conflict", 0, []);
+
+            await accountRepository.VerifyUser(verifyRequest);
+
+            return RESP_Success("Succssfylly registered");
+        }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginUserRequest loginRequest)
@@ -47,14 +72,16 @@ namespace FrenCircle.Base.Controllers
             {
                 Subject = new ClaimsIdentity(new[]
                 {
-            new Claim(ClaimTypes.Name, user.UserName),
-            new Claim(ClaimTypes.Email, user.Email),
-            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
-        }),
+                    new Claim(ClaimTypes.Name, user.UserName),
+                    new Claim(ClaimTypes.Email, user.Email),
+                    new Claim(ClaimTypes.Role, user.Role),
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
+                }),
                 Expires = DateTime.UtcNow.AddMinutes(Convert.ToDouble(3000)),
                 Issuer = "www.something.com",
                 Audience = "www.something.com",
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
+                    SecurityAlgorithms.HmacSha256Signature)
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
@@ -63,6 +90,5 @@ namespace FrenCircle.Base.Controllers
             // Return the token
             return RESP_Success(new { Token = tokenString });
         }
-
     }
 }

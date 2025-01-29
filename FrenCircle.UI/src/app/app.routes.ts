@@ -36,4 +36,18 @@ export const routes: Routes = [
                 (m) => m.AttributionsComponent,
             ),
     },
+    {
+        path: 'account',
+        loadComponent: () =>
+            import('./sections/account/account.component').then(
+                (m) => m.AccountComponent,
+            ),
+    },
+    {
+        path: 'account/login',
+        loadComponent: () =>
+            import('./sections/account/login/login.component').then(
+                (m) => m.LoginComponent,
+            ),
+    },
 ];

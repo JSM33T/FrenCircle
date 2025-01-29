@@ -5,12 +5,12 @@
         public static string Add => @"
         INSERT INTO Messages (Name, Email, Text, DateAdded)
         VALUES (@Name, @Email, @Text, GETDATE());
-        SELECT CAST(SCOPE_IDENTITY() AS INT);";
+        SELECT CAST(SCOPE_IDENTITY() AS INT) WITH(NOLOCK);";
 
         public static string Getall => @"
-        SELECT * FROM Messages";
+        SELECT * FROM Messages WITH(NOLOCK)";
 
         public static string CheckByEmail => @"
-        SELECT TOP 1 * FROM Messages WHERE Email = @Email AND Text = @Text";
+        SELECT TOP 1 * FROM Messages WHERE Email = @Email AND Text = @Text WITH(NOLOCK)";
     }
 }

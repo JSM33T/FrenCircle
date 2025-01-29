@@ -27,6 +27,8 @@ namespace FrenCircle.Infra
         /// <param name="parameters">Optional parameters for the query.</param>
         /// <returns>A Task representing the asynchronous operation that returns a list of data records.</returns>
         public Task<IEnumerable<T>> GetDataList<T>(string query, object? parameters = null);
+
+        Task<int> Execute(string query, object? parameters = null);
     }
     public class DapperFactory(IOptions<FcConfig> config) : IDapperFactory
     {
@@ -44,6 +46,14 @@ namespace FrenCircle.Infra
             await using var connection = new SqlConnection(_connectionString);
             await connection.OpenAsync();
             return await connection.QueryAsync<T>(query, parameters);
+        }
+        
+        // New Execute method
+        public async Task<int> Execute(string query, object? parameters = null)
+        {
+            await using var connection = new SqlConnection(_connectionString);
+            await connection.OpenAsync();
+            return await connection.ExecuteAsync(query, parameters);
         }
     }
 }
