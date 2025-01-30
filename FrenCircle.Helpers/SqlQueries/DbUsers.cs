@@ -24,5 +24,9 @@
         public const string Verify = @"
         SELECT * FROM Users WITH(NOLOCK)
         WHERE Email = @Email;";
+        
+        public const string GetByEmail = @"
+        SELECT * FROM Users WITH(NOLOCK)
+        WHERE Email = @Email;";
     }
 }

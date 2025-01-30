@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using FrenCircle.Helpers.Security;
 
 namespace FrenCircle.Base.Controllers
 {
@@ -50,11 +51,18 @@ namespace FrenCircle.Base.Controllers
         [HttpPost("verify")]
         public async Task<IActionResult> VerifyUser(VerifyRequest verifyRequest)
         {
-            APIResponse<int> aPIResponse = new(StatusCodes.Status409Conflict, "Conflict", 0, []);
-
-            await accountRepository.VerifyUser(verifyRequest);
-
-            return RESP_Success("Succssfylly registered");
+            if (!await accountRepository.VerifyUser(verifyRequest))
+                return RESP_BadRequestResponse("Invalid verification attempt");
+            
+            var user = await accountRepository.GetUserByEmail(verifyRequest.Email);
+            
+            var token = JwtTokenHelper.GenerateToken(user, 
+                "iureowtueorituowierutoi4354======",
+                "www.frencircle.com", 
+                "www.frencircle.com",
+                3000);
+            
+            return RESP_Success(new { Token = token });
         }
 
         [HttpPost("login")]
@@ -63,32 +71,19 @@ namespace FrenCircle.Base.Controllers
             var user = await accountRepository.LoginUser(loginRequest.UserName, loginRequest.Password);
 
             if (user == null)
-                return RESP_UnauthorizedResponse("Invalid username or password");
+                return RESP_BadRequestResponse("Invalid username or password");
 
-            // Generate JWT token
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes("iureowtueorituowierutoi4354======");
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new[]
-                {
-                    new Claim(ClaimTypes.Name, user.UserName),
-                    new Claim(ClaimTypes.Email, user.Email),
-                    new Claim(ClaimTypes.Role, user.Role),
-                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
-                }),
-                Expires = DateTime.UtcNow.AddMinutes(Convert.ToDouble(3000)),
-                Issuer = "www.something.com",
-                Audience = "www.something.com",
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
-                    SecurityAlgorithms.HmacSha256Signature)
-            };
-
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            var tokenString = tokenHandler.WriteToken(token);
+            if (user.IsActive == false)
+                return RESP_BadRequestResponse("Account isn't verified yet. Please verify or recover your account");
+            
+            var token = JwtTokenHelper.GenerateToken(user, 
+                "iureowtueorituowierutoi4354======",
+                "www.frencircle.com", 
+                "www.frencircle.com",
+                3000);
 
             // Return the token
-            return RESP_Success(new { Token = tokenString });
+            return RESP_Success(new { Token = token });
         }
     }
 }

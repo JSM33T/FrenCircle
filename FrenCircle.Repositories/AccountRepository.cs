@@ -52,6 +52,7 @@ namespace FrenCircle.Repositories
         Task<bool> IsUserPresentByEmail(string email);
 
         Task<bool> GenerateAndSaveOTP(string email);
+        Task<User?> GetUserByEmail(string email);
 
     }
 
@@ -98,6 +99,13 @@ namespace FrenCircle.Repositories
 
             return user;
         }
+        
+        public async Task<User?> GetUserByEmail(string email)
+        {
+            var query = DbUsers.GetByEmail;
+            var user = await dapperFactory.GetData<User>(query, new { Email = email });
+            return user;
+        }
 
         public async Task<bool> GenerateAndSaveOTP(string email)
         {
@@ -117,7 +125,7 @@ namespace FrenCircle.Repositories
         
         public async Task<bool> VerifyUser(VerifyRequest verifyRequest)
         {
-            var query = "SELECT OTP, OTPTimeStamp FROM Users WHERE UserName = @Email";
+            var query = "SELECT OTP, OTPTimeStamp FROM Users WHERE Email = @Email";
             var user = await dapperFactory.GetData<User>(query, new { Email = verifyRequest.Email });
 
             if (user == null || user.Otp != verifyRequest.Otp || user.OtpTimeStamp < DateTime.UtcNow)
