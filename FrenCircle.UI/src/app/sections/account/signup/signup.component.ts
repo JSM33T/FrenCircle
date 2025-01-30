@@ -1,0 +1,58 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Component } from '@angular/core';
+import { ApiHandlerService } from '../../../services/Api/api-handler.service';
+import { ModalService } from '../../../services/DOMServices/modal.service';
+import {
+    FormBuilder,
+    FormControl,
+    FormGroup,
+    ReactiveFormsModule,
+} from '@angular/forms';
+import { BreadcrumbsComponent } from '../../../components/ui/breadcrumbs/breadcrumbs.component';
+import { NgIf } from '@angular/common';
+
+@Component({
+    selector: 'app-signup',
+    imports: [BreadcrumbsComponent, ReactiveFormsModule, NgIf],
+    templateUrl: './signup.component.html',
+    styleUrl: './signup.component.css',
+})
+export class SignupComponent {
+    signUpForm!: FormGroup;
+    isLoading = false;
+    data: any;
+
+    constructor(
+        private apiService: ApiHandlerService,
+        private fb: FormBuilder,
+        private mdlService: ModalService,
+    ) {
+        this.signUpForm = this.fb.group({
+            username: new FormControl(''),
+            password: new FormControl(''),
+        });
+    }
+
+    onSubmit(): void {
+        this.isLoading = true;
+
+        this.apiService
+            .post<any>('api/account/signup', this.signUpForm.value)
+            .subscribe({
+                next: (response) => {
+                    if (response.status == 200) {
+                        console.log(response.data);
+                        localStorage.setItem('toiken', response.data.token);
+                    }
+                    this.mdlService.apiToaster(response);
+                    this.signUpForm.reset();
+                },
+                error: (error) => {
+                    console.log(error);
+                    this.mdlService.apiToaster(error.error);
+                },
+            });
+
+        this.isLoading = false;
+    }
+}

@@ -1,0 +1,47 @@
+<section class="container pt-5 pb-lg-2 pb-xl-4 py-xxl-5 my-5">
+
+    <app-breadcrumbs [breadcrumbs]="[
+    { label: 'Home', url: '/' },
+    { label: 'Account', url: '/account' },
+    { label: 'Login' }
+  ]"></app-breadcrumbs>
+
+    <div class="row pb-1 pb-sm-3 pb-lg-4">
+        <div class="col-lg-4 pe-xxl-4">
+            <h1 class="display-2" data-aos="flip-up" data-aos-duration="200">Sign Up</h1>
+            <p class="fs-lg pb-4 mb-0 mb-sm-2" data-aos="flip-up" data-aos-duration="500">
+                Do not have an account? Sign up to frencircle!!
+            </p>
+        </div>
+        <div class="col-lg-8 col-xl-7 offset-xl-1">
+            <form class="row g-4 needs-validation" (ngSubmit)="onSubmit()" [formGroup]="signUpForm">
+                <div class="col-sm-6">
+                    <label class="form-label fs-base" for="username">Name</label>
+                    <input class="form-control form-control-lg" type="text" placeholder="Your name" required id="username"
+                        formControlName="username" name="username" />
+                </div>
+
+                <div class="col-sm-6">
+                    <label class="form-label fs-base" for="username">Password</label>
+                    <input class="form-control form-control-lg" type="password" placeholder="Your password" required id="password"
+                        formControlName="password" name="password" />
+                </div>
+
+                <div class="col-sm-12 pt-2">
+                    <!-- <button
+                        class="btn btn-lg btn-primary"
+                        type="submit"
+                        [disabled]="contactForm.invalid"
+                    > -->
+                    <button class="btn btn-lg btn-primary" type="submit">
+                        <span *ngIf="isLoading">
+                            <span class="spinner-grow spinner-grow-sm me-2" role="status" aria-hidden="true"></span>
+                            Loading...
+                        </span>
+                        <span *ngIf="!isLoading">Send</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>

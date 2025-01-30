@@ -50,4 +50,18 @@ export const routes: Routes = [
                 (m) => m.LoginComponent,
             ),
     },
+    {
+        path: 'account/signup',
+        loadComponent: () =>
+            import('./sections/account/signup/signup.component').then(
+                (m) => m.SignupComponent,
+            ),
+    },
+    {
+        path: 'account/verify',
+        loadComponent: () =>
+            import('./sections/account/verify/verify.component').then(
+                (m) => m.VerifyComponent,
+            ),
+    },
 ];
