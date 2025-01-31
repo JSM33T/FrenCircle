@@ -23,8 +23,8 @@
 
                 <div class="col-sm-6">
                     <label class="form-label fs-base" for="otp">OTP</label>
-                    <input class="form-control form-control-lg" type="number" placeholder="Your password" required
-                        id="otp" formControlName="otp" name="otp" />
+                    <input class="form-control form-control-lg" type="number" placeholder="Enter OTP" required
+                        id="otp" formControlName="otp" name="otp" [readonly]="isVerificationStep" (keyup)="onOtpChange()" />
                 </div>
 
                 <div class="col-sm-12 pt-2">
@@ -38,7 +38,7 @@
                             <span class="spinner-grow spinner-grow-sm me-2" role="status" aria-hidden="true"></span>
                             Loading...
                         </span>
-                        <span *ngIf="!isLoading">Send</span>
+                        <span *ngIf="!isLoading">{{buttonText}}</span>
                     </button>
                 </div>
             </form>

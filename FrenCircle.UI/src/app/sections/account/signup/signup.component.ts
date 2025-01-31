@@ -10,7 +10,6 @@ import {
 } from '@angular/forms';
 import { BreadcrumbsComponent } from '../../../components/ui/breadcrumbs/breadcrumbs.component';
 import { NgIf } from '@angular/common';
-import { first } from 'rxjs';
 
 @Component({
     selector: 'app-signup',
@@ -34,14 +33,17 @@ export class SignupComponent {
             lastname: new FormControl(''),
             username: new FormControl(''),
             password: new FormControl(''),
-            confirmpassword: new FormControl('')
+            confirmpassword: new FormControl(''),
         });
     }
 
     onSubmit(): void {
         this.isLoading = true;
 
-        if (this.signUpForm.get('password')?.value != this.signUpForm.get('confirmpassword')?.value) {
+        if (
+            this.signUpForm.get('password')?.value !=
+            this.signUpForm.get('confirmpassword')?.value
+        ) {
             this.mdlService.toast("Passwords don't match");
             this.isLoading = false;
             return;
@@ -49,7 +51,7 @@ export class SignupComponent {
 
         console.log(this.signUpForm.value);
         this.apiService
-            .post<any>('api/account/signup', this.signUpForm.value)
+            .post<any>('api/account/create', this.signUpForm.value)
             .subscribe({
                 next: (response) => {
                     if (response.status == 200) {
@@ -62,7 +64,6 @@ export class SignupComponent {
                 },
                 error: (error) => {
                     this.isLoading = false;
-                    alert('something');
                     this.mdlService.apiToaster(error.error);
                 },
             });

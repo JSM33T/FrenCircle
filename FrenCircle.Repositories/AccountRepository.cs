@@ -34,7 +34,7 @@ namespace FrenCircle.Repositories
         /// <param name="username">The username of the user.</param>
         /// <param name="password">The password of the user.</param>
         /// <returns>A Task that indicates whether the user's credentials are valid.</returns>
-        Task<bool> VerifyUser(VerifyRequest verifyRequest);
+        Task<bool> VerifyUser(VerifyDto verifyRequest);
 
         /// <summary>
         /// Retrieves a list of all users from the repository.
@@ -123,7 +123,7 @@ namespace FrenCircle.Repositories
             return affectedRows > 0;
         }
         
-        public async Task<bool> VerifyUser(VerifyRequest verifyRequest)
+        public async Task<bool> VerifyUser(VerifyDto verifyRequest)
         {
             var query = "SELECT OTP, OTPTimeStamp FROM Users WHERE Email = @Email";
             var user = await dapperFactory.GetData<User>(query, new { Email = verifyRequest.Email });

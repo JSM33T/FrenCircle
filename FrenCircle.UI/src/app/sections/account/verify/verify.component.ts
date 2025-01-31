@@ -13,6 +13,7 @@ import { ModalService } from '../../../services/DOMServices/modal.service';
 
 @Component({
     selector: 'app-verify',
+    standalone: true,
     imports: [ReactiveFormsModule, NgIf, BreadcrumbsComponent],
     templateUrl: './verify.component.html',
     styleUrl: './verify.component.css',
@@ -20,6 +21,8 @@ import { ModalService } from '../../../services/DOMServices/modal.service';
 export class VerifyComponent {
     verifyForm!: FormGroup;
     isLoading = false;
+    isVerificationStep = false;
+    buttonText = 'Send OTP';
     data: any;
 
     constructor(
@@ -31,29 +34,72 @@ export class VerifyComponent {
             email: new FormControl(''),
             otp: new FormControl(''),
         });
+        this.isVerificationStep = false;
+    }
+
+    stepOneRequest() {}
+    stepTwoVerify() {}
+    reset() {}
+
+    onOtpChange(): void {
+        if (
+            this.verifyForm.get('otp')?.value !== 0 ||
+            this.verifyForm.get('otp')?.value.trim() !== ''
+        ) {
+            this.buttonText = 'Verify';
+        } else {
+            this.buttonText = 'Send OTP';
+        }
     }
 
     onSubmit(): void {
         this.isLoading = true;
+        const email = this.verifyForm.get('email')?.value || '';
+        const otp = this.verifyForm.get('otp')?.value || 0;
+        console.log(this.verifyForm.value);
 
-        this.apiService
-            .post<any>('api/account/login', this.verifyForm.value)
-            .subscribe({
-                next: (response) => {
-                    this.isLoading = false;
-                    if (response.status == 200) {
-                        console.log(response.data);
-                        localStorage.setItem('toiken', response.data.token);
-                    }
-                    this.isLoading = false;
-                    this.verifyForm.reset();
-                },
-                error: (error) => {
-                    this.isLoading = false;
-                    this.mdlService.apiToaster(error.error);
-                },
-            });
-
-
+        if (email !== '' && otp === 0) {
+            this.apiService
+                .post<any>('api/account/generate-otp', this.verifyForm.value)
+                .subscribe({
+                    next: (response) => {
+                        console.log(response, 'GENERATE OTP RESPONSE');
+                        this.isLoading = false;
+                        this.mdlService.apiToaster(response);
+                        if (response.status == 200) {
+                            this.isLoading = false;
+                            this.stepTwoVerify();
+                            this.buttonText = 'Verify';
+                        }
+                    },
+                    error: (error) => {
+                        this.isLoading = false;
+                        this.mdlService.apiToaster(error.error);
+                    },
+                });
+        } else if (email !== '' && otp !== 0) {
+            this.isVerificationStep = true;
+            this.apiService
+                .post<any>('api/account/verify', this.verifyForm.value)
+                .subscribe({
+                    next: (response) => {
+                        console.log(response, 'VERIFICATION RESPONSE');
+                        this.mdlService.apiToaster(response);
+                        this.isLoading = false;
+                        if (response.status == 200) {
+                            console.log(response.data);
+                            localStorage.setItem('token', response.data.token);
+                        }
+                        this.reset();
+                        this.verifyForm.reset();
+                    },
+                    error: (error) => {
+                        this.isLoading = false;
+                        this.mdlService.apiToaster(error.error);
+                    },
+                });
+        } else {
+            this.mdlService.toast('email field is required');
+        }
     }
 }

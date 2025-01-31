@@ -41,6 +41,11 @@
     public class VerifyRequest
     {
         public required string Email { get; set; }
-        public int Otp { get; set; }
+    }
+    
+    public class VerifyDto
+    {
+        public required string Email { get; set; }
+        public int? Otp { get; set; }
     }
 }

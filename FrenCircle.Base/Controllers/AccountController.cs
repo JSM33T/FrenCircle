@@ -23,7 +23,7 @@ namespace FrenCircle.Base.Controllers
                 aPIResponse.Hints.Add("Email is alraedy registered");
 
             if (await accountRepository.IsUserPresent(addUserRequest.UserName))
-                aPIResponse.Hints.Add("Email is alraedy registered");
+                aPIResponse.Hints.Add("Username is alraedy registered");
 
             if (aPIResponse.Hints.Count != 0)
                 return RESP_Custom(aPIResponse);
@@ -49,7 +49,7 @@ namespace FrenCircle.Base.Controllers
         }
         
         [HttpPost("verify")]
-        public async Task<IActionResult> VerifyUser(VerifyRequest verifyRequest)
+        public async Task<IActionResult> VerifyUser(VerifyDto verifyRequest)
         {
             if (!await accountRepository.VerifyUser(verifyRequest))
                 return RESP_BadRequestResponse("Invalid verification attempt");
