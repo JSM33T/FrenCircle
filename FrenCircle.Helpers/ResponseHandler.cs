@@ -118,7 +118,7 @@ namespace FrenCircle.Helpers
             await context.Response.WriteAsync(customResponseText);
         }
 
-         public static async Task HandleInternalServerError(HttpContext context, Stream originalBodyStream,Exception exception)
+        public static async Task HandleInternalServerError(HttpContext context, Stream originalBodyStream, Exception exception)
         {
             var errorMessages = new List<string>
             {

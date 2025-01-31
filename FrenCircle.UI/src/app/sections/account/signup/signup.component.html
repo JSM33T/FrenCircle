@@ -15,6 +15,13 @@
         </div>
         <div class="col-lg-8 col-xl-7 offset-xl-1">
             <form class="row g-4 needs-validation" (ngSubmit)="onSubmit()" [formGroup]="signUpForm">
+
+                <div class="col-sm-6">
+                    <label class="form-label fs-base" for="email">Firstname</label>
+                    <input class="form-control form-control-lg" type="text" placeholder="Your email" required id="email"
+                        formControlName="email" name="email" />
+                </div>
+
                 <div class="col-sm-6">
                     <label class="form-label fs-base" for="username">Firstname</label>
                     <input class="form-control form-control-lg" type="text" placeholder="Your Name" required
@@ -34,9 +41,15 @@
                 </div>
 
                 <div class="col-sm-6">
-                    <label class="form-label fs-base" for="username">Password</label>
+                    <label class="form-label fs-base" for="password">Password</label>
                     <input class="form-control form-control-lg" type="password" placeholder="Your password" required
                         id="password" formControlName="password" name="password" />
+                </div>
+
+                <div class="col-sm-6">
+                    <label class="form-label fs-base" for="confirmpassword">Password</label>
+                    <input class="form-control form-control-lg" type="password" placeholder="Confirm your password"
+                        required id="confirmpassword" formControlName="confirmpassword" name="confirmpassword" />
                 </div>
 
                 <div class="col-sm-12 pt-2">

@@ -42,7 +42,7 @@ export class LoginComponent {
                 next: (response) => {
                     if (response.status == 200) {
                         console.log(response.data);
-                        localStorage.setItem('toiken', response.data.token);
+                        localStorage.setItem('token', response.data.token);
                     }
                     this.isLoading = false;
                     this.mdlService.apiToaster(response);

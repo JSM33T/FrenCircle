@@ -29,25 +29,32 @@ export class SignupComponent {
         private mdlService: ModalService,
     ) {
         this.signUpForm = this.fb.group({
+            email: new FormControl(''),
             firstname: new FormControl(''),
             lastname: new FormControl(''),
             username: new FormControl(''),
             password: new FormControl(''),
             confirmpassword: new FormControl('')
-
         });
     }
 
     onSubmit(): void {
         this.isLoading = true;
 
+        if (this.signUpForm.get('password')?.value != this.signUpForm.get('confirmpassword')?.value) {
+            this.mdlService.toast("Passwords don't match");
+            this.isLoading = false;
+            return;
+        }
+
+        console.log(this.signUpForm.value);
         this.apiService
             .post<any>('api/account/signup', this.signUpForm.value)
             .subscribe({
                 next: (response) => {
                     if (response.status == 200) {
                         console.log(response.data);
-                        localStorage.setItem('toiken', response.data.token);
+                        localStorage.setItem('token', response.data.token);
                     }
                     this.isLoading = false;
                     this.mdlService.apiToaster(response);
@@ -55,11 +62,9 @@ export class SignupComponent {
                 },
                 error: (error) => {
                     this.isLoading = false;
-                    console.log(error);
+                    alert('something');
                     this.mdlService.apiToaster(error.error);
                 },
             });
-
-
     }
 }

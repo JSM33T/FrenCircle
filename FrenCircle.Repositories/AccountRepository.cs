@@ -39,7 +39,7 @@ namespace FrenCircle.Repositories
         /// <summary>
         /// Retrieves a list of all users from the repository.
         /// </summary>
-        /// <returns>A Task that returns a list of all users.</returns>
+        /// <returns>A Task that returns a list of all users.</dreturns>
         Task<List<User>> GetAllUsers();
 
         /// <summary>

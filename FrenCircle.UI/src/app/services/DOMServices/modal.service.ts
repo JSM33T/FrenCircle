@@ -135,4 +135,13 @@ export class ModalService {
             response.hints,
         );
     }
+
+    toast(message: string) {
+        this.toaster(
+            'toast_n',
+            'Toast',
+            message,
+            [],
+        );
+    }
 }
