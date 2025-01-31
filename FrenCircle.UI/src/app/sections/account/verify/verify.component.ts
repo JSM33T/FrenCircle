@@ -28,8 +28,8 @@ export class VerifyComponent {
         private mdlService: ModalService,
     ) {
         this.verifyForm = this.fb.group({
-            username: new FormControl(''),
-            password: new FormControl(''),
+            email: new FormControl(''),
+            otp: new FormControl(''),
         });
     }
 
@@ -40,19 +40,20 @@ export class VerifyComponent {
             .post<any>('api/account/login', this.verifyForm.value)
             .subscribe({
                 next: (response) => {
+                    this.isLoading = false;
                     if (response.status == 200) {
                         console.log(response.data);
                         localStorage.setItem('toiken', response.data.token);
                     }
-                    this.mdlService.apiToaster(response);
+                    this.isLoading = false;
                     this.verifyForm.reset();
                 },
                 error: (error) => {
-                    console.log(error);
+                    this.isLoading = false;
                     this.mdlService.apiToaster(error.error);
                 },
             });
 
-        this.isLoading = false;
+
     }
 }

@@ -16,15 +16,27 @@
         <div class="col-lg-8 col-xl-7 offset-xl-1">
             <form class="row g-4 needs-validation" (ngSubmit)="onSubmit()" [formGroup]="signUpForm">
                 <div class="col-sm-6">
-                    <label class="form-label fs-base" for="username">Name</label>
-                    <input class="form-control form-control-lg" type="text" placeholder="Your name" required id="username"
-                        formControlName="username" name="username" />
+                    <label class="form-label fs-base" for="username">Firstname</label>
+                    <input class="form-control form-control-lg" type="text" placeholder="Your Name" required
+                        id="firstname" formControlName="firstname" name="firstname" />
+                </div>
+
+                <div class="col-sm-6">
+                    <label class="form-label fs-base" for="lastname">Lastname</label>
+                    <input class="form-control form-control-lg" type="text" placeholder="Last Name" required
+                        id="lastname" formControlName="lastname" name="lastname" />
+                </div>
+
+                <div class="col-sm-6">
+                    <label class="form-label fs-base" for="username">User name</label>
+                    <input class="form-control form-control-lg" type="text" placeholder="User Name" required
+                        id="username" formControlName="username" name="username" />
                 </div>
 
                 <div class="col-sm-6">
                     <label class="form-label fs-base" for="username">Password</label>
-                    <input class="form-control form-control-lg" type="password" placeholder="Your password" required id="password"
-                        formControlName="password" name="password" />
+                    <input class="form-control form-control-lg" type="password" placeholder="Your password" required
+                        id="password" formControlName="password" name="password" />
                 </div>
 
                 <div class="col-sm-12 pt-2">

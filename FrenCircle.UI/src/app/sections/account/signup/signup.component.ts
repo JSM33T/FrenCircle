@@ -10,6 +10,7 @@ import {
 } from '@angular/forms';
 import { BreadcrumbsComponent } from '../../../components/ui/breadcrumbs/breadcrumbs.component';
 import { NgIf } from '@angular/common';
+import { first } from 'rxjs';
 
 @Component({
     selector: 'app-signup',
@@ -28,8 +29,12 @@ export class SignupComponent {
         private mdlService: ModalService,
     ) {
         this.signUpForm = this.fb.group({
+            firstname: new FormControl(''),
+            lastname: new FormControl(''),
             username: new FormControl(''),
             password: new FormControl(''),
+            confirmpassword: new FormControl('')
+
         });
     }
 
@@ -44,15 +49,17 @@ export class SignupComponent {
                         console.log(response.data);
                         localStorage.setItem('toiken', response.data.token);
                     }
+                    this.isLoading = false;
                     this.mdlService.apiToaster(response);
                     this.signUpForm.reset();
                 },
                 error: (error) => {
+                    this.isLoading = false;
                     console.log(error);
                     this.mdlService.apiToaster(error.error);
                 },
             });
 
-        this.isLoading = false;
+
     }
 }

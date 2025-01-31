@@ -44,15 +44,15 @@ export class LoginComponent {
                         console.log(response.data);
                         localStorage.setItem('toiken', response.data.token);
                     }
+                    this.isLoading = false;
                     this.mdlService.apiToaster(response);
                     this.loginForm.reset();
                 },
                 error: (error) => {
+                    this.isLoading = false;
                     console.log(error);
                     this.mdlService.apiToaster(error.error);
                 },
             });
-
-        this.isLoading = false;
     }
 }
