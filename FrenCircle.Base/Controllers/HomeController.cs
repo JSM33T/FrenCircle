@@ -7,9 +7,7 @@ namespace FrenCircle.Base.Controllers
     public class HomeController : FcBaseController
     {
         [HttpGet]
-        public Task<IActionResult> ServerStat()
-        {
-            return Task.FromResult<IActionResult>(RESP_Success("||", "Server is up!!"));
-        }
+        public Task<IActionResult> ServerStat() 
+            => Task.FromResult<IActionResult>(RESP_Success("||", "Server is up!!"));
     }
 }

@@ -16,7 +16,7 @@ namespace FrenCircle.Repositories
         /// <summary>
         /// Adds a new user to the repository.
         /// </summary>
-        /// <param name="user">The user to add.</param>
+        /// <param name="userRequest">The user to add.</param>
         /// <returns>A Task representing the asynchronous operation.</returns>
         Task AddUser(AddUserRequest userRequest);
 
@@ -31,15 +31,14 @@ namespace FrenCircle.Repositories
         /// <summary>
         /// Verifies the credentials of a user.
         /// </summary>
-        /// <param name="username">The username of the user.</param>
-        /// <param name="password">The password of the user.</param>
+        /// <param name="verifyRequest">The username and password object of the user.</param>
         /// <returns>A Task that indicates whether the user's credentials are valid.</returns>
         Task<bool> VerifyUser(VerifyDto verifyRequest);
 
         /// <summary>
         /// Retrieves a list of all users from the repository.
         /// </summary>
-        /// <returns>A Task that returns a list of all users.</dreturns>
+        /// <returns>A Task that returns a list of all users.</returns>
         Task<List<User>> GetAllUsers();
 
         /// <summary>
@@ -99,7 +98,7 @@ namespace FrenCircle.Repositories
 
             return user;
         }
-        
+
         public async Task<User?> GetUserByEmail(string email)
         {
             var query = DbUsers.GetByEmail;
@@ -122,7 +121,7 @@ namespace FrenCircle.Repositories
 
             return affectedRows > 0;
         }
-        
+
         public async Task<bool> VerifyUser(VerifyDto verifyRequest)
         {
             var query = "SELECT OTP, OTPTimeStamp FROM Users WHERE Email = @Email";

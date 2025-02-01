@@ -23,15 +23,6 @@
                 </div>
 
                 <div class="col-sm-6">
-                    <label class="form-label fs-base" for="topic">Topic</label>
-                    <select class="form-select form-select-lg" id="yopic" formControlName="topic" name="topic">
-                        <option value="general" selected>General</option>
-                        <option value="feature">Feature Request</option>
-                        <option value="feedback">Feedback/Report</option>
-                    </select>
-                </div>
-
-                <div class="col-sm-12">
                     <label class="form-label fs-base" for="email">Email</label>
                     <input class="form-control form-control-lg" type="email" placeholder="Email address" required
                         formControlName="email" name="email" />
@@ -52,7 +43,7 @@
                     <button class="btn btn-lg btn-primary" type="submit">
                         <span *ngIf="isLoading">
                             <span class="spinner-grow spinner-grow-sm me-2" role="status" aria-hidden="true"></span>
-                            Loading...
+                            Sending...
                         </span>
                         <span *ngIf="!isLoading">Send</span>
                     </button>

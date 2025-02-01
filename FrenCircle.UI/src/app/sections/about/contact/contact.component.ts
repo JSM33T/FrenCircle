@@ -42,15 +42,15 @@ export class ContactComponent {
             .post<any>('api/message/send', this.messageForm.value)
             .subscribe({
                 next: (response) => {
+                    this.isLoading = false;
                     this.mdlService.apiToaster(response);
                     this.messageForm.reset();
                 },
                 error: (error) => {
+                    this.isLoading = false;
                     console.log(error);
                     this.mdlService.apiToaster(error.error);
                 },
             });
-
-        this.isLoading = false;
     }
 }

@@ -5,8 +5,8 @@ export const environment = {
         loaderTime: 1000,
     },
     urls: {
-        apiUrl: 'https://localhost:7262',
-        //apiUrl: 'https://jassi.me',
+        apiUrl: 'http://localhost:5080',
+        //apiUrl: 'https://localhost:7262',
         cdnUrl: 'https://cdn.jassi.me/cdn',
     },
     keys: {

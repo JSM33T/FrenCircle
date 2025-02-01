@@ -35,6 +35,7 @@ export class AppComponent {
         private router: Router,
         private aosService: AOSService,
         private zone: NgZone,
+        private el: ElementRef,
         private mdlService: ModalService,
         private offcanvasService: OffCanvasService,
         private apiHandler: ApiHandlerService,
@@ -46,6 +47,10 @@ export class AppComponent {
                     top: 0,
                     behavior: 'smooth',
                 });
+
+                this.toggleNavbar();
+
+
                 this.mdlService.closeAllModals();
                 this.offcanvasService.closeAllOffcanvases();
             });
@@ -62,6 +67,16 @@ export class AppComponent {
         this.aosService.initAos(this.aosElement);
 
         //this.chackApiStatus();
+    }
+
+
+    toggleNavbar() {
+        const navbar = this.el.nativeElement.querySelector('.navbar-collapse');
+        const toggleButton = this.el.nativeElement.querySelector('.navbar-toggler');
+
+        if (navbar.classList.contains('show')) {
+            toggleButton.click(); // Close navbar
+        }
     }
 
     remLoader() {

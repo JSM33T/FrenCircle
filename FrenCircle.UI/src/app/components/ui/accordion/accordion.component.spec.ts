@@ -10,7 +10,7 @@ describe('AccordionComponent', () => {
     await TestBed.configureTestingModule({
       imports: [AccordionComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(AccordionComponent);
     component = fixture.componentInstance;

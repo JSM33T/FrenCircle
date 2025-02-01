@@ -17,16 +17,16 @@ namespace FrenCircle.Base.Controllers
         [HttpPost("create")]
         public async Task<IActionResult> AddUser(AddUserRequest addUserRequest)
         {
-            APIResponse<int> aPIResponse = new(StatusCodes.Status409Conflict, "Conflict", 0, []);
+            APIResponse<int> apiResponse = new(StatusCodes.Status409Conflict, "Conflict", 0, []);
 
             if (await accountRepository.IsUserPresentByEmail(addUserRequest.Email))
-                aPIResponse.Hints.Add("Email is alraedy registered");
+                apiResponse.Hints.Add("Email is alraedy registered");
 
             if (await accountRepository.IsUserPresent(addUserRequest.UserName))
-                aPIResponse.Hints.Add("Username is alraedy registered");
+                apiResponse.Hints.Add("Username is alraedy registered");
 
-            if (aPIResponse.Hints.Count != 0)
-                return RESP_Custom(aPIResponse);
+            if (apiResponse.Hints.Count != 0)
+                return RESP_Custom(apiResponse);
 
             await accountRepository.AddUser(addUserRequest);
 
@@ -34,18 +34,17 @@ namespace FrenCircle.Base.Controllers
         }
         
         [HttpPost("generate-otp")]
-        public async Task<IActionResult> GenerateOTP(VerifyRequest verifyRequest)
+        public async Task<IActionResult> GenerateOtp(VerifyRequest verifyRequest)
         {
             if (string.IsNullOrEmpty(verifyRequest.Email))
                 return RESP_BadRequestResponse("Email is required.");
 
             var success = await accountRepository.GenerateAndSaveOTP(verifyRequest.Email);
 
-            if (!success)
-                return RESP_NotFoundResponse("User not found.");
+            return !success ? RESP_NotFoundResponse("User not found.") :
+                // In a real-world scenario, send the OTP to the user's email
+                RESP_Success("OTP generated and sent to your email.");
 
-            // In a real-world scenario, send the OTP to the user's email
-            return RESP_Success("OTP generated and sent to your email.");
         }
         
         [HttpPost("verify")]
@@ -56,7 +55,7 @@ namespace FrenCircle.Base.Controllers
             
             var user = await accountRepository.GetUserByEmail(verifyRequest.Email);
             
-            var token = JwtTokenHelper.GenerateToken(user, 
+            var token = JwtTokenHelper.GenerateToken(user!, 
                 "iureowtueorituowierutoi4354======",
                 "www.frencircle.com", 
                 "www.frencircle.com",
