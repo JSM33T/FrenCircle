@@ -8,7 +8,7 @@
 
         public const string Login = @"
         SELECT * FROM Users WITH(NOLOCK)
-        WHERE UserName = @Username;";
+        WHERE UserName = @Username OR Email = @Username;";
 
         public const string GetAll = @"
         SELECT * FROM Users WITH(NOLOCK);";
@@ -23,7 +23,7 @@
         
         public const string Verify = @"
         SELECT * FROM Users WITH(NOLOCK)
-        WHERE Email = @Email;";
+        WHERE Email = @Email OR UserName = @Username;";
         
         public const string GetByEmail = @"
         SELECT * FROM Users WITH(NOLOCK)

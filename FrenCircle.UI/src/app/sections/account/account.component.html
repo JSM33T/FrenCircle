@@ -5,10 +5,55 @@
     { label: 'Account' }
   ]"></app-breadcrumbs>
 
-    <a routerLink="login">Login</a>
-    <br />
-    <a routerLink="signup">SignUp</a>
-    <br />
-    <a routerLink="verify">Verify/Recovery</a>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4 pb-sm-3 pb-md-4 pb-xl-5">
+        <!-- Item -->
+        <div class="col">
+            <a class="card card-hover-primary bg-secondary border-0 h-100 text-decoration-none"
+                routerLink="login">
+                <div class="card-body pb-0">
+                    <i class="h2 text-nav fw-normal ai-login"></i>
 
+                    <h3 class="h4 card-title mt-0">Login</h3>
+                    <p class="card-text">Access your account to connect with friends, join chat rooms, and share posts. Secure authentication ensures your data stays safe.</p>
+                </div>
+                <div class="card-footer border-0 py-3 my-3 mb-sm-4">
+                    <div class="btn btn-lg btn-icon btn-outline-primary rounded-circle pe-none">
+                        <i class="ai-arrow-right"></i>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Item -->
+        <div class="col">
+            <a class="card card-hover-primary bg-secondary border-0 h-100 text-decoration-none" routerLink="signup">
+                <div class="card-body pb-0">
+                    <i class="h2 text-nav fw-normal ai-user-check"></i>
+                    <h3 class="h4 card-title mt-0">Signup</h3>
+                    <p class="card-text">Create an account to start posting images, microblogs, and engaging in voice chats. Just a few steps to join the community!</p>
+                </div>
+                <div class="card-footer border-0 py-3 my-3 mb-sm-4">
+                    <div class="btn btn-lg btn-icon btn-outline-primary rounded-circle pe-none">
+                        <i class="ai-arrow-right"></i>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <!-- Item -->
+        <div class="col">
+            <a routerLink="verify" class="card card-hover-primary bg-secondary border-0 h-100 text-decoration-none">
+                <div class="card-body pb-0">
+                    <i class="h2 text-nav fw-normal ai-check-alt"></i>
+                    <h3 class="h4 card-title mt-0">Verify/Recover</h3>
+                    <p class="card-text">Confirm your email to unlock all features and enhance security. Verified users gain access to real-time chat and exclusive community features.</p>
+                </div>
+                <div class="card-footer border-0 py-3 my-3 mb-sm-4">
+                    <div class="btn btn-lg btn-icon btn-outline-primary rounded-circle pe-none">
+                        <i class="ai-arrow-right"></i>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
 </section>

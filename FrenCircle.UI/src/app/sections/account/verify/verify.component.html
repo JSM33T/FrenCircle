@@ -3,12 +3,12 @@
     <app-breadcrumbs [breadcrumbs]="[
     { label: 'Home', url: '/' },
     { label: 'Account', url: '/account' },
-    { label: 'Login' }
+    { label: 'Verification' }
   ]"></app-breadcrumbs>
 
     <div class="row pb-1 pb-sm-3 pb-lg-4">
         <div class="col-lg-4 pe-xxl-4">
-            <h1 class="display-2" data-aos="flip-up" data-aos-duration="200">Verify/Recover</h1>
+            <h1 class="display-2" data-aos="flip-up" data-aos-duration="200"><i class="h1 pt-1 text-nav fw-bold ai-check-alt"> </i>Verify</h1>
             <p class="fs-lg pb-4 mb-0 mb-sm-2" data-aos="flip-up" data-aos-duration="500">
                 Verify / Recovery your account
             </p>
@@ -18,13 +18,13 @@
                 <div class="col-sm-6">
                     <label class="form-label fs-base" for="username">Email</label>
                     <input class="form-control form-control-lg" type="text" placeholder="Your name" required id="email"
-                        formControlName="email" name="email" />
+                        formControlName="email" name="email" (keyup)="onStateChange()" />
                 </div>
 
                 <div class="col-sm-6">
                     <label class="form-label fs-base" for="otp">OTP</label>
                     <input class="form-control form-control-lg" type="number" placeholder="Enter OTP" required
-                        id="otp" formControlName="otp" name="otp" [readonly]="isVerificationStep" (keyup)="onOtpChange()" />
+                        id="otp" formControlName="otp" name="otp" (keyup)="onStateChange()" />
                 </div>
 
                 <div class="col-sm-12 pt-2">

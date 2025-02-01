@@ -9,7 +9,7 @@
         public required string Email { get; set; }
         public required string Bio { get; set; } = "";
         public required string PasswordHash { get; set; }
-        public string Salt { get; set; }
+        public string? Salt { get; set; }
         
         public int Otp { get; set; }
         public string Role { get; set; } = "USER";

@@ -8,17 +8,16 @@
 
     <div class="row pb-1 pb-sm-3 pb-lg-4">
         <div class="col-lg-4 pe-xxl-4">
-            <h1 class="display-2" data-aos="flip-up" data-aos-duration="200">Login</h1>
+            <h1 class="display-2" data-aos="flip-up" data-aos-duration="200"><i class="h1 pt-1 text-nav fw-bold ai-login"></i>Login</h1>
             <p class="fs-lg pb-4 mb-0 mb-sm-2" data-aos="flip-up" data-aos-duration="500">
-                Got suggestions,ideas? ping me up with this form or mail me at <a href="mailto:mail@almondcove.com"
-                    class="text-primary">jskainthofficial&#64;gmail.com</a>
+                Already have an account. Do login...
             </p>
         </div>
         <div class="col-lg-8 col-xl-7 offset-xl-1">
             <form class="row g-4 needs-validation" (ngSubmit)="onSubmit()" [formGroup]="loginForm">
                 <div class="col-sm-6">
-                    <label class="form-label fs-base" for="username">Name</label>
-                    <input class="form-control form-control-lg" type="text" placeholder="Your name" required id="username"
+                    <label class="form-label fs-base" for="username">Username/Email</label>
+                    <input class="form-control form-control-lg" type="text" placeholder="Your username / email" required id="username"
                         formControlName="username" name="username" />
                 </div>
 

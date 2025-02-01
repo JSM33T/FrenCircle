@@ -3,13 +3,13 @@
     <app-breadcrumbs [breadcrumbs]="[
     { label: 'Home', url: '/' },
     { label: 'Account', url: '/account' },
-    { label: 'Login' }
+    { label: 'Sign Up' }
   ]"></app-breadcrumbs>
 
     <div class="row pb-1 pb-sm-3 pb-lg-4">
         <div class="col-lg-4 pe-xxl-4">
-            <h1 class="display-2" data-aos="flip-up" data-aos-duration="200">Sign Up</h1>
-            <p class="fs-lg pb-4 mb-0 mb-sm-2" data-aos="flip-up" data-aos-duration="500">
+            <h1 class="display-2" data-aos="flip-up" data-aos-duration="200"><i class="h1 pt-1 text-nav fw-bold ai-user-check"></i> Sign Up</h1>
+            <p class=" fs-lg pb-4 mb-0 mb-sm-2" data-aos="flip-up" data-aos-duration="500">
                 Do not have an account? Sign up to frencircle!!
             </p>
         </div>
@@ -17,14 +17,14 @@
             <form class="row g-4 needs-validation" (ngSubmit)="onSubmit()" [formGroup]="signUpForm">
 
                 <div class="col-sm-6">
-                    <label class="form-label fs-base" for="email">Firstname</label>
+                    <label class="form-label fs-base" for="email">Email</label>
                     <input class="form-control form-control-lg" type="text" placeholder="Your email" required id="email"
                         formControlName="email" name="email" />
                 </div>
 
                 <div class="col-sm-6">
                     <label class="form-label fs-base" for="username">Firstname</label>
-                    <input class="form-control form-control-lg" type="text" placeholder="Your Name" required
+                    <input class="form-control form-control-lg" type="text" placeholder="First name" required
                         id="firstname" formControlName="firstname" name="firstname" />
                 </div>
 

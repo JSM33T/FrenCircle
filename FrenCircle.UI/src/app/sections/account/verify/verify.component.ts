@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { BreadcrumbsComponent } from '../../../components/ui/breadcrumbs/breadcrumbs.component';
 import { NgIf } from '@angular/common';
 import {
@@ -10,6 +10,7 @@ import {
 } from '@angular/forms';
 import { ApiHandlerService } from '../../../services/Api/api-handler.service';
 import { ModalService } from '../../../services/DOMServices/modal.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'app-verify',
@@ -18,37 +19,52 @@ import { ModalService } from '../../../services/DOMServices/modal.service';
     templateUrl: './verify.component.html',
     styleUrl: './verify.component.css',
 })
-export class VerifyComponent {
+export class VerifyComponent implements OnInit {
     verifyForm!: FormGroup;
     isLoading = false;
-    isVerificationStep = false;
     buttonText = 'Send OTP';
     data: any;
 
     constructor(
         private apiService: ApiHandlerService,
         private fb: FormBuilder,
+        private route: ActivatedRoute,
         private mdlService: ModalService,
     ) {
         this.verifyForm = this.fb.group({
             email: new FormControl(''),
             otp: new FormControl(''),
         });
-        this.isVerificationStep = false;
+    }
+    ngOnInit(): void {
+        this.route.queryParams.subscribe((params) => {
+            if (params['username']) {
+                this.verifyForm.get('email')?.setValue(params['username']);
+                this.stepTwo();
+            }
+        });
     }
 
-    stepOneRequest() {}
-    stepTwoVerify() {}
+    stepOne() {
+        this.buttonText = 'Send OTP';
+    }
+
+    stepTwo() {
+        this.buttonText = 'Verify';
+    }
     reset() {}
 
-    onOtpChange(): void {
+    onStateChange(): void {
+        console.log('Email===' + this.verifyForm.get('email')?.value);
+        console.log('OTP====' + this.verifyForm.get('otp')?.value);
+
         if (
-            this.verifyForm.get('otp')?.value !== 0 ||
-            this.verifyForm.get('otp')?.value.trim() !== ''
+            this.verifyForm.get('email')?.value.trim() !== '' &&
+            this.verifyForm.get('otp')?.value !== null
         ) {
-            this.buttonText = 'Verify';
+            this.stepTwo();
         } else {
-            this.buttonText = 'Send OTP';
+            this.stepOne();
         }
     }
 
@@ -68,8 +84,7 @@ export class VerifyComponent {
                         this.mdlService.apiToaster(response);
                         if (response.status == 200) {
                             this.isLoading = false;
-                            this.stepTwoVerify();
-                            this.buttonText = 'Verify';
+                            this.stepTwo();
                         }
                     },
                     error: (error) => {
@@ -78,7 +93,6 @@ export class VerifyComponent {
                     },
                 });
         } else if (email !== '' && otp !== 0) {
-            this.isVerificationStep = true;
             this.apiService
                 .post<any>('api/account/verify', this.verifyForm.value)
                 .subscribe({
