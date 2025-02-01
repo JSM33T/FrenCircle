@@ -1,0 +1,16 @@
+<div class="accordion" id="accordionDefault">
+    <div class="accordion-item" *ngFor="let faq of faqs; let i = index">
+        <h3 class="accordion-header" [id]="'heading' + i">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                [attr.data-bs-target]="'#collapse' + i" aria-expanded="false" [attr.aria-controls]="'collapse' + i">
+                {{ faq.question }}
+            </button>
+        </h3>
+        <div class="accordion-collapse collapse" [id]="'collapse' + i" [attr.aria-labelledby]="'heading' + i"
+            data-bs-parent="#accordionDefault">
+            <div class="accordion-body fs-sm">
+                {{ faq.answer }}
+            </div>
+        </div>
+    </div>
+</div>

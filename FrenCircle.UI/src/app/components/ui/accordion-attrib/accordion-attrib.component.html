@@ -1,0 +1,21 @@
+<div class="accordion" id="accordionComponent">
+    <div class="accordion-item" *ngFor="let item of data; let i = index">
+        <h3 class="accordion-header" [id]="'heading' + i">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                [attr.data-bs-target]="'#collapse' + i" aria-expanded="false" [attr.aria-controls]="'collapse' + i">
+                {{ item.field }}
+            </button>
+        </h3>
+        <div class="accordion-collapse collapse" [id]="'collapse' + i" [attr.aria-labelledby]="'heading' + i"
+            data-bs-parent="#accordionComponent">
+            <div class="accordion-body fs-sm">
+                <ul *ngIf="item.users?.length; else textAnswer">
+                    <li *ngFor="let user of item.users">
+                        <a [href]="user.link" target="_blank">{{ user.name }}</a>
+                    </li>
+                </ul>
+                <ng-template #textAnswer>{{ item.users }}</ng-template>
+            </div>
+        </div>
+    </div>
+</div>

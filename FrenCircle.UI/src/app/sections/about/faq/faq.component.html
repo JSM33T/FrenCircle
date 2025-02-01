@@ -1,7 +1,23 @@
-<section class="container pt-5 mt-5">
-    <app-breadcrumbs [breadcrumbs]="[
-    { label: 'Home', url: '/' },
-    { label: 'About', url: '/about' },
-    { label: 'Faq' }
-  ]"></app-breadcrumbs>
+<section class="container pt-5 pb-lg-2 pb-xl-4 py-xxl-5 my-5">
+
+  <app-breadcrumbs [breadcrumbs]="[
+      { label: 'Home', url: '/' },
+      { label: 'About', url: '/about' },
+      { label: 'FAQs' }
+    ]"></app-breadcrumbs>
+
+  <div class="row pb-1 pb-sm-3 pb-lg-4">
+    <div class="col-lg-4 pe-xxl-4">
+      <h1 class="display-2" data-aos="flip-up" data-aos-duration="200">Attributions</h1>
+      <p class="fs-lg pb-4 mb-0 mb-sm-2" data-aos="flip-up" data-aos-duration="500">
+        Got suggestions,ideas? ping me up with this form or mail me at <a href="mailto:mail@almondcove.com"
+          class="text-primary">jskainthofficial&#64;gmail.com</a>
+      </p>
+    </div>
+    <div class="col-lg-8 col-xl-7 offset-xl-1">
+      <div class="row g-4">
+        <app-accordion [faqs]="frencircleFAQs"></app-accordion>
+      </div>
+    </div>
+  </div>
 </section>
