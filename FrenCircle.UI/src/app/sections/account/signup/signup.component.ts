@@ -10,6 +10,7 @@ import {
 } from '@angular/forms';
 import { BreadcrumbsComponent } from '../../../components/ui/breadcrumbs/breadcrumbs.component';
 import { NgIf } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-signup',
@@ -25,6 +26,7 @@ export class SignupComponent {
     constructor(
         private apiService: ApiHandlerService,
         private fb: FormBuilder,
+        private router: Router,
         private mdlService: ModalService,
     ) {
         this.signUpForm = this.fb.group({
@@ -60,7 +62,11 @@ export class SignupComponent {
                     }
                     this.isLoading = false;
                     this.mdlService.apiToaster(response);
-                    this.signUpForm.reset();
+                    this.router.navigate(['/account/verify'], {
+                        queryParams: {
+                            username: this.signUpForm.get('email')?.value,
+                        },
+                    });
                 },
                 error: (error) => {
                     this.isLoading = false;

@@ -18,26 +18,22 @@
                 <div class="col-sm-6">
                     <label class="form-label fs-base" for="username">Email</label>
                     <input class="form-control form-control-lg" type="text" placeholder="Your name" required id="email"
-                        formControlName="email" name="email" (keyup)="onStateChange()" />
+                        formControlName="email" name="email" />
                 </div>
 
                 <div class="col-sm-6">
                     <label class="form-label fs-base" for="otp">OTP</label>
                     <input class="form-control form-control-lg" type="number" placeholder="Enter OTP" required
-                        id="otp" formControlName="otp" name="otp" (keyup)="onStateChange()" />
+                        id="otp" formControlName="otp" name="otp" />
                 </div>
 
                 <div class="col-sm-12 pt-2">
-                    <!-- <button
-                        class="btn btn-lg btn-primary"
-                        type="submit"
-                        [disabled]="contactForm.invalid"
-                    > -->
                     <button class="btn btn-lg btn-primary" type="submit">
                         <span *ngIf="isLoading">
                             <span class="spinner-grow spinner-grow-sm me-2" role="status" aria-hidden="true"></span>
                             Loading...
                         </span>
+
                         <span *ngIf="!isLoading">{{buttonText}}</span>
                     </button>
                 </div>

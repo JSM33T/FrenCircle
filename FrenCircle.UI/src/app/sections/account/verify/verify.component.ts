@@ -10,8 +10,7 @@ import {
 } from '@angular/forms';
 import { ApiHandlerService } from '../../../services/Api/api-handler.service';
 import { ModalService } from '../../../services/DOMServices/modal.service';
-import { ActivatedRoute } from '@angular/router';
-
+import { ActivatedRoute, Router } from '@angular/router';
 @Component({
     selector: 'app-verify',
     standalone: true,
@@ -24,10 +23,11 @@ export class VerifyComponent implements OnInit {
     isLoading = false;
     buttonText = 'Send OTP';
     data: any;
-
+    paramUsername: string = '';
     constructor(
         private apiService: ApiHandlerService,
         private fb: FormBuilder,
+        private router: Router,
         private route: ActivatedRoute,
         private mdlService: ModalService,
     ) {
@@ -40,24 +40,24 @@ export class VerifyComponent implements OnInit {
         this.route.queryParams.subscribe((params) => {
             if (params['username']) {
                 this.verifyForm.get('email')?.setValue(params['username']);
+                this.paramUsername = params['username'];
                 this.stepTwo();
+                this.buttonText = 'Verify';
             }
         });
     }
-
     stepOne() {
-        this.buttonText = 'Send OTP';
+        if (this.paramUsername === '') {
+            this.buttonText = 'Send OTP';
+        }
     }
-
     stepTwo() {
         this.buttonText = 'Verify';
     }
     reset() {}
-
     onStateChange(): void {
         console.log('Email===' + this.verifyForm.get('email')?.value);
         console.log('OTP====' + this.verifyForm.get('otp')?.value);
-
         if (
             this.verifyForm.get('email')?.value.trim() !== '' &&
             this.verifyForm.get('otp')?.value !== null
@@ -67,13 +67,11 @@ export class VerifyComponent implements OnInit {
             this.stepOne();
         }
     }
-
     onSubmit(): void {
         this.isLoading = true;
         const email = this.verifyForm.get('email')?.value || '';
         const otp = this.verifyForm.get('otp')?.value || 0;
         console.log(this.verifyForm.value);
-
         if (email !== '' && otp === 0) {
             this.apiService
                 .post<any>('api/account/generate-otp', this.verifyForm.value)
@@ -104,8 +102,7 @@ export class VerifyComponent implements OnInit {
                             console.log(response.data);
                             localStorage.setItem('token', response.data.token);
                         }
-                        this.reset();
-                        this.verifyForm.reset();
+                        this.router.navigate(['/']);
                     },
                     error: (error) => {
                         this.isLoading = false;

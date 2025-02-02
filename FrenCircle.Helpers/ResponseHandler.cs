@@ -16,7 +16,7 @@ namespace FrenCircle.Helpers
             if (!string.IsNullOrEmpty(originalBodyText) && originalBodyText.Contains("\"traceId\""))
             {
                 var originalResponse = JsonConvert.DeserializeObject<ValidationProblemDetails>(originalBodyText);
-                List<string> errorMessages = originalResponse!.Errors
+                var errorMessages = originalResponse!.Errors
                     .Where(error => error.Value != null && error.Value.Length > 0)
                     .Select(error => error.Value[0])
                     .ToList();

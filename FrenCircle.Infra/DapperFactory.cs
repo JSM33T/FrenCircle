@@ -33,21 +33,21 @@ namespace FrenCircle.Infra
     public class DapperFactory(IOptions<FcConfig> config) : IDapperFactory
     {
         private readonly string _connectionString = config.Value.ConnectionString;
-        
+
         public async Task<T?> GetData<T>(string query, object? parameters = null)
         {
             await using var connection = new SqlConnection(_connectionString);
             await connection.OpenAsync();
             return await connection.QueryFirstOrDefaultAsync<T>(query, parameters);
         }
-        
+
         public async Task<IEnumerable<T>> GetDataList<T>(string query, object? parameters = null)
         {
             await using var connection = new SqlConnection(_connectionString);
             await connection.OpenAsync();
             return await connection.QueryAsync<T>(query, parameters);
         }
-        
+
         // New Execute method
         public async Task<int> Execute(string query, object? parameters = null)
         {

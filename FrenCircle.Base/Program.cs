@@ -31,8 +31,8 @@ builder.Services.AddAuthentication(options =>
         ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        ValidIssuer = "www.something.com",
-        ValidAudience = "www.something.com",
+        ValidIssuer = "www.frencircle.com",
+        ValidAudience = "www.frencircle.com",
         IssuerSigningKey = new SymmetricSecurityKey(key)
     };
 });

@@ -7,6 +7,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using FrenCircle.Helpers.Security;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FrenCircle.Base.Controllers
 {
@@ -63,7 +64,7 @@ namespace FrenCircle.Base.Controllers
             
             return RESP_Success(new { Token = token });
         }
-
+        
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginUserRequest loginRequest)
         {
