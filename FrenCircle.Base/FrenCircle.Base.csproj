@@ -21,4 +21,8 @@
 		<ProjectReference Include="..\FrenCircle.Helpers\FrenCircle.Helpers.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="wwwroot\" />
+	</ItemGroup>
+
 </Project>

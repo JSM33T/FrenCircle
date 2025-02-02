@@ -7,7 +7,7 @@
         VALUES (@FirstName, @LastName, @UserName, @Email, @Bio, @PasswordHash, @Salt, @TimeSpent, @DateUpdated, @LastSeen, @DateAdded,@otp, @otpTimestamp);";
 
         public const string Login = @"
-        SELECT * FROM Users WITH(NOLOCK)
+        SELECT * FROM Users
         WHERE UserName = @Username OR Email = @Username;";
 
         public const string GetAll = @"
