@@ -19,3 +19,6 @@
     <div>{{ formatTime(audioService.currentTime) }} / {{ formatTime(audioService.duration) }} sec</div>
 
 </div>
+<div *ngIf="!audioService.currentTrack">
+    No audio playing
+</div>
