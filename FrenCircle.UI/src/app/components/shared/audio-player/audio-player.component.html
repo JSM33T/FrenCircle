@@ -1,0 +1,21 @@
+<div *ngIf="audioService.currentTrack">
+    <h3>{{ audioService.currentTrack.title }} - {{ audioService.currentTrack.artist }}</h3>
+
+    <!-- Seek Bar -->
+    <input
+        type="range"
+        min="0"
+        [max]="audioService.duration"
+        [value]="audioService.currentTime"
+        (input)="seek($event)" />
+
+    <!-- Playback Controls -->
+    <button (click)="togglePlayPause()">
+        {{ audioService.isPlaying ? 'Pause' : 'Play' }}
+    </button>
+    <button (click)="audioService.stop()">Stop</button>
+
+    <!-- Time Display -->
+    <div>{{ formatTime(audioService.currentTime) }} / {{ formatTime(audioService.duration) }} sec</div>
+
+</div>

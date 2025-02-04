@@ -14,13 +14,13 @@ public class JwtTokenHelper
         var key = Encoding.ASCII.GetBytes(secretKey);
         var tokenDescriptor = new SecurityTokenDescriptor
         {
-            Subject = new ClaimsIdentity(new[]
-            {
+            Subject = new ClaimsIdentity(
+            [
                 new Claim(ClaimTypes.Name, user.UserName),
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim(ClaimTypes.Role, user.Role),
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
-            }),
+            ]),
             Expires = DateTime.UtcNow.AddMinutes(expiryMinutes),
             Issuer = issuer,
             Audience = audience,

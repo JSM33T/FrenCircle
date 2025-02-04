@@ -108,14 +108,11 @@ namespace FrenCircle.Repositories
 
         public async Task<bool> GenerateAndSaveOTP(string email)
         {
-            // Generate a random 6-digit OTP
             var random = new Random();
             var otp = random.Next(100000, 999999).ToString();
 
-            // Set OTP expiration (e.g., 5 minutes from now)
             var otpDate = DateTime.UtcNow.AddMinutes(30);
 
-            // Save OTP and OTPDate to the database
             var query = "UPDATE Users SET OTP = @OTP, OTPTimeStamp = @OTPDate WHERE Email = @Email";
             var affectedRows = await dapperFactory.Execute(query, new { OTP = otp, OTPDate = otpDate, Email = email });
 

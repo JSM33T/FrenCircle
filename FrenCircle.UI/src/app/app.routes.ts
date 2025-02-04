@@ -64,4 +64,11 @@ export const routes: Routes = [
                 (m) => m.VerifyComponent,
             ),
     },
+    {
+        path: 'studio/music',
+        loadComponent: () =>
+            import('./sections/studio/music/music.component').then(
+                (m) => m.MusicComponent,
+            ),
+    },
 ];
