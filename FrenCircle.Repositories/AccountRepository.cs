@@ -50,7 +50,7 @@ namespace FrenCircle.Repositories
 
         Task<bool> IsUserPresentByEmail(string email);
 
-        Task<bool> GenerateAndSaveOTP(string email);
+        Task<bool> GenerateAndSaveOtp(string email);
         Task<User?> GetUserByEmail(string email);
 
     }
@@ -64,8 +64,8 @@ namespace FrenCircle.Repositories
             var user = UserDtoMappers.MAP_AddUserRequest_User(userRequest);
 
             (user.PasswordHash, user.Salt) = PasswordHasher.HashPassword(userRequest.Password);
-
-            user.Otp = 1111;
+            var random = new Random();
+            user.Otp = random.Next(1000, 9999);
             user.OtpTimeStamp = DateTime.Now;
 
             var id = await dapperFactory.GetData<int>(query, new
@@ -106,10 +106,10 @@ namespace FrenCircle.Repositories
             return user;
         }
 
-        public async Task<bool> GenerateAndSaveOTP(string email)
+        public async Task<bool> GenerateAndSaveOtp(string email)
         {
             var random = new Random();
-            var otp = random.Next(100000, 999999).ToString();
+            var otp = random.Next(1000, 9999);
 
             var otpDate = DateTime.UtcNow.AddMinutes(30);
 
@@ -122,14 +122,14 @@ namespace FrenCircle.Repositories
         public async Task<bool> VerifyUser(VerifyDto verifyRequest)
         {
             var query = "SELECT OTP, OTPTimeStamp FROM Users WHERE Email = @Email";
-            var user = await dapperFactory.GetData<User>(query, new { Email = verifyRequest.Email });
+            var user = await dapperFactory.GetData<User>(query, new { verifyRequest.Email });
 
             if (user == null || user.Otp != verifyRequest.Otp || user.OtpTimeStamp < DateTime.UtcNow)
             {
                 return false;
             }
             var updateQuery = "UPDATE Users SET OTP = NULL, OTPTimeStamp = NULL,IsActive = 1 WHERE Email = @Email";
-            await dapperFactory.Execute(updateQuery, new { Email = verifyRequest.Email });
+            await dapperFactory.Execute(updateQuery, new { verifyRequest.Email });
 
             return true;
         }

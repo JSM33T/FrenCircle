@@ -43,6 +43,7 @@ export class LoginComponent {
                     if (response.status == 200) {
                         console.log(response.data);
                         localStorage.setItem('token', response.data.token);
+                        window.location.href = '/';
                     }
                     this.isLoading = false;
                     this.mdlService.apiToaster(response);

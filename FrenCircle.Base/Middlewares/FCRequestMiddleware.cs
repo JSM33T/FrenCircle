@@ -1,10 +1,13 @@
 ﻿using FrenCircle.Helpers;
+using FrenCircle.Infra;
 
 namespace FrenCircle.Base.Middlewares
 {
-    public class FcRequestMiddleware(RequestDelegate next)
+    public class FcRequestMiddleware(RequestDelegate next,ILogger<FcRequestMiddleware> logger,ITelegramService telegramService)
     {
         private readonly RequestDelegate _next = next;
+        private readonly ILogger<FcRequestMiddleware> _logger = logger;
+        private readonly ITelegramService _telegramService = telegramService;
         public async Task InvokeAsync(HttpContext context)
         {
             var originalBodyStream = context.Response.Body;
@@ -19,6 +22,8 @@ namespace FrenCircle.Base.Middlewares
             catch (Exception ex)
             {
                 context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+                _logger.LogError(ex, ex.Message);
+                _ = _telegramService.SendMessageAsync($"Error || {DateTime.Now}: {ex}");
                 await ResponseHandler.HandleInternalServerError(context, originalBodyStream, ex);
                 return;
             }

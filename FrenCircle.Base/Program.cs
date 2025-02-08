@@ -7,10 +7,23 @@ using FrenCircle.Infra;
 using FrenCircle.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
 using System.Reflection;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+
+#region Serilog
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .WriteTo.Async(a => a.File($"Logs/log.txt", rollingInterval: RollingInterval.Hour))
+    .WriteTo.Console()
+    .CreateLogger();
+
+builder.Host.UseSerilog();
+
+builder.Host.UseSerilog();
+#endregion
 
 var key = Encoding.ASCII.GetBytes("iureowtueorituowierutoi4354======");
 
@@ -41,11 +54,19 @@ builder.Services.AddAuthorization();
 
 builder.ConfigureSignalRServices();
 
+if (builder.Environment.IsDevelopment())
+{
+    builder.Configuration.AddUserSecrets<Program>();
+}
+
 builder.Services.Configure<FcConfig>(builder.Configuration.GetSection("FCConfig"));
 
 builder.Services.AddSingleton<IRateLimiter, RateLimiter>();
-
 builder.Services.AddScoped<IDapperFactory, DapperFactory>();
+builder.Services.AddScoped<IEmailService,EmailService>();
+builder.Services.AddHttpClient<ITelegramService, TelegramService>();
+
+
 
 builder.Services.AddScoped<IMessageRepository, MessageRepository>();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();

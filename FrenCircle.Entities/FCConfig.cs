@@ -10,6 +10,7 @@
         public Paths Paths { get; set; }
         public Logins logins { get; set; }
         public Toggles Toggles { get; set; }
+        public TelegramSettings telegramSettings { get; set; }
     }
     public class Toggles
     {
@@ -47,4 +48,11 @@
     {
         public string CDNURL { get; set; }
     }
+    public class TelegramSettings
+    {
+        public string BotToken { get; set; }
+        public string ChatId { get; set; }
+        public string ApiUrl { get; set; }
+    }
+
 }

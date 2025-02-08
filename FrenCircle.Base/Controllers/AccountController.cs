@@ -2,19 +2,22 @@
 using FrenCircle.Entities.Data;
 using FrenCircle.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 using FrenCircle.Helpers.Security;
-using Microsoft.AspNetCore.Authorization;
+using FrenCircle.Helpers.Templates;
+using FrenCircle.Infra;
+using Microsoft.Extensions.Options;
 
 namespace FrenCircle.Base.Controllers
 {
     [Route("/api/account")]
     [ApiController]
-    public class AccountController(IAccountRepository accountRepository) : FcBaseController
+    public class AccountController(
+        IAccountRepository accountRepository,
+        IEmailService emailService,
+        IOptions<FcConfig> config) : FcBaseController
     {
+        private readonly FcConfig _config = config.Value;
+
         [HttpPost("create")]
         public async Task<IActionResult> AddUser(AddUserRequest addUserRequest)
         {
@@ -33,38 +36,46 @@ namespace FrenCircle.Base.Controllers
 
             return RESP_Success("Succssfylly registered");
         }
-        
+
         [HttpPost("generate-otp")]
         public async Task<IActionResult> GenerateOtp(VerifyRequest verifyRequest)
         {
             if (string.IsNullOrEmpty(verifyRequest.Email))
                 return RESP_BadRequestResponse("Email is required.");
 
-            var success = await accountRepository.GenerateAndSaveOTP(verifyRequest.Email);
+            var success = await accountRepository.GenerateAndSaveOtp(verifyRequest.Email);
 
-            return !success ? RESP_NotFoundResponse("User not found.") :
-                // In a real-world scenario, send the OTP to the user's email
-                RESP_Success("OTP generated and sent to your email.");
+            if (success != true)
+                RESP_NotFoundResponse("User not found.");
 
+            var user = await accountRepository.GetUserByEmail(verifyRequest.Email);
+
+            var body = EmailTemplates.OtpTemplate
+                .Replace("{{OTP}}", user!.Otp.ToString())
+                .Replace("{{USERNAME}}", user.UserName);
+
+            await emailService.SendEmailAsync([user?.Email!], "FrenCircle Account Verification", body);
+
+            return RESP_Success("OTP generated and sent to your email.");
         }
-        
+
         [HttpPost("verify")]
         public async Task<IActionResult> VerifyUser(VerifyDto verifyRequest)
         {
             if (!await accountRepository.VerifyUser(verifyRequest))
                 return RESP_BadRequestResponse("Invalid verification attempt");
-            
+
             var user = await accountRepository.GetUserByEmail(verifyRequest.Email);
-            
-            var token = JwtTokenHelper.GenerateToken(user!, 
-                "iureowtueorituowierutoi4354======",
-                "www.frencircle.com", 
-                "www.frencircle.com",
-                3000);
-            
+
+            var token = JwtTokenHelper.GenerateToken(user!,
+                _config.JwtSettings?.IssuerSigningKey!,
+                _config.JwtSettings!.ValidIssuer,
+                _config.JwtSettings.ValidAudience,
+                30000);
+
             return RESP_Success(new { Token = token });
         }
-        
+
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginUserRequest loginRequest)
         {
@@ -75,12 +86,12 @@ namespace FrenCircle.Base.Controllers
 
             if (user.IsActive == false)
                 return RESP_BadRequestResponse("Account isn't verified yet. Please verify or recover your account");
-            
-            var token = JwtTokenHelper.GenerateToken(user, 
-                "iureowtueorituowierutoi4354======",
-                "www.frencircle.com", 
-                "www.frencircle.com",
-                3000);
+
+            var token = JwtTokenHelper.GenerateToken(user,
+                _config.JwtSettings?.IssuerSigningKey!,
+                _config.JwtSettings?.ValidIssuer!,
+                _config.JwtSettings?.ValidAudience!,
+                30000);
 
             // Return the token
             return RESP_Success(new { Token = token });

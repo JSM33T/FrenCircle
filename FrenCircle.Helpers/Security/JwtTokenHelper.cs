@@ -1,8 +1,8 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿using FrenCircle.Entities.Data;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using FrenCircle.Entities.Data;
-using Microsoft.IdentityModel.Tokens;
 
 namespace FrenCircle.Helpers.Security;
 
@@ -19,6 +19,9 @@ public class JwtTokenHelper
                 new Claim(ClaimTypes.Name, user.UserName),
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim(ClaimTypes.Role, user.Role),
+                new Claim("FNAME", user.FirstName),
+                new Claim("UID", user.UId.ToString()),
+                new Claim("LNAME", user.LastName),
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
             ]),
             Expires = DateTime.UtcNow.AddMinutes(expiryMinutes),

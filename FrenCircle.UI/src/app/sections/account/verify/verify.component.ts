@@ -102,7 +102,8 @@ export class VerifyComponent implements OnInit {
                             console.log(response.data);
                             localStorage.setItem('token', response.data.token);
                         }
-                        this.router.navigate(['/']);
+                        //this.router.navigate(['/']);
+                        window.location.href = '/';
                     },
                     error: (error) => {
                         this.isLoading = false;

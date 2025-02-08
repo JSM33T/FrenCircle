@@ -21,7 +21,65 @@
 
             <app-theme-toggle class="form-check form-switch mode-switch order-lg-2 me-3 me-lg-4 ms-auto" data-bs-toggle="mode"></app-theme-toggle>
 
+            <!-- User signed in state. Account dropdown on screens > 576px -->
+            <div class="dropdown nav d-none d-sm-block order-lg-3">
+                @if (isLoggedIn) {
+                <a class="nav-link d-flex align-items-center p-0" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img class="border rounded-circle" src="{{user.pfp}}" width="48" alt="{{ user.username }}" />
+                    <div class="ps-2">
+                        <div class="fs-xs lh-1 opacity-60">Hello,</div>
+                        <div class="fs-sm dropdown-toggle">{{ user.username }}</div>
+                    </div>
+                </a>
+                <div class="dropdown-menu dropdown-menu-end my-1">
+                    <h6 class="dropdown-header fs-xs fw-medium text-body-secondary text-uppercase pb-1">Account</h6>
+                    <a class="dropdown-item disabled" href="account-overview.html">
+                        <i class="ai-user-check fs-lg opacity-70 me-2"></i>
+                        Profile
+                    </a>
+                    <a class="dropdown-item disabled" href="account-settings.html">
+                        <i class="ai-settings fs-lg opacity-70 me-2"></i>
+                        Settings
+                    </a>
+                    <a class="dropdown-item disabled" href="account-billing.html">
+                        <i class="ai-heart fs-base opacity-70 me-2 mt-n1"></i>
+                        Favs
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <h6 class="dropdown-header fs-xs fw-medium text-body-secondary text-uppercase pb-1">Config</h6>
+                    <a class="dropdown-item disabled" href="account-orders.html">
+                        <i class="ai-cart fs-lg opacity-70 me-2"></i>
+                        Themes
+                    </a>
+                    <a class="dropdown-item disabled" href="account-earnings.html">
+                        <i class="ai-activity fs-lg opacity-70 me-2"></i>
+                        Accessibility
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#logoutModal">
+                        <i class="ai-logout fs-lg opacity-70 me-2"></i>
+                        Sign out
+                    </button>
 
+                </div>
+                } @else {
+                <a class="nav-link d-flex align-items-center p-0" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                    <!-- <img class="border rounded-circle" src="{{ webassets }}/webassets/images/home/avatar.jpg" width="48" alt="guest" /> -->
+                    <img class="border rounded-circle" src="{{ user.pfp}}" width="48" alt="guest" />
+                    <div class="ps-2">
+                        <div class="fs-xs lh-1 opacity-60">Hello,</div>
+                        <div class="fs-sm dropdown-toggle">Guest</div>
+                    </div>
+                </a>
+                <div class="dropdown-menu dropdown-menu-end my-1">
+                    <h6 class="dropdown-header fs-xs fw-medium text-body-secondary text-uppercase pb-1">Account</h6>
+                    <a class="dropdown-item" type="button" (click)="redirectToLogin()">
+                        <i class="ai-user-check fs-lg opacity-70 me-2"></i>
+                        Login/Signup
+                    </a>
+                </div>
+                }
+            </div>
 
             <!-- Mobile menu toggler (Hamburger) -->
             <button class="navbar-toggler ms-sm-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-label="Toggle navigation">
@@ -234,8 +292,91 @@
                     <li class="nav-item">
                         <a class="nav-link" routerLink="about">About</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" routerLink="account">Account</a>
+                    </li>
+                    @if (isLoggedIn) {
+                    <!-- User signed in state. Account dropdown on screens > 576px -->
+                    <li class="nav-item dropdown d-sm-none border-top mt-2 pt-2">
+                        <a class="nav-link" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img class="border rounded-circle" src="{{ user.pfp }}" width="48" alt="guest" />
+                            <div class="ps-2">
+                                <div class="fs-xs lh-1 opacity-60">Hello,</div>
+                                <div class="fs-sm dropdown-toggle">{{ user.username }}</div>
+                            </div>
+                        </a>
+                        <div class="dropdown-menu">
+                            <h6 class="dropdown-header fs-xs fw-medium text-body-secondary text-uppercase pb-1">Account</h6>
+                            <a class="dropdown-item disabled" href="account-overview.html">
+                                <i class="ai-user-check fs-lg opacity-70 me-2"></i>
+                                Profile
+                            </a>
+                            <a class="dropdown-item disabled" href="account-settings.html">
+                                <i class="ai-settings fs-lg opacity-70 me-2"></i>
+                                Settings
+                            </a>
+                            <a class="dropdown-item disabled" href="account-billing.html">
+                                <i class="ai-heart fs-base opacity-70 me-2 mt-n1"></i>
+                                Favs
+                            </a>
+                            <h6 class="dropdown-header fs-xs fw-medium text-body-secondary text-uppercase pt-3 pb-1">Config</h6>
+                            <a class="dropdown-item disabled" href="account-orders.html">
+                                <i class="ai-cart fs-lg opacity-70 me-2"></i>
+                                Themes
+                            </a>
+                            <a class="dropdown-item disabled" href="account-earnings.html">
+                                <i class="ai-activity fs-lg opacity-70 me-2"></i>
+                                Accesibility
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#logoutModal">
+                                <i class="ai-logout fs-lg opacity-70 me-2"></i>
+                                Sign out
+                            </button>
+                        </div>
+                    </li>
+                    } @else {
+                    <li class="nav-item dropdown d-sm-none border-top mt-2 pt-2">
+                        <a class="nav-link" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img class="border rounded-circle" src="{{ user.pfp }}" width="48" alt="Isabella Bocouse" />
+                            <div class="ps-2">
+                                <div class="fs-xs lh-1 opacity-60">Hello,</div>
+                                <div class="fs-sm dropdown-toggle">Guest</div>
+                            </div>
+                        </a>
+                        <div class="dropdown-menu">
+                            <h6 class="dropdown-header fs-xs fw-medium text-body-secondary text-uppercase pb-1">Account</h6>
+                            <a class="dropdown-item" type="button" (click)="redirectToLogin()">
+                                <i class="ai-user-check fs-lg opacity-70 me-2"></i>
+                                Login/Signup
+                            </a>
+                        </div>
+                    </li>
+                    }
                 </ul>
             </nav>
         </div>
     </div>
 </header>
+
+
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document" data-bs-keyboard="false">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Logout</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-primary">
+                Wanna logout?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary mx-2" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="logout()">Logout?</button>
+            </div>
+        </div>
+    </div>
+
+</div>

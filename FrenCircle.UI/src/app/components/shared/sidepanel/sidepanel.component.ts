@@ -20,10 +20,10 @@ export class SidepanelComponent implements OnInit {
     }
 
     playSong() {
-        this.audioService.playTrack({
-            title: 'Song Title',
-            artist: 'Artist Name',
-            url: 'https://file-examples.com/storage/fef6bc58a467a23f99bc53c/2017/11/file_example_MP3_700KB.mp3',
-        });
+        // this.audioService.playTrack({
+        //     title: 'Song Title',
+        //     artist: 'Artist Name',
+        //     url: '/media/sample.mp3',
+        // });
     }
 }

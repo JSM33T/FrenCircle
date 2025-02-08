@@ -4,26 +4,24 @@ using Microsoft.Extensions.Options;
 
 namespace FrenCircle.Infra;
 
-public class MailService
-{
-    private interface IEmailService
+    public interface IEmailService
     {
-        Task<bool> SendEmailAsync(string from, List<string> recipients, string subject, string body);
+        Task<bool> SendEmailAsync(List<string> recipients, string subject, string body);
     }
 
     public class EmailService(IOptions<FcConfig> config) : IEmailService
     {
         private readonly FcConfig _config = config.Value;
         
-        public async Task<bool> SendEmailAsync(string from, List<string> recipients, string subject, string body)
+        public async Task<bool> SendEmailAsync(List<string> recipients, string subject, string body)
         {
             using var smtpClient = new SmtpClient(_config.SmtpSettings.Server, _config.SmtpSettings.Port);
-            smtpClient.EnableSsl = true;
+            smtpClient.EnableSsl = false;
             smtpClient.Credentials = new System.Net.NetworkCredential(_config.SmtpSettings.Username, _config.SmtpSettings.Password);
-
+            
             var mailMessage = new MailMessage
             {
-                From = new MailAddress(from),
+                From = new MailAddress(_config.SmtpSettings.FromEmail, _config.SmtpSettings.FromName),
                 Subject = subject,
                 Body = body,
                 IsBodyHtml = true
@@ -39,4 +37,3 @@ public class MailService
             return true;
         }
     }
-}
