@@ -14,9 +14,11 @@ namespace FrenCircle.Base.Controllers
     public class AccountController(
         IAccountRepository accountRepository,
         IEmailService emailService,
+        ITelegramService telegramService,
         IOptions<FcConfig> config) : FcBaseController
     {
         private readonly FcConfig _config = config.Value;
+        private readonly ITelegramService _telegramService = telegramService;
 
         [HttpPost("create")]
         public async Task<IActionResult> AddUser(AddUserRequest addUserRequest)
@@ -31,6 +33,8 @@ namespace FrenCircle.Base.Controllers
 
             if (apiResponse.Hints.Count != 0)
                 return RESP_Custom(apiResponse);
+
+            _ = _telegramService.SendMessageAsync($"New user registered on {DateTime.Now} \n email: {addUserRequest.Email} \n name:{addUserRequest.FirstName} {addUserRequest.LastName} \n username:{addUserRequest.UserName}");
 
             await accountRepository.AddUser(addUserRequest);
 

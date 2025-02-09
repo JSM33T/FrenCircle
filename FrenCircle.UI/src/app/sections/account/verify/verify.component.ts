@@ -43,6 +43,7 @@ export class VerifyComponent implements OnInit {
                 this.paramUsername = params['username'];
                 this.stepTwo();
                 this.buttonText = 'Verify';
+                this.onSubmit();
             }
         });
     }

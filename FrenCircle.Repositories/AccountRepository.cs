@@ -113,7 +113,7 @@ namespace FrenCircle.Repositories
 
             var otpDate = DateTime.UtcNow.AddMinutes(30);
 
-            var query = "UPDATE Users SET OTP = @OTP, OTPTimeStamp = @OTPDate WHERE Email = @Email";
+            var query = DbUsers.GenerateOtp;
             var affectedRows = await dapperFactory.Execute(query, new { OTP = otp, OTPDate = otpDate, Email = email });
 
             return affectedRows > 0;
@@ -121,14 +121,14 @@ namespace FrenCircle.Repositories
 
         public async Task<bool> VerifyUser(VerifyDto verifyRequest)
         {
-            var query = "SELECT OTP, OTPTimeStamp FROM Users WHERE Email = @Email";
+            var query = DbUsers.GetOtp;
             var user = await dapperFactory.GetData<User>(query, new { verifyRequest.Email });
 
             if (user == null || user.Otp != verifyRequest.Otp || user.OtpTimeStamp < DateTime.UtcNow)
             {
                 return false;
             }
-            var updateQuery = "UPDATE Users SET OTP = NULL, OTPTimeStamp = NULL,IsActive = 1 WHERE Email = @Email";
+            var updateQuery = DbUsers.VerifyOtp;
             await dapperFactory.Execute(updateQuery, new { verifyRequest.Email });
 
             return true;

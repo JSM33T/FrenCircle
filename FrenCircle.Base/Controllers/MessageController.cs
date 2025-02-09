@@ -28,7 +28,7 @@ namespace FrenCircle.Base.Controllers
         {
             if (_rateLimiter.IsRateLimited("GLOBAL", 5, 60))
             {
-                return RESP_ForbiddenResponse("Daddy chill....");
+                return RESP_ForbiddenResponse("Chill out man....");
             }
 
             var message = MessageDtoMappers.MAP_AddMessageRequest_Message(messageRequest);
