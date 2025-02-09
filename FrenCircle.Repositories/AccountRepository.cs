@@ -1,6 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 using FrenCircle.Entities.Data;
+using FrenCircle.Entities.Shared;
 using FrenCircle.Helpers.Mappers;
 using FrenCircle.Helpers.Security;
 using FrenCircle.Helpers.SqlQueries;
@@ -53,6 +54,11 @@ namespace FrenCircle.Repositories
         Task<bool> GenerateAndSaveOtp(string email);
         Task<User?> GetUserByEmail(string email);
 
+        Task<User?> GetUserById(int Id);
+        // Refresh Token Methods
+        Task StoreRefreshToken(int userId, string refreshToken, DateTime expiryDate);
+        Task<RefreshToken?> GetRefreshToken(string refreshToken);
+        Task UpdateRefreshToken(int userId, string oldRefreshToken, string newRefreshToken, DateTime expiryDate);
     }
 
     public class AccountRepository(IDapperFactory dapperFactory) : IAccountRepository
@@ -106,6 +112,13 @@ namespace FrenCircle.Repositories
             return user;
         }
 
+        public async Task<User?> GetUserById(int Id)
+        {
+            var query = DbUsers.GetById;
+            var user = await dapperFactory.GetData<User>(query, new { Id = Id });
+            return user;
+        }
+
         public async Task<bool> GenerateAndSaveOtp(string email)
         {
             var random = new Random();
@@ -153,6 +166,27 @@ namespace FrenCircle.Repositories
             var query = DbUsers.CheckByEmail;
             var user = await dapperFactory.GetData<User>(query, new { Email = email });
             return user != null;
+        }
+
+        // 🔹 Store Refresh Token
+        public async Task StoreRefreshToken(int userId, string refreshToken, DateTime expiryDate)
+        {
+            var query = DbUsers.StoreRefreshToken;
+            await dapperFactory.Execute(query, new { UserId = userId, RefreshToken = refreshToken, ExpiryDate = expiryDate });
+        }
+
+        // 🔹 Get Refresh Token
+        public async Task<RefreshToken?> GetRefreshToken(string refreshToken)
+        {
+            var query = DbUsers.GetRefreshToken;
+            return await dapperFactory.GetData<RefreshToken>(query, new { RefreshToken = refreshToken });
+        }
+
+        // 🔹 Update Refresh Token (Rotating Tokens)
+        public async Task UpdateRefreshToken(int userId, string oldRefreshToken, string newRefreshToken, DateTime expiryDate)
+        {
+            var query = DbUsers.UpdateRefreshToken;
+            await dapperFactory.Execute(query, new { UserId = userId, OldRefreshToken = oldRefreshToken, NewRefreshToken = newRefreshToken, ExpiryDate = expiryDate });
         }
     }
 }

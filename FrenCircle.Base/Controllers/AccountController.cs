@@ -80,25 +80,94 @@ namespace FrenCircle.Base.Controllers
             return RESP_Success(new { Token = token });
         }
 
+        //[HttpPost("login")]
+        //public async Task<IActionResult> Login(LoginUserRequest loginRequest)
+        //{
+        //    var user = await accountRepository.LoginUser(loginRequest.UserName, loginRequest.Password);
+
+        //    if (user == null)
+        //        return RESP_BadRequestResponse("Invalid username or password");
+
+        //    if (user.IsActive == false)
+        //        return RESP_BadRequestResponse("Account isn't verified yet. Please verify or recover your account");
+
+        //    var token = JwtTokenHelper.GenerateToken(user,
+        //        _config.JwtSettings?.IssuerSigningKey!,
+        //        _config.JwtSettings?.ValidIssuer!,
+        //        _config.JwtSettings?.ValidAudience!,
+        //        30000);
+
+        //    // Return the token
+        //    return RESP_Success(new { Token = token });
+        //}
+
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginUserRequest loginRequest)
         {
             var user = await accountRepository.LoginUser(loginRequest.UserName, loginRequest.Password);
-
             if (user == null)
                 return RESP_BadRequestResponse("Invalid username or password");
 
-            if (user.IsActive == false)
+            if (!user.IsActive)
                 return RESP_BadRequestResponse("Account isn't verified yet. Please verify or recover your account");
 
             var token = JwtTokenHelper.GenerateToken(user,
-                _config.JwtSettings?.IssuerSigningKey!,
-                _config.JwtSettings?.ValidIssuer!,
-                _config.JwtSettings?.ValidAudience!,
-                30000);
+                _config.JwtSettings.IssuerSigningKey!,
+                _config.JwtSettings.ValidIssuer!,
+                _config.JwtSettings.ValidAudience!,
+                1); // 10 min expiry
 
-            // Return the token
+            var refreshToken = Guid.NewGuid().ToString();
+            await accountRepository.StoreRefreshToken(user.Id, refreshToken, DateTime.UtcNow.AddDays(1));
+
+            // Store refresh token in HttpOnly cookie
+            Response.Cookies.Append("refreshToken", refreshToken, new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.None,
+                Expires = DateTime.UtcNow.AddDays(1)
+            });
+
             return RESP_Success(new { Token = token });
         }
+
+
+        [HttpPost("refresh")]
+        public async Task<IActionResult> Refresh()
+        {
+            var oldRefreshToken = Request.Cookies["refreshToken"];
+            if (string.IsNullOrEmpty(oldRefreshToken))
+                return Unauthorized("No refresh token");
+
+            var storedToken = await accountRepository.GetRefreshToken(oldRefreshToken);
+            if (storedToken == null || storedToken.ExpiresAt < DateTime.UtcNow)
+                return Unauthorized("Invalid or expired refresh token");
+
+            var user = await accountRepository.GetUserById(storedToken.UserId);
+            if (user == null)
+                return Unauthorized("User not found");
+
+            var newAccessToken = JwtTokenHelper.GenerateToken(user,
+                _config.JwtSettings.IssuerSigningKey!,
+                _config.JwtSettings.ValidIssuer!,
+                _config.JwtSettings.ValidAudience!,
+                1); // 10 min expiry
+
+            var newRefreshToken = Guid.NewGuid().ToString();
+            await accountRepository.UpdateRefreshToken(storedToken.UserId, oldRefreshToken, newRefreshToken, DateTime.UtcNow.AddDays(1));
+
+            // Set new refresh token in cookie
+            Response.Cookies.Append("refreshToken", newRefreshToken, new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.None,
+                Expires = DateTime.UtcNow.AddDays(1)
+            });
+
+            return Ok(new { Token = newAccessToken });
+        }
+
     }
 }

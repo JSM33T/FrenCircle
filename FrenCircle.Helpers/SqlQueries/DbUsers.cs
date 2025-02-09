@@ -38,6 +38,10 @@
         SELECT * FROM Users WITH(NOLOCK)
         WHERE Email = @Email;";
 
+        public const string GetById = @"
+        SELECT * FROM Users WITH(NOLOCK)
+        WHERE Id = @Id;";
+
         public static string GetOtp = @"
         SELECT OTP, OTPTimeStamp FROM Users 
         WHERE Email = @Email";
@@ -49,5 +53,22 @@
         public static string VerifyOtp = @"
         UPDATE Users SET OTP = NULL, OTPTimeStamp = NULL,IsActive = 1 
         WHERE Email = @Email";
+
+        // 🔹 Store Refresh Token
+        public const string StoreRefreshToken = @"
+INSERT INTO RefreshTokens (UserId, Token, ExpiresAt, CreatedAt) 
+VALUES (@UserId, @RefreshToken, @ExpiryDate, GETUTCDATE());";
+
+        // 🔹 Get Refresh Token
+        public const string GetRefreshToken = @"
+SELECT * FROM RefreshTokens 
+WHERE Token = @RefreshToken AND ExpiresAt > GETUTCDATE();";
+
+        // 🔹 Update Refresh Token (Rotating Tokens)
+        public const string UpdateRefreshToken = @"
+UPDATE RefreshTokens 
+SET Token = @NewRefreshToken, ExpiresAt = @ExpiryDate, CreatedAt = GETUTCDATE() 
+WHERE UserId = @UserId AND Token = @OldRefreshToken;";
+
     }
 }

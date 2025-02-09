@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using System.Reflection;
+using System.Security.Claims;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -44,8 +45,9 @@ builder.Services.AddAuthentication(options =>
         ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        ValidIssuer = "www.frencircle.com",
-        ValidAudience = "www.frencircle.com",
+        ValidIssuer = "https://frencircle.com",
+        ValidAudience = "https://frencircle.com",
+        RoleClaimType = ClaimTypes.Role,
         IssuerSigningKey = new SymmetricSecurityKey(key)
     };
 });
@@ -87,12 +89,14 @@ if (app.Environment.IsDevelopment())
 app.UseStaticFiles();
 app.UseHttpsRedirection();
 
+app.UseSignalRConfiguration();
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.UseMiddleware<FcRequestMiddleware>();
+
+
 app.MapControllers();
 app.MapFallbackToFile("index.html");
-app.UseSignalRConfiguration();
+
 
 app.Run();

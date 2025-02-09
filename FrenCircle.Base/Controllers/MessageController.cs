@@ -10,19 +10,13 @@ namespace FrenCircle.Base.Controllers
 {
     [Route("api/message")]
     [ApiController]
-    public class MessageController : FcBaseController
+    public class MessageController(IMessageRepository messageRepository, IRateLimiter rateLimiter, ITelegramService telegramService) : FcBaseController
     {
-        private readonly IMessageRepository _messageRepository;
-        private readonly ITelegramService _telegramService;
-        private readonly IRateLimiter _rateLimiter;
-        public MessageController(IMessageRepository messageRepository, IRateLimiter rateLimiter, ITelegramService telegramService)
-        {
-            _messageRepository = messageRepository;
-            _telegramService = telegramService;
-            _rateLimiter = rateLimiter;
-        }
-     
+        private readonly IMessageRepository _messageRepository = messageRepository;
+        private readonly ITelegramService _telegramService = telegramService;
+        private readonly IRateLimiter _rateLimiter = rateLimiter;
 
+        //[Authorize(Roles = "USER")]
         [HttpPost("send")]
         public async Task<IActionResult> AddMessage(AddMessageRequest messageRequest)
         {
