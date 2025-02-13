@@ -72,7 +72,7 @@ namespace FrenCircle.Repositories
             (user.PasswordHash, user.Salt) = PasswordHasher.HashPassword(userRequest.Password);
             var random = new Random();
             user.Otp = random.Next(1000, 9999);
-            user.OtpTimeStamp = DateTime.Now;
+            user.OtpTimeStamp = DateTime.UtcNow;
 
             var id = await dapperFactory.GetData<int>(query, new
             {

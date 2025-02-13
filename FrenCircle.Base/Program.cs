@@ -48,7 +48,8 @@ builder.Services.AddAuthentication(options =>
         ValidIssuer = "https://frencircle.com",
         ValidAudience = "https://frencircle.com",
         RoleClaimType = ClaimTypes.Role,
-        IssuerSigningKey = new SymmetricSecurityKey(key)
+        IssuerSigningKey = new SymmetricSecurityKey(key),
+        ClockSkew = TimeSpan.Zero
     };
 });
 
@@ -72,6 +73,7 @@ builder.Services.AddHttpClient<ITelegramService, TelegramService>();
 
 builder.Services.AddScoped<IMessageRepository, MessageRepository>();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+builder.Services.AddScoped<ILoginRepository, LoginRepository>();
 
 #region Fluent Validatoins
 builder.Services.AddFluentValidationAutoValidation()
