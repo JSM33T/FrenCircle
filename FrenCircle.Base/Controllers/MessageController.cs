@@ -30,7 +30,7 @@ namespace FrenCircle.Base.Controllers
             if (await _messageRepository.IsMessagePresent(message))
                 return RESP_ConflictResponse("Message already present");
 
-            _ = _telegramService.SendMessageAsync($" Message from {message.Name} || {message.Email} :\n {message.Text}");
+            //_ = _telegramService.SendMessageAsync($" Message from {message.Name} || {message.Email} :\n {message.Text}");
 
             await _messageRepository.AddMessage(message);
 

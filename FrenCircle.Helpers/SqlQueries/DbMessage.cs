@@ -4,8 +4,7 @@
     {
         public static string Add => @"
         INSERT INTO Messages (Id,Name, Email, Text, DateAdded)
-        VALUES ((SELECT COALESCE(MAX(Id), 0) + 1 FROM Messages),@Name, @Email, @Text, GETDATE());
-        SELECT CAST(SCOPE_IDENTITY() AS INT);";
+        VALUES ((SELECT COALESCE(MAX(Id), 0) + 1 FROM Messages),@Name, @Email, @Text, GETDATE());";
 
         public static string Getall => @"
         SELECT * FROM Messages WITH(NOLOCK)";

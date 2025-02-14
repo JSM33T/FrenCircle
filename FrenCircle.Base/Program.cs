@@ -14,7 +14,6 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-#region Serilog
 Log.Logger = new LoggerConfiguration()
     .ReadFrom.Configuration(builder.Configuration)
     .WriteTo.Async(a => a.File($"Logs/log.txt", rollingInterval: RollingInterval.Hour))
@@ -24,7 +23,6 @@ Log.Logger = new LoggerConfiguration()
 builder.Host.UseSerilog();
 
 builder.Host.UseSerilog();
-#endregion
 
 var key = Encoding.ASCII.GetBytes("iureowtueorituowierutoi4354======");
 
@@ -68,18 +66,16 @@ builder.Services.AddSingleton<IRateLimiter, RateLimiter>();
 builder.Services.AddScoped<IDapperFactory, DapperFactory>();
 builder.Services.AddScoped<IEmailService,EmailService>();
 builder.Services.AddHttpClient<ITelegramService, TelegramService>();
-
-
+builder.Services.AddScoped<IClaimsService, ClaimsService>();
 
 builder.Services.AddScoped<IMessageRepository, MessageRepository>();
+builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<ILoginRepository, LoginRepository>();
 
-#region Fluent Validatoins
 builder.Services.AddFluentValidationAutoValidation()
-                .AddFluentValidationClientsideAdapters();
+    .AddFluentValidationClientsideAdapters();
 builder.Services.AddValidatorsFromAssembly(Assembly.Load("FrenCircle.Validators"));
-#endregion
 
 var app = builder.Build();
 
@@ -99,6 +95,5 @@ app.UseMiddleware<FcRequestMiddleware>();
 
 app.MapControllers();
 app.MapFallbackToFile("index.html");
-
 
 app.Run();

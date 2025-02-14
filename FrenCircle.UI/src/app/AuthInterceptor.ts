@@ -1,36 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// /* eslint-disable @typescript-eslint/no-explicit-any */
-// import { Injectable } from '@angular/core';
-// import {
-//     HttpInterceptor,
-//     HttpRequest,
-//     HttpHandler,
-//     HttpEvent,
-// } from '@angular/common/http';
-// import { Observable } from 'rxjs';
-
-// @Injectable({ providedIn: 'root' })
-// export class AuthInterceptor implements HttpInterceptor {
-//     intercept(
-//         req: HttpRequest<any>,
-//         next: HttpHandler,
-//     ): Observable<HttpEvent<any>> {
-//         const token = localStorage.getItem('token');
-//         const authReq = token
-//             ? req.clone({
-//                   headers: req.headers.set('Authorization', `Bearer ${token}`),
-//               })
-//             : req;
-//         return next.handle(authReq);
-//     }
-// }
 import { Injectable } from '@angular/core';
 import {
     HttpInterceptor,
     HttpRequest,
     HttpHandler,
     HttpEvent,
-    HttpErrorResponse,
 } from '@angular/common/http';
 import { Observable, throwError, switchMap, catchError } from 'rxjs';
 import { ApiHandlerService } from './services/Api/api-handler.service';
@@ -45,34 +19,32 @@ export class AuthInterceptor implements HttpInterceptor {
         req: HttpRequest<any>,
         next: HttpHandler,
     ): Observable<HttpEvent<any>> {
-        const token = localStorage.getItem('token');
+        let token = localStorage.getItem('token');
+
         const authReq = token
             ? req.clone({
                   headers: req.headers.set('Authorization', `Bearer ${token}`),
               })
             : req;
-        console.log('token' + token);
 
         return next.handle(authReq).pipe(
             catchError((error) => {
-                if (
-                    error instanceof HttpErrorResponse &&
-                    error.status === 409 &&
-                    !this.isRefreshing
-                ) {
+                if (error.status === 401 && !this.isRefreshing) {
                     this.isRefreshing = true;
                     return this.apiHandler.refreshToken().pipe(
                         switchMap((response) => {
-                            localStorage.setItem('token', response.data.token);
+                            token = response.data.token;
+                            localStorage.setItem('token', token);
                             this.isRefreshing = false;
-                            return next.handle(
-                                req.clone({
-                                    headers: req.headers.set(
-                                        'Authorization',
-                                        `Bearer ${response.data.token}`,
-                                    ),
-                                }),
-                            );
+
+                            // Retry the original request with the new token
+                            const retryReq = req.clone({
+                                headers: req.headers.set(
+                                    'Authorization',
+                                    `Bearer ${token}`,
+                                ),
+                            });
+                            return next.handle(retryReq);
                         }),
                         catchError((err) => {
                             this.isRefreshing = false;
@@ -80,6 +52,7 @@ export class AuthInterceptor implements HttpInterceptor {
                         }),
                     );
                 }
+
                 return throwError(() => error);
             }),
         );

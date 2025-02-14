@@ -5,7 +5,7 @@
         public int Id { get; set; }
         public Guid UId { get; set; }
         public required string FirstName { get; set; }
-        public required string LastName { get; set; } = "anonymous";
+        public required string LastName { get; set; }
         public required string  UserName { get; set; }
         public required string Email { get; set; }
         public required string Bio { get; set; } = "";
@@ -48,5 +48,23 @@
     {
         public required string Email { get; set; }
         public int? Otp { get; set; }
+    }
+
+    public class EditProfileRequest
+    {
+        public required string FirstName { get; set; }
+        public required string LastName { get; set; }
+        
+        public required string UserName { get; set; }
+        public string Bio { get; set; }
+    }
+    
+    public class GetProfileRequest
+    {
+        public  string FirstName { get; set; }
+        public  string LastName { get; set; }
+        public string Email { get; set; }
+        public required string UserName { get; set; }
+        public string Bio { get; set; }
     }
 }

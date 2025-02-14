@@ -11,8 +11,8 @@ namespace FrenCircle.Base.Controllers
 {
     [Route("/api/account")]
     [ApiController]
-    public class AccountController(
-        IAccountRepository accountRepository,
+    public class AuthController(
+        IAuthRepository accountRepository,
         IEmailService emailService,
         ITelegramService telegramService,
         ILoginRepository loginRepository,
@@ -140,7 +140,7 @@ namespace FrenCircle.Base.Controllers
                 HttpOnly = true,
                 Secure = true,
                 SameSite = SameSiteMode.None,
-                Expires = DateTime.UtcNow.AddMinutes(1)
+                Expires = DateTime.UtcNow.AddDays(7)
             });
 
 
@@ -177,15 +177,15 @@ namespace FrenCircle.Base.Controllers
 
             var oldRefreshToken = Request.Cookies["refreshToken"];
             if (string.IsNullOrEmpty(oldRefreshToken))
-                return Unauthorized("No refresh token");
+                return BadRequest("No refresh token");
 
             var storedToken = await accountRepository.GetRefreshToken(oldRefreshToken);
             if (storedToken == null || storedToken.ExpiresAt < DateTime.UtcNow)
-                return Unauthorized("Invalid or expired refresh token");
+                return BadRequest("Invalid or expired refresh token");
 
             var user = await accountRepository.GetUserById(storedToken.UserId);
             if (user == null)
-                return Unauthorized("User not found");
+                return BadRequest("User not found");
 
             var newAccessToken = JwtTokenHelper.GenerateToken(user,
                 _config.JwtSettings.IssuerSigningKey!,
@@ -194,7 +194,7 @@ namespace FrenCircle.Base.Controllers
                 1); // 10 min expiry
 
             var newRefreshToken = Guid.NewGuid().ToString();
-            await accountRepository.UpdateRefreshToken(storedToken.UserId, oldRefreshToken, newRefreshToken, DateTime.UtcNow.AddMinutes(1));
+            await accountRepository.UpdateRefreshToken(storedToken.UserId, oldRefreshToken, newRefreshToken, DateTime.UtcNow.AddDays(7));
 
             // Set new refresh token in cookie
             Response.Cookies.Append("refreshToken", newRefreshToken, new CookieOptions
@@ -202,9 +202,10 @@ namespace FrenCircle.Base.Controllers
                 HttpOnly = true,
                 Secure = true,
                 SameSite = SameSiteMode.None,
-                Expires = DateTime.UtcNow.AddMinutes(1000)
+                Expires = DateTime.UtcNow.AddDays(7)
             });
 
+            return RESP_Success(new { Token = newAccessToken },"No refresh token");
             return Ok(new { Token = newAccessToken });
         }
     }

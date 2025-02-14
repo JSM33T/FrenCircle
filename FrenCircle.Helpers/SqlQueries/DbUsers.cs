@@ -56,19 +56,36 @@
 
         // 🔹 Store Refresh Token
         public const string StoreRefreshToken = @"
-INSERT INTO RefreshTokens (UserId, Token, ExpiresAt, CreatedAt) 
-VALUES (@UserId, @RefreshToken, @ExpiryDate, GETUTCDATE());";
+        INSERT INTO RefreshTokens (UserId, Token, ExpiresAt, CreatedAt) 
+        VALUES (@UserId, @RefreshToken, @ExpiryDate, GETUTCDATE());";
 
         // 🔹 Get Refresh Token
         public const string GetRefreshToken = @"
-SELECT * FROM RefreshTokens 
-WHERE Token = @RefreshToken AND ExpiresAt > GETUTCDATE();";
+        SELECT * FROM RefreshTokens 
+        WHERE Token = @RefreshToken AND ExpiresAt > GETUTCDATE();";
 
         // 🔹 Update Refresh Token (Rotating Tokens)
         public const string UpdateRefreshToken = @"
-UPDATE RefreshTokens 
-SET Token = @NewRefreshToken, ExpiresAt = @ExpiryDate, CreatedAt = GETUTCDATE() 
-WHERE UserId = @UserId AND Token = @OldRefreshToken;";
+        UPDATE RefreshTokens 
+        SET Token = @NewRefreshToken, ExpiresAt = @ExpiryDate, CreatedAt = GETUTCDATE() 
+        WHERE UserId = @UserId AND Token = @OldRefreshToken;";
 
+        public static string EditProfile => @"
+        UPDATE Users 
+        SET 
+            FirstName = @FirstName,
+            LastName = @LastName,
+            Bio = @Bio,
+            UserName = @UserName,
+            DateUpdated = @DateUpdated
+        WHERE 
+            Id = @UserId;
+    ";
+        
+        public static string GetProfile => @"
+        SELECT * FROM Users 
+        WHERE Id = @UserId;
+    ";
+        
     }
 }

@@ -126,8 +126,7 @@ export class ModalService {
     }
 
     apiToaster(response: any) {
-        console.log('toaster message herer');
-
+        console.log(response);
         this.toaster(
             'toast_2',
             'Notification',
@@ -137,11 +136,6 @@ export class ModalService {
     }
 
     toast(message: string) {
-        this.toaster(
-            'toast_n',
-            'Toast',
-            message,
-            [],
-        );
+        this.toaster('toast_n', 'Toast', message, []);
     }
 }

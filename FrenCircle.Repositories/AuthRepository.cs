@@ -12,7 +12,7 @@ namespace FrenCircle.Repositories
     /// <summary>
     /// Interface for an account repository to manage user accounts.
     /// </summary>
-    public interface IAccountRepository
+    public interface IAuthRepository
     {
         /// <summary>
         /// Adds a new user to the repository.
@@ -61,7 +61,7 @@ namespace FrenCircle.Repositories
         Task UpdateRefreshToken(int userId, string oldRefreshToken, string newRefreshToken, DateTime expiryDate);
     }
 
-    public class AuthRepository(IDapperFactory dapperFactory) : IAccountRepository
+    public class AuthRepository(IDapperFactory dapperFactory) : IAuthRepository
     {
         public async Task AddUser(AddUserRequest userRequest)
         {

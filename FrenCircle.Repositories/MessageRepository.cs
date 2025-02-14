@@ -35,14 +35,12 @@ namespace FrenCircle.Repositories
         {
             var query = DbMessage.Add;
 
-            var id = await dapperFactory.GetData<int>(query, new
+            await dapperFactory.GetData<int>(query, new
             {
                 message.Name,
                 message.Email,
                 message.Text
             });
-
-            message.Id = id;
         }
 
         public async Task<List<Message>> GetAllMessages()
