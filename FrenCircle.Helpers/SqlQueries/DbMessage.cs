@@ -3,8 +3,8 @@
     public static class DbMessage
     {
         public static string Add => @"
-        INSERT INTO Messages (Id,Name, Email, Text, DateAdded)
-        VALUES ((SELECT COALESCE(MAX(Id), 0) + 1 FROM Messages),@Name, @Email, @Text, GETDATE());";
+        INSERT INTO Messages (Name, Email, Text, DateAdded)
+        VALUES (@Name, @Email, @Text, GETDATE());";
 
         public static string Getall => @"
         SELECT * FROM Messages WITH(NOLOCK)";

@@ -1,16 +1,17 @@
+
 CREATE TABLE Messages
 (
-    [Id]        	INT 			PRIMARY KEY,
+    [Id ]			INT				NOT NULL	IDENTITY(1,1) PRIMARY KEY,
 	
-    [Name]      	NVARCHAR(128) 	NOT NULL DEFAULT 'anonymous',
+    [Name]      	NVARCHAR(128) 	NOT NULL	DEFAULT 'anonymous',
 		
-    [Email]     	NVARCHAR(256) 	NOT NULL,
+    [Email]     	NVARCHAR(256) 	NOT NULL,	
 		
-    [Text]      	NVARCHAR(MAX) 	NOT NULL,
+    [Text]      	NVARCHAR(MAX) 	NOT NULL,	
 		
-    [Origin]    	NVARCHAR(MAX) 	NOT NULL DEFAULT 'na',
+    [Origin]    	NVARCHAR(MAX) 	NOT NULL	DEFAULT 'na',
 		
-    [DateAdded] 	DATETIME      	NOT NULL DEFAULT GETDATE(),
+    [DateAdded] 	DATETIME      	NOT NULL	DEFAULT GETDATE(),
 );
 
 CREATE TABLE Roles
@@ -33,7 +34,7 @@ CREATE TABLE Roles
 
 CREATE TABLE Users
 (
-    [Id]           	INT 				PRIMARY KEY,
+    [Id]           	INT 				 IDENTITY(1,1) NOT NULL PRIMARY KEY,
 
     [FirstName]    	NVARCHAR(128)    	NOT NULL,
 
@@ -105,7 +106,32 @@ CREATE TABLE [Logins] (
     -- CONSTRAINTS
     
     CONSTRAINT [UK_Logins_UserId_DeviceId] UNIQUE ([UserId], [DeviceId]),
+	CONSTRAINT [UK_Logins_DeviceId] UNIQUE ([DeviceId]),
 
     CONSTRAINT [FK_Logins_Users] FOREIGN KEY ([UserId]) REFERENCES [dbo].[Users]([Id])
                             
 )
+
+CREATE TABLE [RefreshTokens] (
+    [Id]          INT                 IDENTITY(1,1) NOT NULL PRIMARY KEY CLUSTERED,
+    [UserId]      INT                 NOT NULL,
+	[DeviceId]		UNIQUEIDENTIFIER	NOT NULL,
+    [Token]       NVARCHAR(500)       NOT NULL,
+    [ExpiresAt]   DATETIME            NOT NULL,
+    [CreatedAt]   DATETIME            NOT NULL DEFAULT (GETUTCDATE())
+) ON [PRIMARY];
+
+-- Foreign Key Constraint
+ALTER TABLE [RefreshTokens]
+    ADD CONSTRAINT [FK_RefreshTokens_Users] FOREIGN KEY ([UserId])
+    REFERENCES [Users] ([Id])
+    ON DELETE CASCADE;
+
+ALTER TABLE [RefreshTokens]
+    ADD CONSTRAINT [FK_RefreshTokens_Logins] FOREIGN KEY ([DeviceId])
+    REFERENCES [Logins] ([DeviceId])
+    ON DELETE CASCADE;
+
+
+-- Ensure the foreign key constraint is valid
+ALTER TABLE [RefreshTokens] CHECK CONSTRAINT [FK_RefreshTokens_Users];

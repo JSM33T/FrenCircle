@@ -10,9 +10,9 @@
 
         public const string Add = @"
         INSERT INTO Users 
-        (Id, FirstName, LastName, UserName, Email, Bio, PasswordHash, Salt, TimeSpent, DateUpdated, LastSeen, DateAdded, OTP, OTPTimestamp)
+        (FirstName, LastName, UserName, Email, Bio, PasswordHash, Salt, TimeSpent, DateUpdated, LastSeen, DateAdded, OTP, OTPTimestamp)
         VALUES 
-        ((SELECT COALESCE(MAX(Id), 0) + 1 FROM Users), @FirstName, @LastName, @UserName, @Email, @Bio, @PasswordHash, @Salt, @TimeSpent, @DateUpdated, @LastSeen, @DateAdded, @otp, @otpTimestamp);";
+        (@FirstName, @LastName, @UserName, @Email, @Bio, @PasswordHash, @Salt, @TimeSpent, @DateUpdated, @LastSeen, @DateAdded, @otp, @otpTimestamp);";
 
 
         public const string Login = @"
