@@ -23,7 +23,7 @@ namespace FrenCircle.Base.Middlewares
             {
                 context.Response.StatusCode = StatusCodes.Status500InternalServerError;
                 _logger.LogError(ex,ex.Message);
-                _ = _telegramService.SendMessageAsync($"Error || {DateTime.Now}: {ex}");
+                //_ = _telegramService.SendMessageAsync($"Error || {DateTime.Now}: {ex}");
                 await ResponseHandler.HandleInternalServerError(context, originalBodyStream, ex);
                 return;
             }

@@ -15,8 +15,7 @@ namespace FrenCircle.Base.Controllers
         private readonly IMessageRepository _messageRepository = messageRepository;
         private readonly ITelegramService _telegramService = telegramService;
         private readonly IRateLimiter _rateLimiter = rateLimiter;
-
-        [Authorize(Roles = "USER")]
+        
         [HttpPost("send")]
         public async Task<IActionResult> AddMessage(AddMessageRequest messageRequest)
         {
@@ -37,7 +36,7 @@ namespace FrenCircle.Base.Controllers
             return RESP_Success("Message submitted");
         }
 
-        [Authorize(Roles = "USER")]
+        [Authorize(Roles = "ADMIN")]
         [HttpGet("getall")]
         public async Task<IActionResult> GetAllMessages() =>
             RESP_Success(await _messageRepository.GetAllMessages(), "Authorized");

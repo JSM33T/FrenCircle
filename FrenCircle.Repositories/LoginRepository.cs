@@ -15,6 +15,8 @@ namespace FrenCircle.Repositories
         /// <param name="deviceId">The device identifier.</param>
         /// <returns>A Task that returns the login information.</returns>
         Task<LoginInfo> GetLoginInfoById(Guid deviceId);
+        
+        Task<LoginInfo> GetLoginInfoByDeviceAndUserId(Guid deviceId,int UserId);
 
         /// <summary>
         /// Adds a new login entry.
@@ -33,14 +35,25 @@ namespace FrenCircle.Repositories
     /// <summary>
     /// Repository implementation for managing login information.
     /// </summary>
-    public class LoginRepository(IDapperFactory dapperFactory) : ILoginRepository
+    public class LoginRepository(IDapperFactory dapperFactory,IClaimsService claimsService) : ILoginRepository
     {
+        private readonly IClaimsService _claimsService = claimsService;
         public async Task<LoginInfo> GetLoginInfoById(Guid deviceId)
         {
             var query = DbLogin.GetLoginByDeviceId;
+            
             var loginInfo = await dapperFactory.GetData<LoginInfo>(query, new { DeviceId = deviceId });
             return loginInfo;
         }
+        
+        public async Task<LoginInfo> GetLoginInfoByDeviceAndUserId(Guid deviceId,int UserId)
+        {
+            var query = DbLogin.GetLoginByDeviceAndUserId;
+            
+            var loginInfo = await dapperFactory.GetData<LoginInfo>(query, new { DeviceId = deviceId,UserId = UserId });
+            return loginInfo;
+        }
+        
 
         public async Task<LoginInfo> AddLoginEntry(LoginInfo loginInfo)
         {

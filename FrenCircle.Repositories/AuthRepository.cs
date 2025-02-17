@@ -48,16 +48,58 @@ namespace FrenCircle.Repositories
         /// <param name="username">The username to check.</param>
         /// <returns>A Task that indicates whether the user is present in the repository.</returns>
         Task<bool> IsUserPresent(string username);
-
+        /// <summary>
+        /// Checks if a user with the specified email is present in the repository.
+        /// </summary>
+        /// <param name="email">The email to check.</param>
+        /// <returns>A Task that indicates whether the user is present in the repository.</returns>
         Task<bool> IsUserPresentByEmail(string email);
 
+        /// <summary>
+        /// Generates and saves a one-time password (OTP) for the user with the specified email.
+        /// </summary>
+        /// <param name="email">The email of the user to generate the OTP for.</param>
+        /// <returns>A Task that indicates whether the OTP was successfully generated and saved.</returns>
         Task<bool> GenerateAndSaveOtp(string email);
+
+        /// <summary>
+        /// Retrieves a user by their email.
+        /// </summary>
+        /// <param name="email">The email of the user to retrieve.</param>
+        /// <returns>A Task that may return the user or null if not found.</returns>
         Task<User?> GetUserByEmail(string email);
 
+        /// <summary>
+        /// Retrieves a user by their ID.
+        /// </summary>
+        /// <param name="Id">The ID of the user to retrieve.</param>
+        /// <returns>A Task that may return the user or null if not found.</returns>
         Task<User?> GetUserById(int Id);
-        // Refresh Token Methods
+
+        /// <summary>
+        /// Stores a refresh token for a user.
+        /// </summary>
+        /// <param name="userId">The ID of the user.</param>
+        /// <param name="refreshToken">The refresh token to store.</param>
+        /// <param name="expiryDate">The expiry date of the refresh token.</param>
+        /// <returns>A Task representing the asynchronous operation.</returns>
         Task StoreRefreshToken(int userId, string refreshToken, DateTime expiryDate);
+
+        /// <summary>
+        /// Retrieves a refresh token.
+        /// </summary>
+        /// <param name="refreshToken">The refresh token to retrieve.</param>
+        /// <returns>A Task that may return the refresh token or null if not found.</returns>
         Task<RefreshToken?> GetRefreshToken(string refreshToken);
+
+        /// <summary>
+        /// Updates a refresh token for a user.
+        /// </summary>
+        /// <param name="userId">The ID of the user.</param>
+        /// <param name="oldRefreshToken">The old refresh token to update.</param>
+        /// <param name="newRefreshToken">The new refresh token to store.</param>
+        /// <param name="expiryDate">The expiry date of the new refresh token.</param>
+        /// <returns>A Task representing the asynchronous operation.</returns>
         Task UpdateRefreshToken(int userId, string oldRefreshToken, string newRefreshToken, DateTime expiryDate);
     }
 

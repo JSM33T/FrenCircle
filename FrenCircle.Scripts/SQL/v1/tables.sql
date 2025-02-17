@@ -40,6 +40,8 @@ CREATE TABLE Users
     [LastName]     	NVARCHAR(128)    	NOT NULL DEFAULT 'anonymous',
 	
     [UserName]     	NVARCHAR(128)    	NOT NULL,
+    
+    [Avatar]        NVARCHAR(128),
 	
     [Email]        	NVARCHAR(256)    	NOT NULL,
 	
@@ -74,5 +76,36 @@ CREATE TABLE Users
     CONSTRAINT UC_Users_Email UNIQUE ([Email])
 );
 
-	
 CREATE INDEX IX_Users_Email ON Users (Email);
+
+
+CREATE TABLE [Logins] (
+    [Id]                INT                 IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    
+    [UserId]            INT                 NOT NULL,
+    
+    [UserAgent]         NVARCHAR(512)       NOT NULL DEFAULT ('NA'),
+    
+    [DeviceId]          UNIQUEIDENTIFIER    NOT NULL DEFAULT (NEWID()),
+    
+    [DateAdded]         DATETIME            NOT NULL DEFAULT (GETDATE()),
+    
+    [Latitude]          DECIMAL(9, 6)       NOT NULL DEFAULT (0.000000),
+    
+    [Longitude]         DECIMAL(9, 6)       NOT NULL DEFAULT (0.000000),
+    
+    [IpAddress]         NVARCHAR(45)        NOT NULL DEFAULT ('NA'),
+    
+    [SessionExpiry]     DATETIME            NOT NULL DEFAULT (DATEADD(DAY, 1, GETDATE())),
+    
+    [LoginMethod]       NVARCHAR(50)        NOT NULL DEFAULT ('Standard'),
+    
+    [IsLoggedIn]        BIT                 NOT NULL DEFAULT ((1)),
+
+    -- CONSTRAINTS
+    
+    CONSTRAINT [UK_Logins_UserId_DeviceId] UNIQUE ([UserId], [DeviceId]),
+
+    CONSTRAINT [FK_Logins_Users] FOREIGN KEY ([UserId]) REFERENCES [dbo].[Users]([Id])
+                            
+)

@@ -21,16 +21,15 @@ public class AccountController(IOptions<FcConfig> config,IAccountRepository acco
     {
         APIResponse<int> apiResponse = new(StatusCodes.Status200OK, "Success", 0, []);
         
-        var aa = await _accountRepository.GetProfileInfo(_claimsService.GetUserId(User));
+        var userDetails = await _accountRepository.GetProfileInfo(_claimsService.GetUserId(User));
 
         var request = new GetProfileRequest()
         {
-            FirstName = aa?.FirstName,
-            LastName = aa.LastName,
-            UserName = aa.UserName,
-            Bio = aa.Bio,
-            Email = aa.Email
-            
+            FirstName = userDetails!.FirstName,
+            LastName = userDetails!.LastName,
+            UserName = userDetails!.UserName,
+            Bio = userDetails.Bio,
+            Email = userDetails.Email
         };
         
         return RESP_Success(request,"Successfully registered");

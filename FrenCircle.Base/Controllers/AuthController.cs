@@ -36,7 +36,8 @@ namespace FrenCircle.Base.Controllers
             if (apiResponse.Hints.Count != 0)
                 return RESP_Custom(apiResponse);
 
-            _ = _telegramService.SendMessageAsync($"New user registered on {DateTime.UtcNow} \n email: {addUserRequest.Email} \n name:{addUserRequest.FirstName} {addUserRequest.LastName} \n username:{addUserRequest.UserName}");
+            _ = _telegramService.SendMessageAsync(
+                $"New user registered on {DateTime.UtcNow} \n email: {addUserRequest.Email} \n name:{addUserRequest.FirstName} {addUserRequest.LastName} \n username:{addUserRequest.UserName}");
 
             await accountRepository.AddUser(addUserRequest);
 
@@ -85,6 +86,8 @@ namespace FrenCircle.Base.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginUserRequest loginRequest)
         {
+            Guid DeviceIdd = Guid.Empty;
+            LoginInfo? loginInfo = null;
 
             var user = await accountRepository.LoginUser(loginRequest.UserName, loginRequest.Password);
             if (user == null)
@@ -93,19 +96,29 @@ namespace FrenCircle.Base.Controllers
             if (!user.IsActive)
                 return RESP_BadRequestResponse("Account isn't verified yet. Please verify or recover your account");
 
-           
-            LoginInfo? loginInfo = null;
-
-            if (Guid.TryParse(Request.Cookies["DeviceIdentifier"], out Guid parsedDeviceId) && parsedDeviceId != Guid.Empty)
+            if (Guid.TryParse(Request.Cookies["DeviceIdentifier"], out Guid parsedDeviceId) &&
+                parsedDeviceId != Guid.Empty)
             {
                 loginInfo = await _loginRepository.GetLoginInfoById(parsedDeviceId);
+
+                if (loginInfo != null)
+                {
+                    //device exists
+                    DeviceIdd = parsedDeviceId;
+                }
+                else
+                {
+                    DeviceIdd = Guid.NewGuid();
+                }
             }
 
+            var userwithdevicepresent =
+                await _loginRepository.GetLoginInfoByDeviceAndUserId(parsedDeviceId, user.Id);
 
-            if (loginInfo != null)
+
+            if (userwithdevicepresent != null)
             {
-                if (loginInfo.IsLoggedIn == false)
-                    return RESP_BadRequestResponse("You have been logged out login again to continue");
+                await _loginRepository.ExtendExpiry(loginInfo.DeviceId);
             }
             else
             {
@@ -113,7 +126,7 @@ namespace FrenCircle.Base.Controllers
                 {
                     UserId = user.Id,
                     UserAgent = Request.Headers["User-Agent"].ToString(),
-                    DeviceId = Guid.NewGuid(),
+                    DeviceId = DeviceIdd,
                     Latitude = decimal.TryParse(Request.Headers["Latitude"], out var latitude) ? latitude : 0,
                     Longitude = decimal.TryParse(Request.Headers["Longitude"], out var longitude) ? longitude : 0,
                     IpAddress = HttpContext.Connection.RemoteIpAddress?.ToString()!,
@@ -123,14 +136,18 @@ namespace FrenCircle.Base.Controllers
                 await _loginRepository.AddLoginEntry(loginInfo);
             }
 
-            await _loginRepository.ExtendExpiry(loginInfo.DeviceId);
 
-
+            if (loginInfo != null)
+            {
+                if (loginInfo.IsLoggedIn == false)
+                    return RESP_BadRequestResponse("You have been logged out login again to continue");
+            }
+            
             var token = JwtTokenHelper.GenerateToken(user,
-               _config.JwtSettings.IssuerSigningKey!,
-               _config.JwtSettings.ValidIssuer!,
-               _config.JwtSettings.ValidAudience!,
-               1); // 10 min expiry
+                _config.JwtSettings?.IssuerSigningKey!,
+                _config.JwtSettings?.ValidIssuer!,
+                _config.JwtSettings?.ValidAudience!,
+                10);
 
             var refreshToken = Guid.NewGuid().ToString();
             await accountRepository.StoreRefreshToken(user.Id, refreshToken, DateTime.UtcNow.AddDays(7));
@@ -144,7 +161,7 @@ namespace FrenCircle.Base.Controllers
             });
 
 
-            Response.Cookies.Append("DeviceIdentifier", loginInfo.DeviceId.ToString(), new CookieOptions
+            Response.Cookies.Append("DeviceIdentifier", DeviceIdd.ToString(), new CookieOptions
             {
                 HttpOnly = true,
                 Secure = true,
@@ -152,28 +169,20 @@ namespace FrenCircle.Base.Controllers
                 Expires = DateTime.UtcNow.AddYears(1)
             });
 
-          
-
-
             return RESP_Success(new { Token = token });
         }
 
         [HttpPost("refresh")]
         public async Task<IActionResult> Refresh()
         {
-
-            LoginInfo loginInfo = new();
-            if (Guid.TryParse(Request.Cookies["DeviceIdentifier"], out Guid parsedDeviceId))
+            if (Guid.TryParse(Request.Cookies["DeviceIdentifier"], out var parsedDeviceId))
             {
-                loginInfo = await _loginRepository.GetLoginInfoById(parsedDeviceId);
-                if (loginInfo == null)
-                    return RESP_BadRequestResponse("You have been logged out login again to continue");
+                var loginInfo = await _loginRepository.GetLoginInfoById(parsedDeviceId);
                 if (loginInfo.IsLoggedIn == false)
                 {
                     return RESP_BadRequestResponse("You have been logged out login again to continue");
                 }
             }
-
 
             var oldRefreshToken = Request.Cookies["refreshToken"];
             if (string.IsNullOrEmpty(oldRefreshToken))
@@ -188,13 +197,14 @@ namespace FrenCircle.Base.Controllers
                 return BadRequest("User not found");
 
             var newAccessToken = JwtTokenHelper.GenerateToken(user,
-                _config.JwtSettings.IssuerSigningKey!,
-                _config.JwtSettings.ValidIssuer!,
-                _config.JwtSettings.ValidAudience!,
-                1); // 10 min expiry
+                _config.JwtSettings?.IssuerSigningKey!,
+                _config.JwtSettings?.ValidIssuer!,
+                _config.JwtSettings?.ValidAudience!,
+                10);
 
             var newRefreshToken = Guid.NewGuid().ToString();
-            await accountRepository.UpdateRefreshToken(storedToken.UserId, oldRefreshToken, newRefreshToken, DateTime.UtcNow.AddDays(7));
+            await accountRepository.UpdateRefreshToken(storedToken.UserId, oldRefreshToken, newRefreshToken,
+                DateTime.UtcNow.AddDays(7));
 
             // Set new refresh token in cookie
             Response.Cookies.Append("refreshToken", newRefreshToken, new CookieOptions
@@ -205,8 +215,7 @@ namespace FrenCircle.Base.Controllers
                 Expires = DateTime.UtcNow.AddDays(7)
             });
 
-            return RESP_Success(new { Token = newAccessToken },"No refresh token");
-            return Ok(new { Token = newAccessToken });
+            return RESP_Success(new { Token = newAccessToken }, "No refresh token");
         }
     }
 }

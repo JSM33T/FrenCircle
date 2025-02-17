@@ -12,7 +12,9 @@ namespace FrenCircle.Validators
             
             RuleFor(x => x.UserName)
                 .NotEmpty().WithMessage("Username is required.")
-                .MinimumLength(3).WithMessage("Username too short");
+                .MinimumLength(3).WithMessage("Username too short")
+                .Matches("^[a-zA-Z0-9]*$").WithMessage("Username can only contain letters and numbers without spaces.");
+
 
             RuleFor(x => x.Email)
                 .NotEmpty().WithMessage("Email is required.")

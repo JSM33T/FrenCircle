@@ -23,7 +23,9 @@ export class AudioPlayerComponent {
     }
 
     formatTime(value: number): string {
-        return this.decimalPipe.transform(value, '1.0-0') || '0';
+        const minutes: number = Math.floor(value / 60);
+        const seconds: number = Math.floor(value % 60);
+        return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
     }
 
     seek(event: any) {

@@ -55,5 +55,26 @@
             UPDATE Logins
             SET DateAdded = GETDATE()
             WHERE DeviceId = @DeviceId";
+        
+        /// <summary>
+        ///  Query ot check   
+        /// </summary>
+        public const string GetLoginByDeviceAndUserId = @"
+            SELECT 
+                Id,
+                UserId,
+                UserAgent,
+                DeviceId,
+                Latitude,
+                Longitude,
+                IpAddress,
+                LoginMethod,
+                IsLoggedIn,
+                DateAdded
+            FROM Logins
+            WHERE DeviceId = @DeviceId 
+            AND UserId = @UserId";
+            
+        
     }
 }
