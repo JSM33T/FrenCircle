@@ -83,7 +83,7 @@ namespace FrenCircle.Repositories
         /// <param name="refreshToken">The refresh token to store.</param>
         /// <param name="expiryDate">The expiry date of the refresh token.</param>
         /// <returns>A Task representing the asynchronous operation.</returns>
-        Task StoreRefreshToken(int userId, string refreshToken, DateTime expiryDate);
+        Task StoreRefreshToken(int userId, string refreshToken, DateTime expiryDate,Guid deviceId);
 
         /// <summary>
         /// Retrieves a refresh token.
@@ -211,10 +211,10 @@ namespace FrenCircle.Repositories
         }
 
         // 🔹 Store Refresh Token
-        public async Task StoreRefreshToken(int userId, string refreshToken, DateTime expiryDate)
+        public async Task StoreRefreshToken(int userId, string refreshToken, DateTime expiryDate,Guid deviceId)
         {
             var query = DbUsers.StoreRefreshToken;
-            await dapperFactory.Execute(query, new { UserId = userId, RefreshToken = refreshToken, ExpiryDate = expiryDate });
+            await dapperFactory.Execute(query, new { UserId = userId, RefreshToken = refreshToken, ExpiryDate = expiryDate,DeviceId = deviceId });
         }
 
         // 🔹 Get Refresh Token

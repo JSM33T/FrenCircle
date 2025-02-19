@@ -47,10 +47,20 @@
         UPDATE Users SET OTP = NULL, OTPTimeStamp = NULL,IsActive = 1 
         WHERE Email = @Email";
 
-        // 🔹 Store Refresh Token
+        //// 🔹 Store Refresh Token
+        //public const string StoreRefreshToken = @"
+        //INSERT INTO RefreshTokens (DeviceId,UserId, Token, ExpiresAt, CreatedAt) 
+        //VALUES (@DeviceId,@UserId, @RefreshToken, @ExpiryDate, GETUTCDATE());";
+
         public const string StoreRefreshToken = @"
-        INSERT INTO RefreshTokens (UserId, Token, ExpiresAt, CreatedAt) 
-        VALUES (@UserId, @RefreshToken, @ExpiryDate, GETUTCDATE());";
+            MERGE INTO RefreshTokens AS target
+            USING (SELECT @DeviceId AS DeviceId, @UserId AS UserId) AS source
+            ON target.DeviceId = source.DeviceId AND target.UserId = source.UserId
+            WHEN MATCHED THEN
+                UPDATE SET ExpiresAt = @ExpiryDate, Token = @RefreshToken
+            WHEN NOT MATCHED THEN
+                INSERT (DeviceId, UserId, Token, ExpiresAt, CreatedAt)
+                VALUES (@DeviceId, @UserId, @RefreshToken, @ExpiryDate, GETUTCDATE());";
 
         // 🔹 Get Refresh Token
         public const string GetRefreshToken = @"

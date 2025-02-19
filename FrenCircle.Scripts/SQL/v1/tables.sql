@@ -106,7 +106,6 @@ CREATE TABLE [Logins] (
     -- CONSTRAINTS
     
     CONSTRAINT [UK_Logins_UserId_DeviceId] UNIQUE ([UserId], [DeviceId]),
-	CONSTRAINT [UK_Logins_DeviceId] UNIQUE ([DeviceId]),
 
     CONSTRAINT [FK_Logins_Users] FOREIGN KEY ([UserId]) REFERENCES [dbo].[Users]([Id])  ON DELETE CASCADE;
                             
@@ -125,11 +124,6 @@ CREATE TABLE [RefreshTokens] (
 ALTER TABLE [RefreshTokens]
     ADD CONSTRAINT [FK_RefreshTokens_Users] FOREIGN KEY ([UserId])
     REFERENCES [Users] ([Id])
-    ON DELETE CASCADE;
-
-ALTER TABLE [RefreshTokens]
-    ADD CONSTRAINT [FK_RefreshTokens_Logins] FOREIGN KEY ([DeviceId])
-    REFERENCES [Logins] ([DeviceId])
     ON DELETE CASCADE;
 
 

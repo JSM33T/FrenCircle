@@ -150,7 +150,7 @@ namespace FrenCircle.Base.Controllers
                 10);
 
             var refreshToken = Guid.NewGuid().ToString();
-            await accountRepository.StoreRefreshToken(user.Id, refreshToken, DateTime.UtcNow.AddDays(7));
+            await accountRepository.StoreRefreshToken(user.Id, refreshToken, DateTime.UtcNow.AddDays(7), DeviceIdd);
 
             Response.Cookies.Append("refreshToken", refreshToken, new CookieOptions
             {
