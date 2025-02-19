@@ -2,18 +2,11 @@
 {
     public static class DbUsers
     {
-        //public const string Add = @"
-        //INSERT INTO Users 
-        //(FirstName, LastName, UserName, Email, Bio, PasswordHash, Salt, TimeSpent, DateUpdated, LastSeen, DateAdded,OTP,OTPTimestamp)
-        //VALUES 
-        //(@FirstName, @LastName, @UserName, @Email, @Bio, @PasswordHash, @Salt, @TimeSpent, @DateUpdated, @LastSeen, @DateAdded,@otp, @otpTimestamp);";
-
         public const string Add = @"
         INSERT INTO Users 
         (FirstName, LastName, UserName, Email, Bio, PasswordHash, Salt, TimeSpent, DateUpdated, LastSeen, DateAdded, OTP, OTPTimestamp)
         VALUES 
         (@FirstName, @LastName, @UserName, @Email, @Bio, @PasswordHash, @Salt, @TimeSpent, @DateUpdated, @LastSeen, @DateAdded, @otp, @otpTimestamp);";
-
 
         public const string Login = @"
         SELECT * FROM Users
@@ -29,11 +22,11 @@
         public const string CheckByEmail = @"
         SELECT * FROM Users WITH(NOLOCK)
         WHERE Email = @Email;";
-        
+
         public const string Verify = @"
         SELECT * FROM Users WITH(NOLOCK)
         WHERE Email = @Email OR UserName = @Username;";
-        
+
         public const string GetByEmail = @"
         SELECT * FROM Users WITH(NOLOCK)
         WHERE Email = @Email;";
@@ -80,12 +73,12 @@
             DateUpdated = @DateUpdated
         WHERE 
             Id = @UserId;
-    ";
-        
+        ";
+
         public static string GetProfile => @"
         SELECT * FROM Users 
         WHERE Id = @UserId;
-    ";
-        
+        ";
+
     }
 }

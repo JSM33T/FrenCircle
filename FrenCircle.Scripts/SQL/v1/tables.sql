@@ -70,7 +70,7 @@ CREATE TABLE Users
 
     OTPTimeStamp	DATETIME,
 
-    CONSTRAINT FK_Users_Roles_RoleId  FOREIGN KEY (RoleId) REFERENCES Roles(Id),
+    CONSTRAINT FK_Users_Roles_RoleId  FOREIGN KEY (RoleId) REFERENCES Roles(Id)  ON DELETE CASCADE,
     
     CONSTRAINT UC_Users_UserName UNIQUE ([UserName]),
 
@@ -108,7 +108,7 @@ CREATE TABLE [Logins] (
     CONSTRAINT [UK_Logins_UserId_DeviceId] UNIQUE ([UserId], [DeviceId]),
 	CONSTRAINT [UK_Logins_DeviceId] UNIQUE ([DeviceId]),
 
-    CONSTRAINT [FK_Logins_Users] FOREIGN KEY ([UserId]) REFERENCES [dbo].[Users]([Id])
+    CONSTRAINT [FK_Logins_Users] FOREIGN KEY ([UserId]) REFERENCES [dbo].[Users]([Id])  ON DELETE CASCADE;
                             
 )
 

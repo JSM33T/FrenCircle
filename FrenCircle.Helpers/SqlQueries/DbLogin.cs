@@ -74,7 +74,5 @@
             FROM Logins
             WHERE DeviceId = @DeviceId 
             AND UserId = @UserId";
-            
-        
     }
 }
