@@ -96,24 +96,14 @@ namespace FrenCircle.Base.Controllers
             if (!user.IsActive)
                 return RESP_BadRequestResponse("Account isn't verified yet. Please verify or recover your account");
 
-            if (Guid.TryParse(Request.Cookies["DeviceIdentifier"], out Guid parsedDeviceId) &&
-                parsedDeviceId != Guid.Empty)
+            if (Guid.TryParse(Request.Cookies["DeviceIdentifier"], out Guid parsedDeviceId) && parsedDeviceId != Guid.Empty)
             {
-                loginInfo = await _loginRepository.GetLoginInfoById(parsedDeviceId);
-
-                if (loginInfo != null)
-                {
-                    //device exists
-                    DeviceIdd = parsedDeviceId;
-                }
-                else
-                {
-                    DeviceIdd = Guid.NewGuid();
-                }
+                DeviceIdd = (await _loginRepository.GetLoginInfoById(parsedDeviceId)) != null
+                    ? parsedDeviceId
+                    : Guid.NewGuid();
             }
 
-            var userwithdevicepresent =
-                await _loginRepository.GetLoginInfoByDeviceAndUserId(parsedDeviceId, user.Id);
+            var userwithdevicepresent = await _loginRepository.GetLoginInfoByDeviceAndUserId(parsedDeviceId, user.Id);
 
 
             if (userwithdevicepresent != null)
@@ -138,18 +128,18 @@ namespace FrenCircle.Base.Controllers
 
 
             if (loginInfo != null)
-            {
                 if (loginInfo.IsLoggedIn == false)
                     return RESP_BadRequestResponse("You have been logged out login again to continue");
-            }
             
+
             var token = JwtTokenHelper.GenerateToken(user,
                 _config.JwtSettings?.IssuerSigningKey!,
                 _config.JwtSettings?.ValidIssuer!,
                 _config.JwtSettings?.ValidAudience!,
                 10);
 
-            var refreshToken = Guid.NewGuid().ToString();
+            var refreshToken = Guid.NewGuid().ToString(); // TODO - accept guid directly and avoid tostring -> conversion
+
             await accountRepository.StoreRefreshToken(user.Id, refreshToken, DateTime.UtcNow.AddDays(7), DeviceIdd);
 
             Response.Cookies.Append("refreshToken", refreshToken, new CookieOptions
@@ -178,21 +168,24 @@ namespace FrenCircle.Base.Controllers
             if (Guid.TryParse(Request.Cookies["DeviceIdentifier"], out var parsedDeviceId))
             {
                 var loginInfo = await _loginRepository.GetLoginInfoById(parsedDeviceId);
+
                 if (loginInfo.IsLoggedIn == false)
-                {
                     return RESP_BadRequestResponse("You have been logged out login again to continue");
-                }
+                
             }
 
             var oldRefreshToken = Request.Cookies["refreshToken"];
+
             if (string.IsNullOrEmpty(oldRefreshToken))
                 return BadRequest("No refresh token");
 
             var storedToken = await accountRepository.GetRefreshToken(oldRefreshToken);
+
             if (storedToken == null || storedToken.ExpiresAt < DateTime.UtcNow)
                 return BadRequest("Invalid or expired refresh token");
 
             var user = await accountRepository.GetUserById(storedToken.UserId);
+
             if (user == null)
                 return BadRequest("User not found");
 
@@ -203,10 +196,9 @@ namespace FrenCircle.Base.Controllers
                 10);
 
             var newRefreshToken = Guid.NewGuid().ToString();
-            await accountRepository.UpdateRefreshToken(storedToken.UserId, oldRefreshToken, newRefreshToken,
-                DateTime.UtcNow.AddDays(7));
 
-            // Set new refresh token in cookie
+            await accountRepository.UpdateRefreshToken(storedToken.UserId, oldRefreshToken, newRefreshToken, DateTime.UtcNow.AddDays(7));
+
             Response.Cookies.Append("refreshToken", newRefreshToken, new CookieOptions
             {
                 HttpOnly = true,

@@ -19,8 +19,8 @@ public class AccountController(IOptions<FcConfig> config,IAccountRepository acco
     [HttpGet("get")]
     public async Task<IActionResult> AddUser()
     {
-        APIResponse<int> apiResponse = new(StatusCodes.Status200OK, "Success", 0, []);
-        
+        _ = new APIResponse<int>(StatusCodes.Status200OK, "Success", 0, []);
+
         var userDetails = await _accountRepository.GetProfileInfo(_claimsService.GetUserId(User));
 
         var request = new GetProfileRequest()

@@ -16,7 +16,7 @@ namespace FrenCircle.Repositories
         /// <returns>A Task that returns the login information.</returns>
         Task<LoginInfo> GetLoginInfoById(Guid deviceId);
         
-        Task<LoginInfo> GetLoginInfoByDeviceAndUserId(Guid deviceId,int UserId);
+        Task<LoginInfo?> GetLoginInfoByDeviceAndUserId(Guid deviceId,int UserId);
 
         /// <summary>
         /// Adds a new login entry.
@@ -46,7 +46,7 @@ namespace FrenCircle.Repositories
             return loginInfo;
         }
         
-        public async Task<LoginInfo> GetLoginInfoByDeviceAndUserId(Guid deviceId,int UserId)
+        public async Task<LoginInfo?> GetLoginInfoByDeviceAndUserId(Guid deviceId,int UserId)
         {
             var query = DbLogin.GetLoginByDeviceAndUserId;
             

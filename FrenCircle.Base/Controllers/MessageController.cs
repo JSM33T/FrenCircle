@@ -4,7 +4,6 @@ using FrenCircle.Infra;
 using FrenCircle.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.RateLimiting;
 
 namespace FrenCircle.Base.Controllers
 {
@@ -15,20 +14,17 @@ namespace FrenCircle.Base.Controllers
         private readonly IMessageRepository _messageRepository = messageRepository;
         private readonly ITelegramService _telegramService = telegramService;
         private readonly IRateLimiter _rateLimiter = rateLimiter;
-        
+
         [HttpPost("send")]
         public async Task<IActionResult> AddMessage(AddMessageRequest messageRequest)
         {
             if (_rateLimiter.IsRateLimited("GLOBAL", 5, 60))
-            {
                 return RESP_ForbiddenResponse("Chill out man....");
-            }
 
             var message = MessageDtoMappers.MAP_AddMessageRequest_Message(messageRequest);
 
             if (await _messageRepository.IsMessagePresent(message))
                 return RESP_ConflictResponse("Message already present");
-
             //_ = _telegramService.SendMessageAsync($" Message from {message.Name} || {message.Email} :\n {message.Text}");
 
             await _messageRepository.AddMessage(message);

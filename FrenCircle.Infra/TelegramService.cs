@@ -21,10 +21,10 @@ namespace FrenCircle.Infra
 
         public async Task SendMessageAsync(string message)
         {
-            if (string.IsNullOrEmpty(_config.telegramSettings.BotToken) || string.IsNullOrEmpty(_config.telegramSettings.ChatId) || string.IsNullOrEmpty(_config.telegramSettings.ApiUrl))
-            {
+            if (string.IsNullOrEmpty(_config.telegramSettings.BotToken)
+                || string.IsNullOrEmpty(_config.telegramSettings.ChatId)
+                || string.IsNullOrEmpty(_config.telegramSettings.ApiUrl))
                 return;
-            }
 
             var url = $"{_config.telegramSettings.ApiUrl}/bot{_config.telegramSettings.BotToken}/sendMessage";
             var payload = new { chat_id = _config.telegramSettings.ChatId, text = message };
