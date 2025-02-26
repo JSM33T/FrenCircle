@@ -1,0 +1,193 @@
+<!-- Page container -->
+<div class="container pt-5 pb-lg-5 pb-md-4 pb-2 my-5">
+
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb">
+        <ol class="pt-lg-3 pb-lg-4 pb-2 breadcrumb">
+            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Blog list with sidebar</li>
+        </ol>
+    </nav>
+
+    <div class="row mb-md-2 mb-xl-4">
+
+        <!-- Blog posts -->
+        <div class="col-lg-9 pe-lg-4 pe-xl-5">
+            <h1 class="pb-3 pb-lg-4">Blog list with sidebar</h1>
+
+            <!-- Post -->
+            <article class="row g-0 border-0 mb-4">
+                <a class="col-sm-5 bg-repeat-0 bg-size-cover bg-position-center rounded-5" href="blog-single-v1.html" style="background-image: url(assets/img/blog/list/01.jpg); min-height: 14rem" aria-label="Post image"></a>
+                <div class="col-sm-7">
+                    <div class="pt-4 pb-sm-4 ps-sm-4 pe-lg-4">
+                        <h3>
+                            <a href="blog-single-v1.html">Business strategy for a brand of vintage bags</a>
+                        </h3>
+                        <p class="d-sm-none d-md-block">Morbi et massa fames ac scelerisque sit commodo dignissim faucibus vel quisque proin lectus et massa fames ac scelerisque fames velit diam sit...</p>
+                        <div class="d-flex flex-wrap align-items-center mt-n2">
+                            <a class="nav-link text-body-secondary fs-sm fw-normal p-0 mt-2 me-3" href="#">
+                                6
+                                <i class="ai-share fs-lg ms-1"></i>
+                            </a>
+                            <a class="nav-link text-body-secondary fs-sm fw-normal d-flex align-items-end p-0 mt-2" href="#">
+                                12
+                                <i class="ai-message fs-lg ms-1"></i>
+                            </a>
+                            <span class="fs-xs opacity-20 mt-2 mx-3">|</span>
+                            <span class="fs-sm text-body-secondary mt-2">8 hours ago</span>
+                            <span class="fs-xs opacity-20 mt-2 mx-3">|</span>
+                            <a class="badge text-nav fs-xs border mt-2" href="#">Business</a>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Pagination -->
+            <div class="row gy-3 align-items-center mt-lg-5 pt-2 pt-md-4 pt-lg-0">
+                <div class="col col-md-4 col-6 order-md-1 order-1">
+                    <div class="d-flex align-items-center">
+                        <span class="text-body-secondary fs-sm">Show</span>
+                        <select class="form-select form-select-flush w-auto">
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="25">25</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col col-md-4 col-12 order-md-2 order-3 text-center">
+                    <button class="btn btn-primary w-md-auto w-100" type="button">Load more posts</button>
+                </div>
+                <div class="col col-md-4 col-6 order-md-3 order-2">
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination pagination-sm justify-content-end">
+                            <li class="page-item active" aria-current="page">
+                                <span class="page-link">1<span class="visually-hidden">(current)</span></span>
+                            </li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item"><a class="page-link" href="#">4</a></li>
+                            <li class="page-item"><a class="page-link" href="#">5</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Sidebar (offcanvas on sreens < 992px) -->
+        <aside class="col-lg-3">
+            <div class="offcanvas-lg offcanvas-end" id="sidebarBlog">
+                <div class="offcanvas-header">
+                    <h4 class="offcanvas-title">Sidebar</h4>
+                    <button class="btn-close ms-auto" type="button" data-bs-dismiss="offcanvas" data-bs-target="#sidebarBlog" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+
+                    <!-- Search box -->
+                    <div class="position-relative mb-4 mb-lg-5">
+                        <i class="ai-search position-absolute top-50 start-0 translate-middle-y ms-3"></i>
+                        <input class="form-control ps-5" type="search" placeholder="Enter keyword">
+                    </div>
+
+                    <!-- Category links -->
+                    <h4 class="pt-1 pt-lg-0 mt-lg-n2">Categories:</h4>
+                    <ul class="nav flex-column mb-lg-5 mb-4">
+                        <li class="mb-2">
+                            <a class="nav-link d-flex p-0 active" href="#">
+                                All categories
+                                <span class="fs-sm text-body-secondary ms-2">(110)</span>
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a class="nav-link d-flex p-0" href="#">
+                                Inspiration
+                                <span class="fs-sm text-body-secondary ms-2">(34)</span>
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a class="nav-link d-flex p-0" href="#">
+                                Brand strategy
+                                <span class="fs-sm text-body-secondary ms-2">(8)</span>
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a class="nav-link d-flex p-0" href="#">
+                                Advertisement
+                                <span class="fs-sm text-body-secondary ms-2">(45)</span>
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a class="nav-link d-flex p-0" href="#">
+                                Ecommerce
+                                <span class="fs-sm text-body-secondary ms-2">(17)</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="nav-link d-flex p-0" href="#">
+                                Travel &amp; Vacation
+                                <span class="fs-sm text-body-secondary ms-2">(6)</span>
+                            </a>
+                        </li>
+                    </ul>
+
+                    <!-- Featured posts widget -->
+                    <h4 class="pt-3 pt-lg-0 pb-1">Trending posts:</h4>
+                    <div class="mb-lg-5 mb-4">
+                        <article class="position-relative d-flex align-items-center mb-4">
+                            <img class="rounded" src="assets/img/blog/sidebar/01.jpg" width="92" alt="Post image">
+                            <div class="ps-3">
+                                <h4 class="h6 mb-2">
+                                    <a class="stretched-link" href="blog-single-v1.html">Instagram trends that will definitely work</a>
+                                </h4>
+                                <span class="fs-sm text-body-secondary">13 hours ago</span>
+                            </div>
+                        </article>
+                        <article class="position-relative d-flex align-items-center mb-4">
+                            <img class="rounded" src="assets/img/blog/sidebar/02.jpg" width="92" alt="Post image">
+                            <div class="ps-3">
+                                <h4 class="h6 mb-2">
+                                    <a class="stretched-link" href="blog-single-v2.html">A session with a psychologist</a>
+                                </h4>
+                                <span class="fs-sm text-body-secondary">May 12, 2022</span>
+                            </div>
+                        </article>
+                        <article class="position-relative d-flex align-items-center">
+                            <img class="rounded" src="assets/img/blog/sidebar/03.jpg" width="92" alt="Post image">
+                            <div class="ps-3">
+                                <h4 class="h6 mb-2">
+                                    <a class="stretched-link" href="blog-single-v3.html">How to look for inspiration for new goals</a>
+                                </h4>
+                                <span class="fs-sm text-body-secondary">June 10, 2022</span>
+                            </div>
+                        </article>
+                    </div>
+
+                    <!-- Social buttons -->
+                    <h4 class="pt-3 pt-lg-0 pb-1">Tags:</h4>
+                    <div class="d-flex mt-n3 ms-n3 mb-lg-5 mb-4 pb-3 pb-lg-0">
+                        <div class="mb-lg-5 px-3    ">
+                            <a class="nav-link fs-sm" href="#">
+                                <span class="text-primary">#</span>Inspiration
+                            </a>
+                            <a class="nav-link fs-sm" href="#">
+                                <span class="text-primary">#</span>Travel
+                            </a>
+                            <a class="nav-link fs-sm" href="#">
+                                <span class="text-primary">#</span>Books
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </aside>
+    </div>
+</div>
+
+
+<!-- Sidebar toggle button -->
+<button class="d-lg-none btn btn-sm fs-sm btn-primary w-100 rounded-0 fixed-bottom" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarBlog">
+    <i class="ai-layout-column me-2"></i>
+    Sidebar
+</button>

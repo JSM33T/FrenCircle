@@ -1,4 +1,5 @@
-﻿using FrenCircle.Infra;
+﻿using FrenCircle.Base.Attributes;
+using FrenCircle.Infra;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,7 +12,7 @@ namespace FrenCircle.Base.Controllers
         private readonly ILogger<HomeController> _logger = logger;
         private readonly ITelegramService _telegramService = telegramService;
         [HttpGet]
-        [Authorize]
+        [Persist("categories")]
         public async Task<IActionResult> ServerStat()
         {
             _ = _telegramService.SendMessageAsync("asas");

@@ -1,6 +1,4 @@
-﻿using FrenCircle.Base.Hubs;
-
-namespace FrenCircle.Base.Extensions
+﻿namespace FrenCircle.Base.Extensions
 {
     public static class WebApplicationExtensions
     {
@@ -20,7 +18,6 @@ namespace FrenCircle.Base.Extensions
         public static void UseSignalRConfiguration(this WebApplication app)
         {
             app.UseCors("AllowAngularApp");
-            app.MapHub<AudioStreamHub>("/audioStreamHub");
         }
     }
 }

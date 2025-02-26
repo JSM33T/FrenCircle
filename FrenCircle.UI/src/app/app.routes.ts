@@ -71,4 +71,11 @@ export const routes: Routes = [
                 (m) => m.MusicComponent,
             ),
     },
+    {
+        path: 'blogs',
+        loadComponent: () =>
+            import('./sections/blog/browse/browse.component').then(
+                (m) => m.BrowseComponent,
+            ),
+    },
 ];

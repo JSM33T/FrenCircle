@@ -1,4 +1,5 @@
-﻿using FrenCircle.Entities;
+﻿using FrenCircle.Base.Attributes;
+using FrenCircle.Entities;
 using FrenCircle.Entities.Data;
 using FrenCircle.Helpers.Security;
 using FrenCircle.Helpers.Templates;
@@ -66,6 +67,23 @@ namespace FrenCircle.Base.Controllers
             return RESP_Success("OTP generated and sent to your email.");
         }
 
+        //[HttpPost("verify")]
+        //public async Task<IActionResult> VerifyUser(VerifyDto verifyRequest)
+        //{
+        //    if (!await accountRepository.VerifyUser(verifyRequest))
+        //        return RESP_BadRequestResponse("Invalid verification attempt");
+
+        //    var user = await accountRepository.GetUserByEmail(verifyRequest.Email);
+
+        //    var token = JwtTokenHelper.GenerateToken(user!,
+        //        _config.JwtSettings?.IssuerSigningKey!,
+        //        _config.JwtSettings!.ValidIssuer,
+        //        _config.JwtSettings.ValidAudience,
+        //        1);
+
+        //    return RESP_Success(new { Token = token });
+        //}
+
         [HttpPost("verify")]
         public async Task<IActionResult> VerifyUser(VerifyDto verifyRequest)
         {
@@ -74,14 +92,39 @@ namespace FrenCircle.Base.Controllers
 
             var user = await accountRepository.GetUserByEmail(verifyRequest.Email);
 
-            var token = JwtTokenHelper.GenerateToken(user!,
+            // Device tracking logic
+            var deviceId = Guid.NewGuid();
+            var loginInfo = new LoginInfo
+            {
+                UserId = user!.Id,
+                UserAgent = Request.Headers.UserAgent.ToString(),
+                DeviceId = deviceId,
+                Latitude = decimal.TryParse(Request.Headers["Latitude"], out var latitude) ? latitude : 0,
+                Longitude = decimal.TryParse(Request.Headers["Longitude"], out var longitude) ? longitude : 0,
+                IpAddress = HttpContext.Connection.RemoteIpAddress?.ToString()!,
+                LoginMethod = "Verification",
+                IsLoggedIn = true
+            };
+            await _loginRepository.AddLoginEntry(loginInfo);
+
+            var token = JwtTokenHelper.GenerateToken(user,
                 _config.JwtSettings?.IssuerSigningKey!,
                 _config.JwtSettings!.ValidIssuer,
                 _config.JwtSettings.ValidAudience,
                 1);
 
+            // Set device identifier cookie
+            Response.Cookies.Append("DeviceIdentifier", deviceId.ToString(), new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.None,
+                Expires = DateTime.UtcNow.AddYears(1)
+            });
+
             return RESP_Success(new { Token = token });
         }
+
 
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginUserRequest loginRequest)
@@ -108,7 +151,7 @@ namespace FrenCircle.Base.Controllers
 
             if (userwithdevicepresent != null)
             {
-                await _loginRepository.ExtendExpiry(loginInfo.DeviceId);
+                await _loginRepository.ExtendExpiry(parsedDeviceId);
             }
             else
             {

@@ -26,6 +26,8 @@ builder.Host.UseSerilog();
 
 var key = Encoding.ASCII.GetBytes("iureowtueorituowierutoi4354======");
 
+builder.Services.Configure<FcConfig>(builder.Configuration.GetSection("FCConfig"));
+
 builder.Services.AddControllers();
 
 builder.Services.AddOpenApi();
@@ -60,7 +62,7 @@ if (builder.Environment.IsDevelopment())
     builder.Configuration.AddUserSecrets<Program>();
 }
 
-builder.Services.Configure<FcConfig>(builder.Configuration.GetSection("FCConfig"));
+
 
 builder.Services.AddSingleton<IRateLimiter, RateLimiter>();
 builder.Services.AddScoped<IDapperFactory, DapperFactory>();
@@ -72,7 +74,6 @@ builder.Services.AddScoped<IMessageRepository, MessageRepository>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<ILoginRepository, LoginRepository>();
-builder.Services.AddScoped<IPostRepository, PostRepository>();
 
 builder.Services.AddFluentValidationAutoValidation()
     .AddFluentValidationClientsideAdapters();

@@ -11,7 +11,14 @@
         public Logins logins { get; set; }
         public Toggles Toggles { get; set; }
         public TelegramSettings telegramSettings { get; set; }
+        public List<Url> Urls { get; set; }
     }
+
+    public class Url
+    {
+        public string ApiBaseUrl { get; set; }
+    }
+
     public class Toggles
     {
     }

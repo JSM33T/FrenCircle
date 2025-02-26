@@ -29,4 +29,8 @@
 		<ProjectReference Include="..\FrenCircle.Helpers\FrenCircle.Helpers.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Cache\" />
+	</ItemGroup>
+
 </Project>
