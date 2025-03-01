@@ -12,7 +12,7 @@ namespace FrenCircle.Base.Controllers
         private readonly ILogger<HomeController> _logger = logger;
         private readonly ITelegramService _telegramService = telegramService;
         [HttpGet]
-        [Persist("categories")]
+        [Persist($"server-info2")]
         public async Task<IActionResult> ServerStat()
         {
             _ = _telegramService.SendMessageAsync("asas");

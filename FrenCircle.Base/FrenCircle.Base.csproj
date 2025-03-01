@@ -13,6 +13,8 @@
 		<PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.1" />
 		<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.1" />
+		<PackageReference Include="Microsoft.Extensions.Caching.SqlServer" Version="9.0.2" />
+		<PackageReference Include="MongoDB.Driver" Version="3.2.1" />
 		<PackageReference Include="Serilog" Version="4.2.0" />
 		<PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
 		<PackageReference Include="Serilog.Extensions.Hosting" Version="9.0.0" />
@@ -27,10 +29,6 @@
 		<ProjectReference Include="..\FrenCircle.Validatiors\FrenCircle.Validators.csproj" />
 		<ProjectReference Include="..\FrenCircle.Entities\FrenCircle.Entities.csproj" />
 		<ProjectReference Include="..\FrenCircle.Helpers\FrenCircle.Helpers.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Cache\" />
 	</ItemGroup>
 
 </Project>

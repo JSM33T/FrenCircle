@@ -8,7 +8,10 @@
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("AllowAngularApp", policy =>
-                    policy.WithOrigins("http://localhost:4200","https://preview.frencircle.com")
+                    policy.SetIsOriginAllowed(origin =>
+                        origin == "http://localhost:4200" ||
+                        origin == "https://preview.frencircle.com" ||
+                        origin.StartsWith("https://frencircle.com"))
                           .AllowAnyMethod()
                           .AllowAnyHeader()
                           .AllowCredentials());

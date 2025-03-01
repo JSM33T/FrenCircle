@@ -16,9 +16,10 @@ namespace FrenCircle.Base.Controllers
         private readonly IRateLimiter _rateLimiter = rateLimiter;
 
         [HttpPost("send")]
+        [Authorize]
         public async Task<IActionResult> AddMessage(AddMessageRequest messageRequest)
         {
-            if (_rateLimiter.IsRateLimited("GLOBAL", 5, 60))
+            if (_rateLimiter.IsRateLimited("GLOBAL", 50, 60))
                 return RESP_ForbiddenResponse("Chill out man....");
 
             var message = MessageDtoMappers.MAP_AddMessageRequest_Message(messageRequest);

@@ -11,9 +11,16 @@
         public Logins logins { get; set; }
         public Toggles Toggles { get; set; }
         public TelegramSettings telegramSettings { get; set; }
+        public MongoDb mongoDb { get; set; }
         public List<Url> Urls { get; set; }
     }
 
+    public class MongoDb
+    {
+        public string ConnectionString { get; set; }
+        public string Database { get; set; }
+        public string Collection { get; set; }
+    }
     public class Url
     {
         public string ApiBaseUrl { get; set; }

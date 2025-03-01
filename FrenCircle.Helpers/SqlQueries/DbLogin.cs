@@ -53,7 +53,8 @@
         /// </summary>
         public const string ExtendExpiry = @"
             UPDATE Logins
-            SET DateAdded = GETDATE()
+            SET DateAdded = GETDATE(),
+            IsLoggedIn = 1
             WHERE DeviceId = @DeviceId";
         
         /// <summary>

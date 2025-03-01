@@ -129,3 +129,18 @@ ALTER TABLE [RefreshTokens]
 
 -- Ensure the foreign key constraint is valid
 ALTER TABLE [RefreshTokens] CHECK CONSTRAINT [FK_RefreshTokens_Users];
+
+
+CREATE TABLE dbo.Cache (
+
+    Id                          NVARCHAR(449)   PRIMARY KEY,
+
+    [Value]                     VARBINARY(MAX)  NOT NULL,
+
+    ExpiresAtTime               DATETIMEOFFSET  NOT NULL,
+
+    SlidingExpirationInSeconds  BIGINT          NULL,
+
+    AbsoluteExpiration          DATETIMEOFFSET  NULL
+
+);

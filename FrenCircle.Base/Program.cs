@@ -28,9 +28,18 @@ var key = Encoding.ASCII.GetBytes("iureowtueorituowierutoi4354======");
 
 builder.Services.Configure<FcConfig>(builder.Configuration.GetSection("FCConfig"));
 
+var fcConfig = builder.Configuration.GetSection("FCConfig").Get<FcConfig>();
+
 builder.Services.AddControllers();
 
 builder.Services.AddOpenApi();
+
+builder.Services.AddDistributedSqlServerCache(options =>
+{
+    options.ConnectionString = fcConfig?.ConnectionString ?? throw new ArgumentException("CacheConnectionString is missing");
+    options.SchemaName = "dbo";
+    options.TableName = "Cache";
+});
 
 builder.Services.AddAuthentication(options =>
 {
