@@ -72,6 +72,13 @@ export const routes: Routes = [
             ),
     },
     {
+        path: 'account/profile',
+        loadComponent: () =>
+            import(
+                './sections/account/profile/overview/overview.component'
+            ).then((m) => m.OverviewComponent),
+    },
+    {
         path: 'blogs',
         loadComponent: () =>
             import('./sections/blog/browse/browse.component').then(

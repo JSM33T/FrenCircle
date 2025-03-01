@@ -33,7 +33,7 @@
                 </a>
                 <div class="dropdown-menu dropdown-menu-end my-1">
                     <h6 class="dropdown-header fs-xs fw-medium text-body-secondary text-uppercase pb-1">Account</h6>
-                    <a class="dropdown-item disabled" href="account-overview.html">
+                    <a class="dropdown-item" routerLink="account/profile">
                         <i class="ai-user-check fs-lg opacity-70 me-2"></i>
                         Profile
                     </a>
@@ -73,9 +73,17 @@
                 </a>
                 <div class="dropdown-menu dropdown-menu-end my-1">
                     <h6 class="dropdown-header fs-xs fw-medium text-body-secondary text-uppercase pb-1">Account</h6>
-                    <a class="dropdown-item" type="button" (click)="redirectToLogin()">
+                    <a class="dropdown-item" type="button" routerLink="account">
                         <i class="ai-user-check fs-lg opacity-70 me-2"></i>
                         Login/Signup
+                    </a>
+                    <a class="dropdown-item" routerLink="/account/verify">
+                        <i class="ai-activity fs-lg opacity-70 me-2"></i>
+                        Recovery
+                    </a>
+                    <a class="dropdown-item" routerLink="/customization">
+                        <i class="ai-paint-roll fs-lg opacity-70 me-2"></i>
+                        Customization
                     </a>
                 </div>
                 }
