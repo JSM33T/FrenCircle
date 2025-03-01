@@ -1,7 +1,4 @@
 ﻿using FrenCircle.Entities.Data;
-using FrenCircle.Infra;
-using FrenCircle.Repositories;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FrenCircle.Base.Controllers
@@ -15,7 +12,7 @@ namespace FrenCircle.Base.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllPosts()
         {
-            return RESP_Success("ASAS");
+            return RESP_Success("them");
         }
 
         [HttpPost("addpost")]

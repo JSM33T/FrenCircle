@@ -90,5 +90,10 @@
         WHERE Id = @UserId;
         ";
 
+        public static string GetLoginInfo => @"
+        SELECT * FROM Logins
+        WHERE UserId = 4
+        ";
+
     }
 }

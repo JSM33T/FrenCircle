@@ -1,5 +1,4 @@
-﻿using FrenCircle.Base.Attributes;
-using FrenCircle.Entities;
+﻿using FrenCircle.Entities;
 using FrenCircle.Entities.Data;
 using FrenCircle.Helpers.Security;
 using FrenCircle.Helpers.Templates;
@@ -179,7 +178,7 @@ namespace FrenCircle.Base.Controllers
                 _config.JwtSettings?.IssuerSigningKey!,
                 _config.JwtSettings?.ValidIssuer!,
                 _config.JwtSettings?.ValidAudience!,
-                1);
+                5);
 
             var refreshToken = Guid.NewGuid().ToString(); // TODO - accept guid directly and avoid tostring -> conversion
 
@@ -236,7 +235,7 @@ namespace FrenCircle.Base.Controllers
                 _config.JwtSettings?.IssuerSigningKey!,
                 _config.JwtSettings?.ValidIssuer!,
                 _config.JwtSettings?.ValidAudience!,
-                10);
+                5);
 
             var newRefreshToken = Guid.NewGuid().ToString();
 

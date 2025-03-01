@@ -27,6 +27,8 @@ namespace FrenCircle.Repositories
         /// <param name="updateRequest">The profile update request containing new details.</param>
         /// <returns>A Task that indicates whether the update was successful.</returns>
         Task<bool> EditProfile(EditProfileRequest updateRequest);
+
+        Task<IEnumerable<LoginInfo>> GetLoginInfo(int userId);
     }
 
     public class AccountRepository(IDapperFactory dapperFactory) : IAccountRepository
@@ -35,6 +37,13 @@ namespace FrenCircle.Repositories
         {
             var query = DbUsers.GetProfile;
             var profile = await dapperFactory.GetData<User>(query, new { UserId = userId });
+            return profile;
+        }
+
+        public async Task<IEnumerable<LoginInfo>> GetLoginInfo(int userId)
+        {
+            var query = DbUsers.GetLoginInfo;
+            var profile = await dapperFactory.GetDataList<LoginInfo>(query, new { UserId = userId });
             return profile;
         }
 
@@ -50,5 +59,7 @@ namespace FrenCircle.Repositories
             });
             return affectedRows > 0;
         }
+
+       
     }
 }

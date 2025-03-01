@@ -18,7 +18,7 @@
         public bool IsActive { get; set; } = false;
         
         public DateTime OtpTimeStamp { get; set; }
-        public DateTime TimeSpent { get; set; } = DateTime.Now.AddMinutes(60);
+        public DateTime TimeSpent { get; set; } = DateTime.Now.AddMinutes(1);
         public DateTime DateUpdated { get; set; } = DateTime.Now;
         public DateTime LastSeen { get; set; } = DateTime.Now;
         public DateTime DateAdded { get; set; } = DateTime.Now;
@@ -59,12 +59,16 @@
         public string Bio { get; set; }
     }
     
-    public class GetProfileRequest
+    public class GetProfileResponse
     {
         public  string FirstName { get; set; }
         public  string? LastName { get; set; }
         public string Email { get; set; }
         public required string UserName { get; set; }
         public string? Bio { get; set; }
+        public DateTime TimeSpent { get; set; }
+        public DateTime DateUpdated { get; set; }
+        public DateTime LastSeen { get; set; }
+        public DateTime DateAdded { get; set; }
     }
 }

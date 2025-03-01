@@ -107,17 +107,24 @@ CREATE TABLE [Logins] (
     
     CONSTRAINT [UK_Logins_UserId_DeviceId] UNIQUE ([UserId], [DeviceId]),
 
-    CONSTRAINT [FK_Logins_Users] FOREIGN KEY ([UserId]) REFERENCES [dbo].[Users]([Id])  ON DELETE CASCADE;
+    CONSTRAINT [FK_Logins_Users] FOREIGN KEY ([UserId]) REFERENCES [Users]([Id])  ON DELETE CASCADE
                             
 )
 
 CREATE TABLE [RefreshTokens] (
-    [Id]          INT                 IDENTITY(1,1) NOT NULL PRIMARY KEY CLUSTERED,
-    [UserId]      INT                 NOT NULL,
-	[DeviceId]		UNIQUEIDENTIFIER	NOT NULL,
-    [Token]       NVARCHAR(500)       NOT NULL,
-    [ExpiresAt]   DATETIME            NOT NULL,
-    [CreatedAt]   DATETIME            NOT NULL DEFAULT (GETUTCDATE())
+
+    [Id]            INT                 IDENTITY(1,1) NOT NULL PRIMARY KEY CLUSTERED,
+    
+    [UserId]        INT                 NOT NULL,
+	
+    [DeviceId]	    UNIQUEIDENTIFIER	NOT NULL,
+    
+    [Token]         NVARCHAR(500)       NOT NULL,
+    
+    [ExpiresAt]     DATETIME            NOT NULL,
+    
+    [CreatedAt]     DATETIME            NOT NULL DEFAULT (GETUTCDATE())
+
 ) ON [PRIMARY];
 
 -- Foreign Key Constraint
@@ -131,16 +138,65 @@ ALTER TABLE [RefreshTokens]
 ALTER TABLE [RefreshTokens] CHECK CONSTRAINT [FK_RefreshTokens_Users];
 
 
-CREATE TABLE dbo.Cache (
+CREATE TABLE Categories (
 
-    Id                          NVARCHAR(449)   PRIMARY KEY,
+    [Id]            INT             IDENTITY(1,1) NOT NULL PRIMARY KEY,
 
-    [Value]                     VARBINARY(MAX)  NOT NULL,
+    [Name]          NVARCHAR(128)   NOT NULL    UNIQUE,
 
-    ExpiresAtTime               DATETIMEOFFSET  NOT NULL,
+    [Slug]          NVARCHAR(128)   NOT NULL    UNIQUE,
 
-    SlidingExpirationInSeconds  BIGINT          NULL,
+    [Description]   NVARCHAR(512)   NULL,
 
-    AbsoluteExpiration          DATETIMEOFFSET  NULL
+    [DateAdded]     DATETIME        NOT NULL    DEFAULT (GETDATE()),
 
+    [IsActive]      BIT             NOT NULL    DEFAULT(1)
+
+);
+
+INSERT INTO Categories ([Name], [Slug], [Description])
+VALUES 
+    ('Uncategorized', 'uncategorized', 'Default category for uncategorized posts'),
+    ('Tech', 'tech', 'Technology-related articles and news'),
+    ('Lifestyle', 'lifestyle', 'Topics related to daily life, health, and well-being'),
+    ('History', 'business', 'Business trends, startups, and market insights'),
+    ('Travel', 'entertainment', 'Movies, music, and pop culture discussions'),
+    ('Science', 'science', 'Scientific discoveries and research updates')
+
+CREATE TABLE Posts (
+    [Id]            INT                 IDENTITY(1,1) NOT NULL PRIMARY KEY,
+
+    [CategoryId]    INT                 NOT NULL DEFAULT(0),
+
+    [Tags]          NVARCHAR(256),
+
+    [Title]         NVARCHAR(256)       NOT NULL,
+
+    [Slug]          NVARCHAR(256)       NOT NULL,
+
+    [Content]       NVARCHAR(MAX)       NOT NULL,
+
+    [ImageUrl]      NVARCHAR(512)       NULL,
+
+    [DateAdded]     DATETIME            NOT NULL DEFAULT (GETDATE()),
+
+    [LastUpdated]   DATETIME            NOT NULL DEFAULT (GETDATE()),
+
+    [IsPublished]   BIT                 NOT NULL DEFAULT (0),
+    
+    CONSTRAINT FK_Posts_Categories FOREIGN KEY ([CategoryId]) REFERENCES Categories([Id]) ON DELETE CASCADE
+);
+
+CREATE INDEX IX_Posts_CategoryId ON Posts (CategoryId);
+
+CREATE TABLE PostAuthors (
+    [PostId]    INT NOT NULL,
+
+    [UserId]    INT NOT NULL,
+    
+    CONSTRAINT PK_PostAuthors PRIMARY KEY ([PostId], [UserId]),
+
+    CONSTRAINT FK_PostAuthors_Posts FOREIGN KEY ([PostId]) REFERENCES Posts([Id]) ON DELETE CASCADE,
+    
+    CONSTRAINT FK_PostAuthors_Users FOREIGN KEY ([UserId]) REFERENCES Users([Id]) ON DELETE CASCADE
 );

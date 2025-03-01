@@ -1,6 +1,5 @@
 ﻿using FrenCircle.Base.Attributes;
 using FrenCircle.Infra;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FrenCircle.Base.Controllers
