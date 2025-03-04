@@ -10,7 +10,9 @@
                 options.AddPolicy("AllowAngularApp", policy =>
                     policy.SetIsOriginAllowed(origin =>
                         origin == "http://localhost:4200" ||
+                        origin == "https://localhost:3000" ||
                         origin == "https://preview.frencircle.com" ||
+                        origin == "https://revalalert.revalweb.com" ||
                         origin.StartsWith("https://frencircle.com"))
                           .AllowAnyMethod()
                           .AllowAnyHeader()

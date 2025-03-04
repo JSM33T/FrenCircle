@@ -16,11 +16,14 @@ namespace FrenCircle.Base.Controllers
         IEmailService emailService,
         ITelegramService telegramService,
         ILoginRepository loginRepository,
+        INotificationRepository notificationRepository,
         IOptions<FcConfig> config) : FcBaseController
     {
         private readonly FcConfig _config = config.Value;
         private readonly ITelegramService _telegramService = telegramService;
         private readonly ILoginRepository _loginRepository = loginRepository;
+        private readonly INotificationRepository _notificationRepository = notificationRepository;
+
 
         [HttpPost("create")]
         public async Task<IActionResult> AddUser(AddUserRequest addUserRequest)
@@ -36,11 +39,11 @@ namespace FrenCircle.Base.Controllers
             if (apiResponse.Hints.Count != 0)
                 return RESP_Custom(apiResponse);
 
-            _ = _telegramService.SendMessageAsync(
-                $"New user registered on {DateTime.UtcNow} \n email: {addUserRequest.Email} \n name:{addUserRequest.FirstName} {addUserRequest.LastName} \n username:{addUserRequest.UserName}");
-
             await accountRepository.AddUser(addUserRequest);
 
+            _ = _telegramService.SendMessageAsync(
+                $"New user registered on {DateTime.UtcNow} \n email: {addUserRequest.Email} \n name:{addUserRequest.FirstName} {addUserRequest.LastName} \n username:{addUserRequest.UserName}");
+                
             return RESP_Success("Succssfylly registered");
         }
 
@@ -61,27 +64,10 @@ namespace FrenCircle.Base.Controllers
                 .Replace("{{OTP}}", user!.Otp.ToString())
                 .Replace("{{USERNAME}}", user.UserName);
 
-            await emailService.SendEmailAsync([user?.Email!], "FrenCircle Account Verification", body);
+            _ = emailService.SendEmailAsync([user?.Email!], "FrenCircle Account Verification", body);
 
             return RESP_Success("OTP generated and sent to your email.");
         }
-
-        //[HttpPost("verify")]
-        //public async Task<IActionResult> VerifyUser(VerifyDto verifyRequest)
-        //{
-        //    if (!await accountRepository.VerifyUser(verifyRequest))
-        //        return RESP_BadRequestResponse("Invalid verification attempt");
-
-        //    var user = await accountRepository.GetUserByEmail(verifyRequest.Email);
-
-        //    var token = JwtTokenHelper.GenerateToken(user!,
-        //        _config.JwtSettings?.IssuerSigningKey!,
-        //        _config.JwtSettings!.ValidIssuer,
-        //        _config.JwtSettings.ValidAudience,
-        //        1);
-
-        //    return RESP_Success(new { Token = token });
-        //}
 
         [HttpPost("verify")]
         public async Task<IActionResult> VerifyUser(VerifyDto verifyRequest)
@@ -120,6 +106,15 @@ namespace FrenCircle.Base.Controllers
                 SameSite = SameSiteMode.None,
                 Expires = DateTime.UtcNow.AddYears(1)
             });
+
+            CreateNotificationDto notificationDto = new()
+            {
+                UserId = user.Id,
+                NotificationType = "RecoveryLogin",
+                Message = $"You logged in via OTP, please set your password in case you dont remember your old one",
+                ActionUrl = "/account/profile/password"
+            };
+            await _notificationRepository.AddNotification(notificationDto);
 
             return RESP_Success(new { Token = token });
         }
@@ -251,5 +246,21 @@ namespace FrenCircle.Base.Controllers
 
             return RESP_Success(new { Token = newAccessToken }, "No refresh token");
         }
+
+        [HttpPost("outlook")]
+        public async Task<IActionResult> OutlookMessage(OutlookMessage message)
+        {
+            _ =  _telegramService.SendMessageAsync(
+               $"Outlook Message: \n {message.Message}");
+
+            return RESP_Success("OTP generated and sent to your email.");
+        }
+
+
+    }
+
+    public class OutlookMessage
+    {
+        public string Message { get; set; }
     }
 }

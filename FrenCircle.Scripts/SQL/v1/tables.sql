@@ -200,3 +200,26 @@ CREATE TABLE PostAuthors (
     
     CONSTRAINT FK_PostAuthors_Users FOREIGN KEY ([UserId]) REFERENCES Users([Id]) ON DELETE CASCADE
 );
+
+
+
+-- NOTIFICAITON TABLE DESIGN
+
+CREATE TABLE Notifications (
+    Id                  INT             IDENTITY(1,1) PRIMARY KEY,
+    UserId              INT             NOT NULL,
+    ActorId             INT             NOT NULL,
+    PostId              INT             NULL,
+    CommentId           INT             NULL,
+    NotificationType    NVARCHAR(50)    NOT NULL,
+    [Message]           NVARCHAR(255)   NOT NULL,
+    ActionUrl           NVARCHAR(500)   NULL,
+    IsRead              BIT             NOT NULL    DEFAULT 0,
+    EmailSent           BIT             NOT NULL    DEFAULT 0,
+    EmailSentAt         DATETIME        NULL,
+    CreatedAt           DATETIME        NOT NULL    DEFAULT GETDATE()
+);
+
+-- Indexing
+CREATE INDEX IDX_Notifications_UserId ON Notifications (UserId);
+CREATE INDEX IDX_Notifications_CreatedAt ON Notifications (CreatedAt DESC);
