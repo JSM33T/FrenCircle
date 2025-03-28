@@ -1,0 +1,13 @@
+29-03-2025 12.50.13 AM	This log contains information about the import operation of the script 'tables.sql' into project 'FrenCircle.Scripts' on computer 'JASSI' by user'jsm33t.
+29-03-2025 12.50.13 AM	Started importing file: C:\F_R_E_N_C_I_R_C_L_E\FrenCircle.Scripts2\database\v1\tables.sql 
+29-03-2025 12.50.13 AM	File name C:\F_R_E_N_C_I_R_C_L_E\FrenCircle.Scripts2\database\v1\tables.sql (size: 3930)
+29-03-2025 12.50.13 AM	Parsing import script
+29-03-2025 12.50.13 AM	Total number of batches in script: 3
+29-03-2025 12.50.13 AM	Total number of statements in script: 8
+29-03-2025 12.50.13 AM	The script was successfully imported into the project.
+29-03-2025 12.50.13 AM	Analyzing schema objects...
+29-03-2025 12.50.13 AM	Scanning project for duplicate elements
+29-03-2025 12.50.13 AM	Finished duplicate element processing
+29-03-2025 12.50.14 AM	In the script that you provided to the import operation, one or more statements were not fully understood. These statements were moved to the ScriptsIgnoredOnImport.sql file. Review the file contents for additional information.
+29-03-2025 12.50.14 AM	A summary of the import was saved to the following location: C:\F_R_E_N_C_I_R_C_L_E\FrenCircle.Scripts\Import Script Logs\tables_sql_20250328072013.log
+29-03-2025 12.50.14 AM	Click Finish to continue...

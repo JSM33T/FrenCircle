@@ -1,0 +1,15 @@
+﻿-- USER ROLES
+CREATE TABLE UserRoles (
+    Id		INT PRIMARY KEY IDENTITY(1,1),
+    RowId	UNIQUEIDENTIFIER NOT NULL DEFAULT NEWID(),
+    UserId	INT NOT NULL,
+    RoleId	INT NOT NULL,
+
+    CONSTRAINT FK_UserRoles_UserId 
+		FOREIGN KEY (UserId) 
+		REFERENCES Users(Id),
+
+    CONSTRAINT FK_UserRoles_RoleId 
+		FOREIGN KEY (RoleId) 
+		REFERENCES Roles(Id)
+);
