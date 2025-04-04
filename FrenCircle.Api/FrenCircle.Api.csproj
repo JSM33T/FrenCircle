@@ -14,7 +14,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\FrenCircle.Application\FrenCircle.Application.csproj" />
     <ProjectReference Include="..\FrenCircle.Contracts\FrenCircle.Contracts.csproj" />
+    <ProjectReference Include="..\FrenCircle.Infra\FrenCircle.Infra.csproj" />
+    <ProjectReference Include="..\FrenCircle.Repositories\FrenCircle.Repositories.csproj" />
+    <ProjectReference Include="..\FrenCircle.Shared\FrenCircle.Shared.csproj" />
   </ItemGroup>
 
 </Project>

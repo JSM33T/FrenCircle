@@ -63,16 +63,10 @@
     <Folder Include="Snapshots" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="dbo\Tables\Users.sql" />
-    <Build Include="dbo\Tables\UserAuthProviders.sql" />
-    <Build Include="dbo\Tables\Roles.sql" />
-    <Build Include="dbo\Tables\UserRoles.sql" />
-    <Build Include="dbo\Tables\GlobalSettings.sql" />
-    <Build Include="dbo\Tables\AuditLogs.sql" />
-    <Build Include="dbo\Tables\SystemLogs.sql" />
-    <Build Include="dbo\Stored Procedures\AddSystemLog.sql" />
+    <Build Include="dbo\Tables\ChangeLog.sql" />
     <None Include="Scripts\ScriptsIgnoredOnImport.sql" />
-    <Build Include="dbo\Stored Procedures\AddAuditLog.sql" />
+    <Build Include="dbo\Stored Procedures\InsertChangeLog.sql" />
+    <Build Include="dbo\Stored Procedures\DeleteChangeLogsByVersion.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Snapshots\FrenCircle.Scripts_20250329_00-52-58.dacpac" />

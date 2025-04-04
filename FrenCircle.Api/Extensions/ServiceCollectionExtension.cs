@@ -1,4 +1,12 @@
-﻿namespace FrenCircle.Api.Extensions
+﻿using FrenCircle.Application;
+using FrenCircle.Contracts.Interfaces.Repositories;
+using FrenCircle.Contracts.Interfaces.Services;
+using FrenCircle.Infra.Dapper;
+using FrenCircle.Infra.MailService;
+using FrenCircle.Infra.MailService.SmtpMail;
+using FrenCircle.Repositories;
+
+namespace FrenCircle.Api.Extensions
 {
     public static class ServiceCollectionExtensions
     {
@@ -7,6 +15,12 @@
             services.Configure<SmtpConfig>(config.GetSection("SmtpSettings"));
 
             services.AddScoped<IMailService, SmtpMailService>();
+
+            services.AddScoped<IChangeLogRepository, ChangeLogRepository>();
+            services.AddScoped<IChangeLogService, ChangeLogService>();
+
+            services.AddSingleton<IDapperFactory, DapperFactory>();
+
 
             return services;
         }

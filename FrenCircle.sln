@@ -15,8 +15,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FrenCircle.Repositories", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FrenCircle.Application", "FrenCircle.Application\FrenCircle.Application.csproj", "{F9F6919D-BD89-4BB9-BD5C-5B6DBB31B1C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FrenCircle.Domain", "FrenCircle.Domain\FrenCircle.Domain.csproj", "{A7DA9172-1B07-45AA-AEA4-909A8D87DEA6}"
-EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "FrenCircle.Data", "FrenCircle.Data\FrenCircle.Data.sqlproj", "{63B9F8F2-236F-4763-A503-5305B92611EE}"
 EndProject
 Global
@@ -49,10 +47,6 @@ Global
 		{F9F6919D-BD89-4BB9-BD5C-5B6DBB31B1C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F9F6919D-BD89-4BB9-BD5C-5B6DBB31B1C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F9F6919D-BD89-4BB9-BD5C-5B6DBB31B1C1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A7DA9172-1B07-45AA-AEA4-909A8D87DEA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A7DA9172-1B07-45AA-AEA4-909A8D87DEA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A7DA9172-1B07-45AA-AEA4-909A8D87DEA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A7DA9172-1B07-45AA-AEA4-909A8D87DEA6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{63B9F8F2-236F-4763-A503-5305B92611EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{63B9F8F2-236F-4763-A503-5305B92611EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{63B9F8F2-236F-4763-A503-5305B92611EE}.Debug|Any CPU.Deploy.0 = Debug|Any CPU

@@ -6,4 +6,13 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.1.66" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FrenCircle.Contracts\FrenCircle.Contracts.csproj" />
+    <ProjectReference Include="..\FrenCircle.Infra\FrenCircle.Infra.csproj" />
+  </ItemGroup>
+
 </Project>

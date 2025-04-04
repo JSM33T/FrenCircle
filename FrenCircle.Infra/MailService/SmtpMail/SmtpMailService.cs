@@ -4,7 +4,7 @@ using System.Net.Mail;
 
 namespace FrenCircle.Infra.MailService.SmtpMail
 {
-    internal class SmtpMailService : IMailService
+    public class SmtpMailService : IMailService
     {
         private readonly SmtpConfig _config;
 
