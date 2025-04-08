@@ -1,4 +1,4 @@
-using FrenCircle.Contracts.Dtos;
+﻿using FrenCircle.Contracts.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FrenCircle.Api.Controllers
@@ -6,31 +6,39 @@ namespace FrenCircle.Api.Controllers
     [ApiController]
     public abstract class FcBaseController : ControllerBase
     {
-        private ObjectResult FcResponse<T>(ApiResponse<T?> ApiResponse) =>
-            StatusCode(ApiResponse.Status, ApiResponse);
+        protected ActionResult<ApiResponse<T>> FcResponse<T>(ApiResponse<T?> apiResponse)
+        {
+            if (HttpContext?.Items?.TryGetValue("__elapsedMs_final", out var msObj) == true && msObj is long ms)
+            {
+                apiResponse.ResponseTimeMs = ms;
+            }
 
-        protected ObjectResult RESP_Custom<T>(ApiResponse<T> ApiResponse) =>
-            FcResponse(ApiResponse);
+            return StatusCode(apiResponse.Status, apiResponse);
+        }
 
-        protected ObjectResult RESP_Success<T>(T data, string message = "Success") =>
+        protected ActionResult<ApiResponse<T>> RESP_Custom<T>(ApiResponse<T?> apiResponse) =>
+            FcResponse(apiResponse);
+
+        protected ActionResult<ApiResponse<T>> RESP_Success<T>(T data, string message = "Success") =>
             FcResponse(new ApiResponse<T?>(200, message, data));
 
-        protected ObjectResult RESP_BadRequestResponse(string message) =>
-            FcResponse(new ApiResponse<object?>(400, message, null));
+        // ✅ Generic error overloads
+        protected ActionResult<ApiResponse<T>> RESP_BadRequestResponse<T>(string message) =>
+            FcResponse(new ApiResponse<T?>(400, message, default));
 
-        protected ObjectResult RESP_UnauthorizedResponse(string message = "Unauthorized") =>
-            FcResponse(new ApiResponse<object?>(401, message, null));
+        protected ActionResult<ApiResponse<T>> RESP_UnauthorizedResponse<T>(string message = "Unauthorized") =>
+            FcResponse(new ApiResponse<T?>(401, message, default));
 
-        protected ObjectResult RESP_ForbiddenResponse(string message = "Forbidden") =>
-            FcResponse(new ApiResponse<object?>(403, message, null));
+        protected ActionResult<ApiResponse<T>> RESP_ForbiddenResponse<T>(string message = "Forbidden") =>
+            FcResponse(new ApiResponse<T?>(403, message, default));
 
-        protected ObjectResult RESP_NotFoundResponse(string message = "Not Found") =>
-            FcResponse(new ApiResponse<object?>(404, message, null));
+        protected ActionResult<ApiResponse<T>> RESP_NotFoundResponse<T>(string message = "Not Found") =>
+            FcResponse(new ApiResponse<T?>(404, message, default));
 
-        protected ObjectResult RESP_ConflictResponse(string message = "Conflict") =>
-            FcResponse(new ApiResponse<object?>(409, message, null));
+        protected ActionResult<ApiResponse<T>> RESP_ConflictResponse<T>(string message = "Conflict") =>
+            FcResponse(new ApiResponse<T?>(409, message, default));
 
-        protected ObjectResult RESP_ServerErrorResponse(string message = "Internal Server Error") =>
-            FcResponse(new ApiResponse<object?>(500, message, null));
+        protected ActionResult<ApiResponse<T>> RESP_ServerErrorResponse<T>(string message = "Internal Server Error") =>
+            FcResponse(new ApiResponse<T?>(500, message, default));
     }
 }

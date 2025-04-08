@@ -7,7 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="4.13.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.3" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="7.5.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\FrenCircle.Contracts\FrenCircle.Contracts.csproj" />
+    <ProjectReference Include="..\FrenCircle.Shared\FrenCircle.Shared.csproj" />
   </ItemGroup>
 
 </Project>

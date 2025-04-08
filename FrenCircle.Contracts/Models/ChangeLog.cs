@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FrenCircle.Contracts.Models
+﻿namespace FrenCircle.Contracts.Models
 {
     public class ChangeLog
     {

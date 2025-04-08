@@ -25,5 +25,4 @@
         public string ChangeType { get; set; }
         public string Contributors { get; set; }
     }
-
 }

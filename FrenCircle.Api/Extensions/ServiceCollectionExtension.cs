@@ -17,7 +17,12 @@ namespace FrenCircle.Api.Extensions
             services.AddScoped<IMailService, SmtpMailService>();
 
             services.AddScoped<IChangeLogRepository, ChangeLogRepository>();
+
+
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<IChangeLogService, ChangeLogService>();
+            services.AddScoped<ITokenService, TokenService>();
 
             services.AddSingleton<IDapperFactory, DapperFactory>();
 

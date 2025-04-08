@@ -22,5 +22,9 @@ namespace FrenCircle.Contracts.Dtos.Responses
         public string Version { get; set; }
         public List<ChangeLogResponseDto> Changes { get; set; }
     }
+    public class ChangeLogListResponseDto
+    {
+        public string Title { get; set; }
+    }
 
 }
