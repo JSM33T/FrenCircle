@@ -12,10 +12,10 @@ namespace FrenCircle.Api.Middlewares
         private readonly RequestDelegate _next;
         private readonly Toggles _config;
 
-        public RequestTimerMiddleware(RequestDelegate next, IOptions<FcConfig> config)
+        public RequestTimerMiddleware(RequestDelegate next,FcConfig config)
         {
             _next = next;
-            _config = config.Value.Toggles;
+            _config = config.Toggles;
         }
 
         public async Task Invoke(HttpContext context)

@@ -2,6 +2,8 @@
 {
     public interface ITelegramService
     {
-        public Task<int> Hello();
+        Task SendToMultipleAsync(IEnumerable<string> chatIds, string message);
+        Task SendToOneAsync(string chatId, string message);
     }
+
 }

@@ -36,11 +36,11 @@ builder.Services
             ValidateAudience = false,
             ValidateLifetime = false,
             ValidateIssuerSigningKey = true,
-            ValidIssuer = fcConfig.JwtConfig.Issuer,
-            ValidAudience = fcConfig.JwtConfig.Issuer,
+            ValidIssuer = fcConfig.JwtConfig?.Issuer,
+            ValidAudience = fcConfig.JwtConfig?.Issuer,
             ClockSkew = TimeSpan.Zero,
             IssuerSigningKey = new SymmetricSecurityKey(
-                Convert.FromBase64String(fcConfig.JwtConfig.Key!))
+                Convert.FromBase64String(fcConfig.JwtConfig?.Key!))
         };
     });
 
@@ -62,4 +62,4 @@ app.UseMiddleware<RequestTimerMiddleware>();
 app.UseMiddleware<FcRequestMiddleware>();
 app.MapControllers();
 
-app.Run();
+await app.RunAsync();

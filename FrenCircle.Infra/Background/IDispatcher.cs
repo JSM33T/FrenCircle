@@ -19,6 +19,7 @@
         /// </summary>
         /// <param name="cancellationToken">Token to observe cancellation requests.</param>
         /// <returns>A tuple containing the Job ID and the task delegate.</returns>
-        Task<(int JobId, Func<CancellationToken, Task> Task)> DequeueAsync(CancellationToken cancellationToken);
+        //Task<(int JobId, Func<CancellationToken, Task> Task)> DequeueAsync(CancellationToken cancellationToken);
+        Task<(int JobId, Func<CancellationToken, Task>)> DequeueAsync(CancellationToken cancellationToken);
     }
 }

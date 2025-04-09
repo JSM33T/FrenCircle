@@ -2,6 +2,9 @@
 using FrenCircle.Contracts.Dtos.Requests;
 using FrenCircle.Contracts.Dtos.Responses;
 using FrenCircle.Contracts.Interfaces.Services;
+using FrenCircle.Infra.Background;
+using FrenCircle.Infra.Telegram;
+using FrenCircle.Shared.ConfigModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,7 +12,7 @@ namespace FrenCircle.Api.Controllers;
 
 [ApiController]
 [Route("api/auth")]
-public class AuthController(IAuthService authService) : FcBaseController
+public class AuthController(IAuthService authService,IDispatcher dispatcher,ITelegramService telegramService,FcConfig config) : FcBaseController
 {
     private readonly IAuthService _authService = authService;
 
@@ -17,6 +20,13 @@ public class AuthController(IAuthService authService) : FcBaseController
     public async Task<ActionResult<ApiResponse<int>>> Signup(SignupUserDto dto)
     {
         var userId = await _authService.SignupAsync(dto);
+
+        await dispatcher.EnqueueAsync(async token =>
+        {
+            var msg = $"🚨 User Signup \n\n {dto.FirstName} {dto.LastName} \n\n email: {dto.Email}";
+            await telegramService.SendToOneAsync(config.TeleConfig.LogChatId.ToString(), msg);
+        }, jobName: "SignUp NOtification", triggeredBy: "signupApi");
+
         return RESP_Success(userId, "User created successfully");
     }
 

@@ -24,11 +24,13 @@ namespace FrenCircle.Api.Extensions
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<IChangeLogService, ChangeLogService>();
             services.AddScoped<ITokenService, TokenService>();
-            services.AddSingleton<IDapperFactory, DapperFactory>();
-            services.AddScoped<IDispatcher, Dispatcher>();
-            services.AddScoped<IJobHistoryRepository, JobHistoryRepository>();
+            services.AddScoped<IDapperFactory, DapperFactory>();
 
-            //services.AddScoped<ITelegramService, TelegramService>();
+            services.AddSingleton<IDispatcher, Dispatcher>();
+            services.AddScoped<IJobHistoryRepository, JobHistoryRepository>();
+            services.AddHostedService<JobWorker>();
+
+            services.AddHttpClient<ITelegramService, TelegramService>();
 
 
             return services;

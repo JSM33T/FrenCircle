@@ -63,44 +63,6 @@ namespace FrenCircle.Application
             return (response, tokens.RefreshToken);
         }
 
-
-
-        //public async Task<LoginResponseDto> LoginAsync(LoginRequestDto dto)
-        //{
-        //    var login = await _repo.GetLoginDataByEmailAsync(dto.Email);
-        //    if (login == null)
-        //        throw new UnauthorizedAccessException("Invalid credentials");
-
-        //    if (!PasswordHelper.VerifyPassword(dto.Password, login.PasswordHash!, login.Salt!))
-        //        throw new UnauthorizedAccessException("Invalid credentials");
-
-        //    var tokens = _tokenService.GenerateTokens(login.UserId);
-
-        //    var session = new LoginSession
-        //    {
-        //        UserLoginId = login.Id,
-        //        AccessToken = tokens.AccessToken,
-        //        RefreshToken = tokens.RefreshToken,
-        //        ExpiresAt = tokens.ExpiresAt,
-        //        DeviceFingerprint = dto.DeviceFingerprint,
-        //        IpAddress = dto.IpAddress,
-        //        UserAgent = dto.UserAgent
-        //    };
-
-        //    var sessionId = await _repo.CreateSessionAsync(session);
-
-        //    return new LoginResponseDto
-        //    {
-        //        UserId = login.UserId,
-        //        SessionId = sessionId,
-        //        AccessToken = tokens.AccessToken,
-        //        RefreshToken = tokens.RefreshToken,
-        //        ExpiresAt = tokens.ExpiresAt
-        //    };
-        //}
-
-
-
         public async Task<IEnumerable<SessionDto>> GetUserSessionsAsync(int userId)
         {
             return await _repo.GetSessionsByUserIdAsync(userId);
