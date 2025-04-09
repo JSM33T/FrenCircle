@@ -11,24 +11,36 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    INSERT INTO LoginSessions (
-        UserLoginId, AccessToken, RefreshToken, IssuedAt ,ExpiresAt,
-        DeviceId, IPAddress, UserAgent
+    IF EXISTS (
+        SELECT 1 FROM LoginSessions
+        WHERE DeviceId = @DeviceId AND UserLoginId = @UserLoginId
     )
-    VALUES (
-        @UserLoginId, @AccessToken, @RefreshToken,@IssuedAt, @ExpiresAt,
-        @DeviceId, @IPAddress, @UserAgent
-    );
+    BEGIN
+        UPDATE LoginSessions
+        SET 
+            AccessToken = @AccessToken,
+            RefreshToken = @RefreshToken,
+            IssuedAt = @IssuedAt,
+            ExpiresAt = @ExpiresAt,
+            IPAddress = @IPAddress,
+            UserAgent = @UserAgent
+        WHERE DeviceId = @DeviceId AND UserLoginId = @UserLoginId;
 
-    SELECT SCOPE_IDENTITY() AS SessionId;
+        SELECT Id
+        FROM LoginSessions
+        WHERE DeviceId = @DeviceId AND UserLoginId = @UserLoginId;
+    END
+    ELSE
+    BEGIN
+        INSERT INTO LoginSessions (
+            UserLoginId, AccessToken, RefreshToken, IssuedAt, ExpiresAt,
+            DeviceId, IPAddress, UserAgent
+        )
+        VALUES (
+            @UserLoginId, @AccessToken, @RefreshToken, @IssuedAt, @ExpiresAt,
+            @DeviceId, @IPAddress, @UserAgent
+        );
+
+        SELECT SCOPE_IDENTITY() AS SessionId;
+    END
 END
-
-
---EXEC CreateLoginSession 
---    @UserLoginId = 1,
---    @AccessToken = 'sample_access_token',
---    @RefreshToken = 'sample_refresh_token',
---    @ExpiresAt = DATEADD(HOUR, 1, GETDATE()),
---    @DeviceId = 'device-abc-123',
---    @IPAddress = '192.168.1.100',
---    @UserAgent = 'Chrome on Windows 10';

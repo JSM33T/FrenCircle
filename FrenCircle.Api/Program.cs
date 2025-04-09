@@ -15,6 +15,10 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
     });
 
+var fcConfig = builder.Configuration
+    .GetSection("FcConfig")
+    .Get<FcConfig>()!;
+builder.Services.AddSingleton(fcConfig);
 
 builder.Services.AddOpenApi();
 
@@ -26,40 +30,21 @@ builder.Services
     })
     .AddJwtBearer(options =>
     {
-        var config = builder.Configuration.GetSection("FcConfig:JwtConfig");
-        //options.TokenValidationParameters = new TokenValidationParameters
-        //{
-        //    ValidateIssuer = false,
-        //    ValidateAudience = false,
-        //    ValidateLifetime = false,
-        //    ValidateIssuerSigningKey = true,
-        //    ValidIssuer = config["Issuer"],
-        //    ValidAudience = config["Audience"],
-        //    ClockSkew = TimeSpan.Zero,
-        //    IssuerSigningKey = new SymmetricSecurityKey(
-        //        Convert.FromBase64String(config["Key"]!))
-        //};
-
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = false,
             ValidateAudience = false,
             ValidateLifetime = false,
             ValidateIssuerSigningKey = true,
-            ValidIssuer = "https://localhost:7233",
-            ValidAudience = "https://localhost:7233",
+            ValidIssuer = fcConfig.JwtConfig.Issuer,
+            ValidAudience = fcConfig.JwtConfig.Issuer,
             ClockSkew = TimeSpan.Zero,
             IssuerSigningKey = new SymmetricSecurityKey(
-        Convert.FromBase64String("N9+K7c9FvS+5eOAvDLX0wT1V5x9eOArdfTP+ml+qxJ4="))
+                Convert.FromBase64String(fcConfig.JwtConfig.Key!))
         };
     });
 
-
-builder.Services.Configure<FcConfig>(
-    builder.Configuration.GetSection("FcConfig")
-);
-
-builder.Services.AddInfrastructureServices(builder.Configuration);
+builder.Services.AddInfrastructureServices();
 
 var app = builder.Build();
 
@@ -74,7 +59,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseMiddleware<RequestTimerMiddleware>();
-
+app.UseMiddleware<FcRequestMiddleware>();
 app.MapControllers();
 
 app.Run();

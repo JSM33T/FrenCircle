@@ -1,19 +1,20 @@
 ﻿using FrenCircle.Application;
 using FrenCircle.Contracts.Interfaces.Repositories;
 using FrenCircle.Contracts.Interfaces.Services;
+using FrenCircle.Infra.Background;
 using FrenCircle.Infra.Dapper;
 using FrenCircle.Infra.MailService;
 using FrenCircle.Infra.MailService.SmtpMail;
+using FrenCircle.Infra.Telegram;
+using FrenCircle.Infra.Token;
 using FrenCircle.Repositories;
 
 namespace FrenCircle.Api.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration config)
+        public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
         {
-            services.Configure<SmtpConfig>(config.GetSection("SmtpSettings"));
-
             services.AddScoped<IMailService, SmtpMailService>();
 
             services.AddScoped<IChangeLogRepository, ChangeLogRepository>();
@@ -23,8 +24,11 @@ namespace FrenCircle.Api.Extensions
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<IChangeLogService, ChangeLogService>();
             services.AddScoped<ITokenService, TokenService>();
-
             services.AddSingleton<IDapperFactory, DapperFactory>();
+            services.AddScoped<IDispatcher, Dispatcher>();
+            services.AddScoped<IJobHistoryRepository, JobHistoryRepository>();
+
+            //services.AddScoped<ITelegramService, TelegramService>();
 
 
             return services;

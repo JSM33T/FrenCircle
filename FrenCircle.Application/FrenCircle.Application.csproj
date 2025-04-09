@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FrenCircle.Contracts\FrenCircle.Contracts.csproj" />
+    <ProjectReference Include="..\FrenCircle.Infra\FrenCircle.Infra.csproj" />
     <ProjectReference Include="..\FrenCircle.Shared\FrenCircle.Shared.csproj" />
   </ItemGroup>
 

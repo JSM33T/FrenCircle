@@ -54,7 +54,7 @@ namespace FrenCircle.Api.Middlewares
                     {
                         json["responseTimeMs"] = sw.ElapsedMilliseconds;
 
-                        var modified = JsonSerializer.Serialize(json, new JsonSerializerOptions
+                        string modified = JsonSerializer.Serialize(json, new JsonSerializerOptions
                         {
                             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
                             DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull

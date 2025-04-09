@@ -1,14 +1,10 @@
-﻿using FrenCircle.Contracts.Dtos.Requests;
+﻿using FrenCircle.Contracts.Dtos;
+using FrenCircle.Contracts.Dtos.Requests;
 using FrenCircle.Contracts.Dtos.Responses;
-using FrenCircle.Contracts.Dtos;
 using FrenCircle.Contracts.Interfaces.Repositories;
 using FrenCircle.Contracts.Interfaces.Services;
 using FrenCircle.Contracts.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using FrenCircle.Infra.Token;
 using FrenCircle.Shared.Helpers;
 
 namespace FrenCircle.Application
@@ -16,7 +12,7 @@ namespace FrenCircle.Application
     public class AuthService : IAuthService
     {
         private readonly IAuthRepository _repo;
-        private readonly ITokenService _tokenService; // You'd implement this to generate JWTs
+        private readonly ITokenService _tokenService;
 
         public AuthService(IAuthRepository repo, ITokenService tokenService)
         {

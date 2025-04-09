@@ -9,10 +9,7 @@ namespace FrenCircle.Application
     {
         private readonly IChangeLogRepository _repository;
 
-        public ChangeLogService(IChangeLogRepository repository)
-        {
-            _repository = repository;
-        }
+        public ChangeLogService(IChangeLogRepository repository) => _repository = repository;
 
         public async Task<int> AddBulkChangeLogsAsync(ChangeLogBulkRequestDto bulkDto)
         {

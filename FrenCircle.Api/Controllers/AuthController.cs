@@ -9,14 +9,9 @@ namespace FrenCircle.Api.Controllers;
 
 [ApiController]
 [Route("api/auth")]
-public class AuthController : FcBaseController
+public class AuthController(IAuthService authService) : FcBaseController
 {
-    private readonly IAuthService _authService;
-
-    public AuthController(IAuthService authService)
-    {
-        _authService = authService;
-    }
+    private readonly IAuthService _authService = authService;
 
     [HttpPost("signup")]
     public async Task<ActionResult<ApiResponse<int>>> Signup(SignupUserDto dto)
@@ -30,15 +25,12 @@ public class AuthController : FcBaseController
     {
         try
         {
-            Guid deviceId;
 
-            if (!Guid.TryParse(Request.Cookies["DeviceId"], out deviceId) &&
+            if (!Guid.TryParse(Request.Cookies["DeviceId"], out Guid deviceId) &&
                 !Guid.TryParse(dto.DeviceId, out deviceId))
             {
                 deviceId = Guid.NewGuid();
             }
-
-
 
             // Pass updated device ID into dto for logging/tracking
             dto.DeviceId = deviceId.ToString();
@@ -73,8 +65,6 @@ public class AuthController : FcBaseController
             return RESP_UnauthorizedResponse<LoginResponseDto>(ex.Message);
         }
     }
-
-
 
     [HttpGet("sessions/{userId}")]
     public async Task<ActionResult<ApiResponse<IEnumerable<SessionDto>>>> GetSessions(int userId)
@@ -126,7 +116,7 @@ public class AuthController : FcBaseController
         {
             var (response, newRefreshToken) = await _authService.RefreshTokenAsync(refreshToken, deviceId);
 
-            Response.Cookies.Append("refreshToken", newRefreshToken, new CookieOptions
+            Response.Cookies.Append("RefreshToken", newRefreshToken, new CookieOptions
             {
                 HttpOnly = true,
                 Secure = true,
