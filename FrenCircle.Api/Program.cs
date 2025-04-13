@@ -44,7 +44,15 @@ builder.Services
         };
     });
 
+builder.Services.AddCors(o => o.AddPolicy("OpenPolicy", builder =>
+{
+    builder.AllowAnyOrigin()
+           .AllowAnyMethod()
+           .AllowAnyHeader();
+}));
+
 builder.Services.AddInfrastructureServices();
+
 
 var app = builder.Build();
 
@@ -52,7 +60,7 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
-
+app.UseCors("OpenPolicy");
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
