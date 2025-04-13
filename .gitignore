@@ -55,3 +55,5 @@ TestResult.xml
 nunit-*.xml
 /FrenCircle.Api/appsettings.json
 FrenCircle.Data/FrenCircle.Data.dbmdl
+/FrenCircle.Data/FrenCircle.Data.dbmdl
+/FrenCircle.Data/FrenCircle.Data.jfm
