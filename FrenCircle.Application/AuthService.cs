@@ -1,9 +1,11 @@
 ﻿using FrenCircle.Contracts.Dtos;
+using FrenCircle.Contracts.Dtos.Internal;
 using FrenCircle.Contracts.Dtos.Requests;
 using FrenCircle.Contracts.Dtos.Responses;
 using FrenCircle.Contracts.Interfaces.Repositories;
 using FrenCircle.Contracts.Interfaces.Services;
 using FrenCircle.Contracts.Models;
+using FrenCircle.Infra.MailService;
 using FrenCircle.Infra.Token;
 using FrenCircle.Shared.Helpers;
 
@@ -13,18 +15,24 @@ namespace FrenCircle.Application
     {
         private readonly IAuthRepository _repo;
         private readonly ITokenService _tokenService;
+        private readonly IMailService _mailService;
 
-        public AuthService(IAuthRepository repo, ITokenService tokenService)
+        public AuthService(IAuthRepository repo, ITokenService tokenService,IMailService mailService)
         {
             _repo = repo;
             _tokenService = tokenService;
+            _mailService = mailService;
         }
 
-        public async Task<int> SignupAsync(SignupUserDto dto)
+        public async Task<bool> SignupAsync(SignupUserDto dto)
         {
             var salt = PasswordHelper.GenerateSalt();
             var hash = PasswordHelper.HashPassword(dto.Password, salt);
-            return await _repo.InsertUserAsync(dto, hash, salt);
+            SignupResultDto res = await _repo.InsertUserAsync(dto, hash, salt);
+
+            await _mailService.SendEmailAsync(res.Email, "subject", "body", true);
+
+            return true;
         }
 
         public async Task<(LoginResponseDto Response, string RefreshToken)> LoginAsync(LoginRequestDto dto)

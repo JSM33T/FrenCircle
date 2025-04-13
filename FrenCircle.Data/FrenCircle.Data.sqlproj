@@ -79,6 +79,7 @@
     <Build Include="dbo\Stored Procedures\VerifyEmail.sql" />
     <None Include="Scripts\Seeds\Role_seed.sql" />
     <Build Include="dbo\Tables\JobHistory.sql" />
+    <Build Include="dbo\Stored Procedures\GetProfileDetailsById.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Snapshots\FrenCircle.Scripts_20250329_00-52-58.dacpac" />

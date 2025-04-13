@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 'use client'
 import {
     forwardRef,
@@ -9,7 +9,7 @@ import {
 } from 'react'
 
 export enum ModalType {
-    Success = 'success',
+    Success = 'primary',
     Error = 'danger',
     Warning = 'warning',
 }

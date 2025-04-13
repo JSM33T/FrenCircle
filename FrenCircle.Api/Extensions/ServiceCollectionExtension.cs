@@ -32,6 +32,8 @@ namespace FrenCircle.Api.Extensions
 
             services.AddHttpClient<ITelegramService, TelegramService>();
 
+            services.AddScoped<IProfileService, ProfileService>();
+            services.AddScoped<IProfileRepository, ProfileRepository>();
 
             return services;
         }

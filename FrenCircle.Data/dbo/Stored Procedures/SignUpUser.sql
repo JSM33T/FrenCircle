@@ -39,5 +39,12 @@ BEGIN
     INSERT INTO UserLogins (UserId, ProviderId, Email, PasswordHash, Salt, IsPasswordLogin)
     VALUES (@UserId, @ProviderId, @Email, @PasswordHash, @Salt, 1);
 
-    SELECT @UserId AS UserId, @EmailToken AS EmailVerificationToken;
+    SELECT 
+    @UserId AS UserId,
+    @EmailToken AS EmailVerificationToken,
+    @FirstName AS FirstName,
+    @LastName AS LastName,
+    @UserName AS UserName,
+    @Email AS Email
+
 END

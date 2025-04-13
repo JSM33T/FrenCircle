@@ -17,4 +17,8 @@
     <ProjectReference Include="..\FrenCircle.Shared\FrenCircle.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="HttpContext\" />
+  </ItemGroup>
+
 </Project>

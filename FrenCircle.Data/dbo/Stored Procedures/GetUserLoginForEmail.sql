@@ -22,4 +22,3 @@ END
 
 
 --EXEC GetUserLoginForEmail 
---    @Email = 'john@example.com';

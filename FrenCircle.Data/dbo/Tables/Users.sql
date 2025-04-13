@@ -5,6 +5,7 @@
     LastName                NVARCHAR(128)       NULL,
     UserName                NVARCHAR(128)       NOT NULL,
     Email                   NVARCHAR(256)       NOT NULL,
+    RoleId                  INT                 NOT NULL FOREIGN KEY REFERENCES Roles(Id) DEFAULT(1),
     Avatar                  NVARCHAR(256)       NULL,
     Bio                     NVARCHAR(256)       NULL,
     Gender                  NVARCHAR(1)         NULL,

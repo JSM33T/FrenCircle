@@ -1,5 +1,6 @@
+import { defaultMetadata } from "@/lib/defaultMetadata"
 import HomeClient from "./home/HomeClient"
-import { defaultMetadata } from "./lib/defaultMetadata"
+
 import { Metadata } from "next"
 
 

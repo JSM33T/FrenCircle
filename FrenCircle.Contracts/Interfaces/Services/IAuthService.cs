@@ -8,7 +8,7 @@ namespace FrenCircle.Contracts.Interfaces.Services
     {
         //Task<LoginResponseDto> LoginAsync(LoginRequestDto dto);
         Task<(LoginResponseDto Response, string RefreshToken)> LoginAsync(LoginRequestDto dto);
-        Task<int> SignupAsync(SignupUserDto dto);
+        Task<bool> SignupAsync(SignupUserDto dto);
         Task<IEnumerable<SessionDto>> GetUserSessionsAsync(int userId);
         Task<bool> LogoutSessionAsync(int sessionId);
         Task VerifyEmailAsync(Guid token);

@@ -3,13 +3,9 @@
 -- date		:	2025/03/28
 -- comment	:	Seed roles
 ---------------------------------------
-SET IDENTITY_INSERT Roles ON;
-GO
+INSERT INTO [dbo].[Roles] ([Id], [Name], [Slug], [Description], [CreatedAt], [RowId])
+VALUES 
 
-INSERT INTO Roles (Id, RowId, Name, CreatedAt) VALUES 
-(1, NEWID(), 'User', GETDATE()),
-(2, NEWID(), 'Moderator', GETDATE()),
-(3, NEWID(), 'Admin', GETDATE());
-GO
-
-SET IDENTITY_INSERT Roles OFF;
+(1, 'User', 'user', 'Standard registered user', GETDATE(), NEWID()),
+(2, 'Moderator', 'moderator', 'Can manage posts and comments', GETDATE(), NEWID()),
+(3, 'Admin', 'admin', 'Administrator with full access', GETDATE(), NEWID())

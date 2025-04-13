@@ -1,0 +1,25 @@
+:root {
+    --bs-primary: #6f42c1 !important;
+    --bs-secondary: #198363 !important;
+    --bs-success: #268b5c !important;
+    --bs-danger: #dc3545 !important;
+    --bs-warning: #ffc107;
+    --bs-info: #0dcaf0;
+    --bs-light: #f8f9fa;
+    --bs-dark: #212529;
+}
+
+.btn {
+    border-radius: 0 !important;
+}
+
+.btn-primary {
+    background-color: #6f42c1 !important;
+    border-color: #6f42c1 !important;
+    border-radius: 0;
+}
+
+.btn-primary:hover {
+    background-color: #5a379d !important;
+    border-color: #50318c !important;
+}

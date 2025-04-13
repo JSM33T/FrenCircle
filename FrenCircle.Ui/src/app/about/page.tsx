@@ -1,5 +1,5 @@
+import { defaultMetadata } from "@/lib/defaultMetadata"
 import { Metadata } from "next"
-import { defaultMetadata } from "../lib/defaultMetadata"
 import Link from "next/link"
 
 export const generateMetadata = async (): Promise<Metadata> => {

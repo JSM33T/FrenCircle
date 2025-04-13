@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import BootstrapSetup from "./components/BootstrapSetup";
-import Navbar from "./components/ui/Navbar";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './globals.css';
+import BootstrapSetup from "@/components/BootstrapSetup";
+import Navbar from "@/components/ui/Navbar";
+import { ToastProvider } from "@/contexts/ToastContext";
 
 
 const geistSans = Geist({
@@ -32,7 +33,9 @@ export default function RootLayout({
             <body className={`${geistSans.variable} ${geistMono.variable}`}>
                 <BootstrapSetup />
                 <Navbar />
-                {children}
+                <ToastProvider>
+                    {children}
+                </ToastProvider>
             </body>
         </html>
     );

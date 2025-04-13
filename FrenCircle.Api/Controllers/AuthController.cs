@@ -17,7 +17,7 @@ public class AuthController(IAuthService authService,IDispatcher dispatcher,ITel
     private readonly IAuthService _authService = authService;
 
     [HttpPost("signup")]
-    public async Task<ActionResult<ApiResponse<int>>> Signup(SignupUserDto dto)
+    public async Task<ActionResult<ApiResponse<bool>>> Signup(SignupUserDto dto)
     {
         var userId = await _authService.SignupAsync(dto);
 

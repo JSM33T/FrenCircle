@@ -12,6 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FrenCircle.Infra.Dapper;
+using FrenCircle.Contracts.Dtos.Internal;
 
 namespace FrenCircle.Repositories
 {
@@ -33,7 +34,19 @@ namespace FrenCircle.Repositories
             return result;
         }
 
-        public async Task<int> InsertUserAsync(SignupUserDto dto, string passwordHash, string salt)
+        //public async Task<int> InsertUserAsync(SignupUserDto dto, string passwordHash, string salt)
+        //{
+        //    var parameters = new DynamicParameters();
+        //    parameters.Add("@FirstName", dto.FirstName);
+        //    parameters.Add("@LastName", dto.LastName);
+        //    parameters.Add("@UserName", dto.UserName);
+        //    parameters.Add("@Email", dto.Email);
+        //    parameters.Add("@PasswordHash", passwordHash);
+        //    parameters.Add("@Salt", salt);
+
+        //    return await _db.ExecuteScalarAsync<int>("SignupUser", parameters, commandType: CommandType.StoredProcedure);
+        //}\
+        public async Task<SignupResultDto> InsertUserAsync(SignupUserDto dto, string passwordHash, string salt)
         {
             var parameters = new DynamicParameters();
             parameters.Add("@FirstName", dto.FirstName);
@@ -43,8 +56,12 @@ namespace FrenCircle.Repositories
             parameters.Add("@PasswordHash", passwordHash);
             parameters.Add("@Salt", salt);
 
-            return await _db.ExecuteScalarAsync<int>("SignupUser", parameters, commandType: CommandType.StoredProcedure);
+            var result = await _db.QuerySingleAsync<SignupResultDto>(
+                "SignupUser", parameters, commandType: CommandType.StoredProcedure);
+
+            return result;
         }
+
 
         public async Task<int> InsertUserLoginAsync(int userId, string email, string passwordHash, string salt)
         {

@@ -2,9 +2,8 @@
 {
     public enum RoleType
     {
-        SuperAdmin = 1,
-        Admin = 2,
-        Mod = 3,
-        Fren = 4
+        User = 1,
+        Moderator = 2,
+        Admin = 3,
     }
 }
