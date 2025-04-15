@@ -3,6 +3,7 @@ using FrenCircle.Contracts.Interfaces.Repositories;
 using FrenCircle.Contracts.Interfaces.Services;
 using FrenCircle.Infra.Background;
 using FrenCircle.Infra.Dapper;
+using FrenCircle.Infra.ImageHost;
 using FrenCircle.Infra.MailService;
 using FrenCircle.Infra.MailService.SmtpMail;
 using FrenCircle.Infra.Telegram;
@@ -16,10 +17,8 @@ namespace FrenCircle.Api.Extensions
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
         {
             services.AddScoped<IMailService, SmtpMailService>();
-
+            services.AddSingleton<ICloudinaryService, CloudinaryService>();
             services.AddScoped<IChangeLogRepository, ChangeLogRepository>();
-
-
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<IChangeLogService, ChangeLogService>();
@@ -34,6 +33,7 @@ namespace FrenCircle.Api.Extensions
 
             services.AddScoped<IProfileService, ProfileService>();
             services.AddScoped<IProfileRepository, ProfileRepository>();
+            
 
             return services;
         }

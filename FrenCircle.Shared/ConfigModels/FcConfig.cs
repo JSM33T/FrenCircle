@@ -6,7 +6,8 @@
         public MongoConfig? MongoConfig { get; set; }
         public Toggles? Toggles { get; set; }
         public JwtConfig? JwtConfig { get; set; }
-        public TelegramConfig TeleConfig { get; set; }
+        public TelegramConfig? TeleConfig { get; set; }
+        public CloudinaryConfig? CloudinaryConfig { get; set; }
     }
 
     public class Toggles
@@ -25,12 +26,18 @@
     }
 
     public class JwtConfig {
-        public string Issuer { get; set; }
-        public string Audience { get; set; }
-        public string Key { get; set; }
+        public string? Issuer { get; set; }
+        public string? Audience { get; set; }
+        public string? Key { get; set; }
     }
     public class TelegramConfig {
-        public string BotToken { get; set; }
+        public string? BotToken { get; set; }
         public double LogChatId { get; set; }
+    }
+    public class CloudinaryConfig
+    {
+        public string? CloudName { get; set; }
+        public string? ApiKey { get; set; }
+        public string? ApiSecret { get; set; }
     }
 }

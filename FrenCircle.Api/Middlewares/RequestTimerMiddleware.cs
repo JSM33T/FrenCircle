@@ -1,29 +1,20 @@
 ﻿using FrenCircle.Shared.ConfigModels;
-using Microsoft.Extensions.Options;
 using System.Diagnostics;
-using System.Text.Json;
 using System.Text;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace FrenCircle.Api.Middlewares
 {
-    public class RequestTimerMiddleware
+    public class RequestTimerMiddleware(RequestDelegate next, FcConfig config)
     {
-        private readonly RequestDelegate _next;
-        private readonly Toggles _config;
-
-        public RequestTimerMiddleware(RequestDelegate next,FcConfig config)
-        {
-            _next = next;
-            _config = config.Toggles;
-        }
+        private readonly Toggles _config = config.Toggles ?? new Toggles();
 
         public async Task Invoke(HttpContext context)
         {
-            // Skip timing logic if config says so
             if (!_config.IncludeResponseTime)
             {
-                await _next(context);
+                await next(context);
                 return;
             }
 
@@ -33,7 +24,7 @@ namespace FrenCircle.Api.Middlewares
             context.Response.Body = memStream;
 
             var sw = Stopwatch.StartNew();
-            await _next(context);
+            await next(context);
             sw.Stop();
 
             memStream.Seek(0, SeekOrigin.Begin);

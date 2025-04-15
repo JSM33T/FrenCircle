@@ -3,6 +3,7 @@ using FrenCircle.Contracts.Dtos.Requests;
 using FrenCircle.Contracts.Dtos.Responses;
 using FrenCircle.Contracts.Interfaces.Services;
 using FrenCircle.Infra.Dapper;
+using Microsoft.AspNetCore.Authorization;
 using System.Data;
 
 namespace FrenCircle.Repositories
@@ -16,6 +17,7 @@ namespace FrenCircle.Repositories
             _dbFactory = dbFactory;
         }
 
+        [Authorize]
         public async Task<int> InsertChangeLogAsync(ChangeLogRequestDto dto)
         {
             using var conn = _dbFactory.CreateConnection();

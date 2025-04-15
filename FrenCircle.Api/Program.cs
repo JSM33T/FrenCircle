@@ -62,7 +62,7 @@ if (app.Environment.IsDevelopment())
 }
 app.UseCors("OpenPolicy");
 app.UseHttpsRedirection();
-
+app.UseStaticFiles();
 app.UseAuthentication();
 app.UseAuthorization();
 

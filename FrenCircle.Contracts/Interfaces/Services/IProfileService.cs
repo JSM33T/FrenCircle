@@ -10,5 +10,6 @@ namespace FrenCircle.Contracts.Interfaces.Services
     public interface IProfileService
     {
         Task<UserProfileDetailsDto> GetUserProfileById(int Id);
+        Task<int> UpdateUserProfile(EditUserProfileDto userProfileDetails,string AvatarUrl);
     }
 }

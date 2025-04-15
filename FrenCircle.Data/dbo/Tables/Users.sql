@@ -12,6 +12,7 @@
     IsEmailVerified         BIT                 NOT NULL DEFAULT 0,
     EmailVerificationToken  UNIQUEIDENTIFIER    NULL,
     CreatedAt               DATETIME            NOT NULL DEFAULT GETDATE(),
+    UpdatedAt               DATETIME            NOT NULL DEFAULT GETDATE(),
     RowId                   UNIQUEIDENTIFIER    NOT NULL DEFAULT NEWID(),
 
 );
