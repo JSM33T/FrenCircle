@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE CreateLoginSession
+﻿CREATE PROCEDURE [dbo].[usp_CreateLoginSession]
     @UserLoginId INT,
     @AccessToken NVARCHAR(512),
     @RefreshToken NVARCHAR(512),

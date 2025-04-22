@@ -29,7 +29,7 @@ namespace FrenCircle.Repositories
             parameters.Add("@Contributors", dto.Contributors);
 
             var result = await conn.ExecuteScalarAsync<int>(
-                "InsertChangeLog",
+                "usp_InsertChangeLog",
                 parameters,
                 commandType: CommandType.StoredProcedure
             );
@@ -42,7 +42,7 @@ namespace FrenCircle.Repositories
             using var conn = _dbFactory.CreateConnection();
 
             await conn.ExecuteAsync(
-                "DeleteChangeLogsByVersion",
+                "usp_DeleteChangeLogsByVersion",
                 new { Version = version },
                 commandType: CommandType.StoredProcedure
             );

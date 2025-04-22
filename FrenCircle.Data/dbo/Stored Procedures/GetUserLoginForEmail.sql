@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE GetUserLoginForEmail
+﻿CREATE PROCEDURE [dbo].[usp_GetUserLoginForEmail]
     @Email NVARCHAR(256)
 AS
 BEGIN

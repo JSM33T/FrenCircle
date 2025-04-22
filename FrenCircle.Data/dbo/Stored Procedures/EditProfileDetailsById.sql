@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE usp_UpdateUserProfile
+﻿CREATE PROCEDURE [dbo].[usp_UpdateUserProfile]
     @Id INT,
     @FirstName NVARCHAR(128),
     @LastName NVARCHAR(128),

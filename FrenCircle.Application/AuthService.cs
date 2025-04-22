@@ -30,7 +30,7 @@ namespace FrenCircle.Application
             var hash = PasswordHelper.HashPassword(dto.Password, salt);
             SignupResultDto res = await _repo.InsertUserAsync(dto, hash, salt);
 
-            await _mailService.SendEmailAsync(res.Email, "subject", "body", true);
+            //await _mailService.SendEmailAsync(res.Email, "subject", "body", true);
 
             return true;
         }

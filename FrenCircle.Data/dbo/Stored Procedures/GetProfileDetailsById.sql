@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[GetProfileDetailsById]
+﻿CREATE PROCEDURE [dbo].[usp_GetProfileDetailsById]
     @Id NVARCHAR(50)
 AS
 BEGIN

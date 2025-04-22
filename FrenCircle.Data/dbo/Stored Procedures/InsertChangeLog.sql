@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[InsertChangeLog]
+﻿CREATE PROCEDURE [dbo].[usp_InsertChangeLog]
     @Version       NVARCHAR(50),
     @Title         NVARCHAR(255),
     @Description   NVARCHAR(MAX),

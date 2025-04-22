@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace FrenCircle.Api.Controllers
 {
     [Route("api/profile")]
-    [Authorize]
+    [Authorize] 
     [ApiController]
     public class ProfileController(IProfileService profileService,ICloudinaryService cloudinaryService) : FcBaseController
     {

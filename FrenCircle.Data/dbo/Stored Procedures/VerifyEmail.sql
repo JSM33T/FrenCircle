@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE VerifyEmail
+﻿CREATE PROCEDURE [dbo].[usp_VerifyEmail]
     @Token UNIQUEIDENTIFIER
 AS
 BEGIN

@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE SignupUser
+﻿CREATE PROCEDURE [dbo].[usp_SignupUser]
     @FirstName NVARCHAR(128),
     @LastName NVARCHAR(128),
     @UserName NVARCHAR(128),

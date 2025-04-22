@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE GetUserSessions
+﻿CREATE PROCEDURE [dbo].[usp_GetUserSessions]
     @UserId INT
 AS
 BEGIN

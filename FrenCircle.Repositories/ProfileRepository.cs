@@ -1,14 +1,8 @@
 ﻿using Dapper;
 using FrenCircle.Contracts.Dtos.Responses;
 using FrenCircle.Contracts.Interfaces.Repositories;
-using FrenCircle.Contracts.Models;
 using FrenCircle.Infra.Dapper;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FrenCircle.Repositories
 {
@@ -24,7 +18,7 @@ namespace FrenCircle.Repositories
             using var conn = dapperFactory.CreateConnection();
 
             return await conn.QuerySingleOrDefaultAsync<UserProfileDetailsDto>(
-                "[GetProfileDetailsById]",
+                "usp_GetProfileDetailsById",
                 new { Id = id },
                 commandType: CommandType.StoredProcedure);
         }
@@ -44,7 +38,7 @@ namespace FrenCircle.Repositories
             parameters.Add("ResultCode", dbType: DbType.Int32, direction: ParameterDirection.Output);
 
             await conn.ExecuteAsync(
-                "[usp_UpdateUserProfile]",
+                "usp_UpdateUserProfile",
                 parameters,
                 commandType: CommandType.StoredProcedure);
 

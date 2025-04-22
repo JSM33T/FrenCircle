@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[DeleteChangeLogsByVersion]
+﻿CREATE PROCEDURE [dbo].[usp_DeleteChangeLogsByVersion]
     @Version NVARCHAR(50)
 AS
 BEGIN

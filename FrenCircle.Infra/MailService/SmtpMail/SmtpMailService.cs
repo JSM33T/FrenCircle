@@ -8,10 +8,7 @@ namespace FrenCircle.Infra.MailService.SmtpMail
     {
         private readonly SmtpConfig _config;
 
-        public SmtpMailService(IOptions<SmtpConfig> smtpOptions)
-        {
-            _config = smtpOptions.Value;
-        }
+        public SmtpMailService(IOptions<SmtpConfig> smtpOptions) => _config = smtpOptions.Value;
 
         public async Task SendEmailAsync(string to, string subject, string body, bool isHtml = true)
         {

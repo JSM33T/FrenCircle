@@ -1,35 +1,22 @@
 ﻿using Dapper;
-using FrenCircle.Contracts.Dtos.Requests;
-using FrenCircle.Contracts.Dtos.Responses;
 using FrenCircle.Contracts.Dtos;
-using FrenCircle.Contracts.Interfaces.Repositories;
-using FrenCircle.Contracts.Interfaces.Services;
-using FrenCircle.Contracts.Models;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FrenCircle.Infra.Dapper;
 using FrenCircle.Contracts.Dtos.Internal;
+using FrenCircle.Contracts.Interfaces.Repositories;
+using FrenCircle.Contracts.Models;
+using FrenCircle.Infra.Dapper;
+using System.Data;
 
 namespace FrenCircle.Repositories
 {
     // AuthRepository.cs
-    public class AuthRepository : IAuthRepository
+    public class AuthRepository(IDapperFactory factory) : IAuthRepository
     {
-        private readonly IDbConnection _db;
-
-        public AuthRepository(IDapperFactory factory)
-        {
-            _db = factory.CreateConnection();
-        }
+        private readonly IDbConnection _db = factory.CreateConnection();
 
         public async Task<UserLogin?> GetLoginDataByEmailAsync(string email)
         {
             var result = await _db.QueryFirstOrDefaultAsync<UserLogin>(
-                "EXEC GetUserLoginForEmail @Email",
+                "EXEC usp_GetUserLoginForEmail @Email",
                 new { Email = email });
             return result;
         }
@@ -57,7 +44,7 @@ namespace FrenCircle.Repositories
             parameters.Add("@Salt", salt);
 
             var result = await _db.QuerySingleAsync<SignupResultDto>(
-                "SignupUser", parameters, commandType: CommandType.StoredProcedure);
+                "usp_SignupUser", parameters, commandType: CommandType.StoredProcedure);
 
             return result;
         }
@@ -81,7 +68,7 @@ namespace FrenCircle.Repositories
             parameters.Add("@IPAddress", session.IpAddress);
             parameters.Add("@UserAgent", session.UserAgent);
 
-            return await _db.ExecuteScalarAsync<int>("CreateLoginSession", parameters, commandType: CommandType.StoredProcedure);
+            return await _db.ExecuteScalarAsync<int>("usp_CreateLoginSession", parameters, commandType: CommandType.StoredProcedure);
         }
 
         public async Task<(int UserId, int UserLoginId,int SessionId)> ValidateRefreshTokenAsync(string refreshToken, string deviceId)
@@ -109,20 +96,20 @@ namespace FrenCircle.Repositories
 
         public async Task<IEnumerable<SessionDto>> GetSessionsByUserIdAsync(int userId)
         {
-            return await _db.QueryAsync<SessionDto>("EXEC GetUserSessions @UserId", new { UserId = userId });
+            return await _db.QueryAsync<SessionDto>("EXEC usp_GetUserSessions @UserId", new { UserId = userId });
         }
         public async Task VerifyEmailTokenAsync(Guid token)
         {
-            await _db.ExecuteAsync("VerifyEmail", new { Token = token }, commandType: CommandType.StoredProcedure);
+            await _db.ExecuteAsync("usp_VerifyEmail", new { Token = token }, commandType: CommandType.StoredProcedure);
         }
 
         public async Task StoreNewRefreshTokenAsync(int sessionId, string newRefreshToken, DateTime expiresAt)
         {
             const string sql = @"
-        UPDATE LoginSessions
-        SET RefreshToken = @RefreshToken,
-            ExpiresAt = @ExpiresAt
-        WHERE Id = @SessionId;";
+            UPDATE LoginSessions
+            SET RefreshToken = @RefreshToken,
+                ExpiresAt = @ExpiresAt
+            WHERE Id = @SessionId;";
 
             await _db.ExecuteAsync(sql, new
             {
