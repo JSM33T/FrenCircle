@@ -1,0 +1,6 @@
+@FrenCircle.Base_HostAddress = http://localhost:5073
+
+GET {{FrenCircle.Base_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
