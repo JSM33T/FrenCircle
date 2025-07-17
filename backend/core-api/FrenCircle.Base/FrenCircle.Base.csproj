@@ -13,4 +13,10 @@
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.22.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\FrenCircle.Contracts\FrenCircle.Contracts.csproj" />
+    <ProjectReference Include="..\FrenCircle.Entities\FrenCircle.Entities.csproj" />
+    <ProjectReference Include="..\FrenCircle.Helpers\FrenCircle.Helpers.csproj" />
+  </ItemGroup>
+
 </Project>

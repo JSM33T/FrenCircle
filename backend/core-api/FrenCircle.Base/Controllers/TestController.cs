@@ -1,29 +1,26 @@
+
 using Microsoft.AspNetCore.Mvc;
 
 namespace FrenCircle.Base.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
-    public class TestController : ControllerBase
+    [Route("/")]
+    public class TestController(ILogger<TestController> logger) : Base.FcBaseController
     {
-        private readonly ILogger<TestController> _logger;
+        private readonly ILogger<TestController> _logger = logger;
 
-        public TestController(ILogger<TestController> logger)
+        [HttpGet(Name = "system-details")]
+        public ActionResult<FrenCircle.Contracts.Shared.ApiResponse<object>> GetSystemDetails()
         {
-            _logger = logger;
-        }
-
-        [HttpGet(Name = "GetWeatherForecast")]
-        public IActionResult Get()
-        {
-            return Ok(
-
-                new
-                {
-                    Date = DateTime.Now,
-                    ServerStat = "Running"
-                }
-            );
+            var details = new
+            {
+                ServerTime = DateTime.Now,
+                OS = System.Runtime.InteropServices.RuntimeInformation.OSDescription,
+                MachineName = Environment.MachineName,
+                DotNetVersion = Environment.Version.ToString(),
+                UserName = Environment.UserName
+            };
+            return RESP_Success((object)details, "System details fetched successfully");
         }
     }
 }
