@@ -1,0 +1,28 @@
+.page-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.card {
+  background: var(--surface-color, #ffffff);
+  border-radius: 8px;
+  padding: 20px;
+  margin: 20px 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+h1 {
+  color: var(--text-color, #212121);
+  margin-bottom: 20px;
+}
+
+h3 {
+  color: var(--text-color, #212121);
+  margin-bottom: 15px;
+}
+
+p {
+  color: var(--text-secondary-color, #757575);
+  margin-bottom: 10px;
+}

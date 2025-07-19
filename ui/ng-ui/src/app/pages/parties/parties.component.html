@@ -1,0 +1,26 @@
+<div class="page-container">
+  <h1>Parties</h1>
+  <p>Join parties and events happening around you.</p>
+
+  <div class="parties-section">
+    <h2>Upcoming Parties</h2>
+    <div class="party-grid">
+      <div class="party-card" *ngFor="let party of parties">
+        <div class="party-header">
+          <h3>{{ party.name }}</h3>
+          <span class="party-date">{{ party.date }}</span>
+        </div>
+        <div class="party-details">
+          <p><strong>Location:</strong> {{ party.location }}</p>
+          <p><strong>Host:</strong> {{ party.host }}</p>
+          <p><strong>Attendees:</strong> {{ party.attendees }}</p>
+          <p class="party-description">{{ party.description }}</p>
+        </div>
+        <div class="party-actions">
+          <button class="join-btn">Join Party</button>
+          <button class="info-btn">More Info</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

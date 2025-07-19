@@ -1,0 +1,16 @@
+<div class="page-container">
+  <h1>Stream</h1>
+  <p>Watch live streams and connect with friends.</p>
+  <div class="stream-grid">
+    <div class="stream-card" *ngFor="let stream of streams">
+      <div class="stream-thumbnail">
+        <div class="live-badge">LIVE</div>
+      </div>
+      <div class="stream-info">
+        <h3>{{ stream.title }}</h3>
+        <p>{{ stream.streamer }}</p>
+        <p>{{ stream.viewers }} viewers</p>
+      </div>
+    </div>
+  </div>
+</div>

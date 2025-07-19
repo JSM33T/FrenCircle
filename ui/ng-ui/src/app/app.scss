@@ -1,0 +1,166 @@
+// Navbar styles
+.desktop-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+
+  .logo {
+    font-weight: 600;
+    font-size: 1.5rem;
+  }
+
+  .spacer {
+    flex: 1 1 auto;
+  }
+
+  button {
+    margin-left: 8px;
+
+    mat-icon {
+      margin-right: 4px;
+    }
+  }
+
+  // Dark mode toggle styles
+  .dark-mode-toggle {
+    display: flex;
+    align-items: center;
+    margin: 0 16px;
+    gap: 8px;
+
+    mat-icon {
+      opacity: 0.7;
+      transition: opacity 0.3s ease;
+
+      &:first-child {
+        color: #FFC107; // Sun color
+      }
+
+      &:last-child {
+        color: #3F51B5; // Moon color
+      }
+    }
+
+    mat-slide-toggle {
+      margin: 0 4px;
+    }
+  }
+}
+
+// Mobile navigation styles
+.sidenav-container {
+  height: 100vh;
+}
+
+.sidenav {
+  width: 250px;
+
+  .mat-toolbar {
+    background: inherit;
+  }
+}
+
+.sidenav .mat-toolbar {
+  background: inherit;
+}
+
+// Mobile dark mode toggle
+.mobile-dark-mode-toggle {
+  mat-icon {
+    color: #3F51B5; // Moon color
+  }
+}
+
+// Content area
+.content {
+  padding: 20px;
+  min-height: calc(100vh - 64px); // Subtract toolbar height
+  transition: background-color 0.3s ease, color 0.3s ease;
+
+  @media (max-width: 768px) {
+    padding: 16px;
+    min-height: calc(100vh - 56px); // Smaller toolbar on mobile
+  }
+}
+
+// Dark theme styles
+:root {
+  --background-color: #fafafa;
+  --surface-color: #ffffff;
+  --text-color: #212121;
+  --text-secondary-color: #757575;
+}
+
+body.dark-theme {
+  --background-color: #121212;
+  --surface-color: #1e1e1e;
+  --text-color: #ffffff;
+  --text-secondary-color: #b3b3b3;
+
+  background-color: var(--background-color);
+  color: var(--text-color);
+
+  .content {
+    background-color: var(--background-color);
+    color: var(--text-color);
+  }
+
+  // Override Material theme for dark mode
+  .mat-toolbar {
+    background-color: #1f1f1f !important;
+    color: var(--text-color) !important;
+  }
+
+  .mat-sidenav {
+    background-color: var(--surface-color) !important;
+    color: var(--text-color) !important;
+  }
+
+  .mat-sidenav-container {
+    background-color: var(--background-color) !important;
+  }
+
+  .mat-list-item {
+    color: var(--text-color) !important;
+  }
+
+  .mat-menu-panel {
+    background-color: var(--surface-color) !important;
+  }
+
+  .mat-menu-item {
+    color: var(--text-color) !important;
+  }
+}
+
+// Light theme (default)
+body:not(.dark-theme) {
+  background-color: var(--background-color);
+  color: var(--text-color);
+
+  .content {
+    background-color: var(--background-color);
+    color: var(--text-color);
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .desktop-toolbar {
+    display: none !important;
+  }
+
+  .dark-mode-toggle {
+    display: none !important;
+  }
+}
+
+@media (min-width: 769px) {
+  .sidenav-container {
+    display: none !important;
+  }
+
+  .mobile-dark-mode-toggle {
+    display: none !important;
+  }
+}
