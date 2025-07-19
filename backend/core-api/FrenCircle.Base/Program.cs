@@ -18,7 +18,7 @@ builder.Services.AddSingleton(sp =>
 // Add authentication services
 builder.Services.AddAuthServices(builder.Configuration);
 
-builder.Services.AddUserServices(builder.Environment);
+builder.Services.AddUserServices(builder.Environment, builder.Configuration);
 
 var app = builder.Build();
 

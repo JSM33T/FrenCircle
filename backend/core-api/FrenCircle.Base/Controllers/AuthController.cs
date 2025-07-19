@@ -7,6 +7,8 @@ using FrenCircle.Data;
 using System.Security.Claims;
 using System.Security;
 using System.Text.Json;
+using FrenCircle.Infra.Repositories.Interfaces;
+using FrenCircle.Contracts.Mail;
 
 namespace FrenCircle.Api.Controllers
 {
@@ -53,13 +55,15 @@ namespace FrenCircle.Api.Controllers
         private readonly IJwtService _jwtService;
         private readonly IOAuthService _oauthService;
         private readonly ILogger<AuthController> _logger;
+        private readonly IMailRepository _mailRepository;
 
-        public AuthController(IAuthRepository repo, IJwtService jwtService, IOAuthService oauthService, ILogger<AuthController> logger)
+        public AuthController(IAuthRepository repo, IJwtService jwtService, IOAuthService oauthService, ILogger<AuthController> logger, IMailRepository mailRepository)
         {
             _repo = repo;
             _jwtService = jwtService;
             _oauthService = oauthService;
             _logger = logger;
+            _mailRepository = mailRepository;
         }
 
         // 1. Register (email+password)
@@ -73,6 +77,43 @@ namespace FrenCircle.Api.Controllers
 
             if (!result.Success)
                 return BadRequest(result);
+
+            // Send welcome email with email verification
+            try
+            {
+                if (result.UserId.HasValue && !string.IsNullOrEmpty(result.EmailVerificationToken))
+                {
+                    // Get the created user
+                    var user = await _repo.GetUserByIdAsync(result.UserId.Value);
+                    
+                    if (user != null)
+                    {
+                        // Send welcome email with verification link
+                        var verificationLink = $"{Request.Scheme}://{Request.Host}/verify-email?token={result.EmailVerificationToken}&email={Uri.EscapeDataString(user.Email)}";
+                        
+                        var emailVariables = new Dictionary<string, string>
+                        {
+                            { "UserName", user.FirstName ?? user.Username ?? "User" },
+                            { "AppName", "FrenCircle" },
+                            { "VerificationLink", verificationLink },
+                            { "ExpirationHours", "24" }
+                        };
+
+                        await _mailRepository.SendTemplateEmailAsync(
+                            EmailTemplateType.EmailVerification,
+                            new EmailRecipient { Email = user.Email, Name = user.FirstName ?? user.Username },
+                            emailVariables
+                        );
+
+                        _logger.LogInformation("Welcome email sent to {Email}", user.Email);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to send welcome email to {Email}", req.Email);
+                // Don't fail registration if email fails
+            }
 
             return Ok(result);
         }
@@ -366,8 +407,35 @@ namespace FrenCircle.Api.Controllers
             if (user == null) return NotFound();
 
             var token = await _repo.CreateEmailVerificationTokenAsync(user.Id, req.Email);
-            // TODO: Send email with token here
-            return Ok(new { success = true, token });
+            
+            // Send email verification
+            try
+            {
+                var verificationLink = $"{Request.Scheme}://{Request.Host}/verify-email?token={token}&email={Uri.EscapeDataString(user.Email)}";
+                
+                var emailVariables = new Dictionary<string, string>
+                {
+                    { "UserName", user.FirstName ?? user.Username ?? "User" },
+                    { "AppName", "FrenCircle" },
+                    { "VerificationLink", verificationLink },
+                    { "ExpirationHours", "24" }
+                };
+
+                await _mailRepository.SendTemplateEmailAsync(
+                    EmailTemplateType.EmailVerification,
+                    new EmailRecipient { Email = user.Email, Name = user.FirstName ?? user.Username },
+                    emailVariables
+                );
+
+                _logger.LogInformation("Email verification sent to {Email}", user.Email);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to send email verification to {Email}", req.Email);
+                // Don't fail the request if email fails
+            }
+
+            return Ok(new { success = true, message = "Email verification sent if account exists" });
         }
 
         // 9. Email verification (confirm token)
@@ -391,8 +459,35 @@ namespace FrenCircle.Api.Controllers
 
             var ip = HttpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown";
             var token = await _repo.CreatePasswordResetTokenAsync(user.Id, req.Email, ip);
-            // TODO: Send email with token here
-            return Ok(new { success = true, token });
+            
+            // Send password reset email
+            try
+            {
+                var resetLink = $"{Request.Scheme}://{Request.Host}/reset-password?token={token}&email={Uri.EscapeDataString(user.Email)}";
+                
+                var emailVariables = new Dictionary<string, string>
+                {
+                    { "UserName", user.FirstName ?? user.Username ?? "User" },
+                    { "AppName", "FrenCircle" },
+                    { "ResetLink", resetLink },
+                    { "ExpirationHours", "1" }
+                };
+
+                await _mailRepository.SendTemplateEmailAsync(
+                    EmailTemplateType.PasswordReset,
+                    new EmailRecipient { Email = user.Email, Name = user.FirstName ?? user.Username },
+                    emailVariables
+                );
+
+                _logger.LogInformation("Password reset email sent to {Email}", user.Email);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to send password reset email to {Email}", req.Email);
+                // Don't fail the request if email fails, for security reasons
+            }
+
+            return Ok(new { success = true, message = "Password reset email sent if account exists" });
         }
 
         // 11. Password reset confirm
