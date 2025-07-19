@@ -19,6 +19,7 @@ namespace FrenCircle.Data.Repositories
 
         // Session management
         Task<Session> CreateSessionAsync(Guid userId, string deviceFingerprint, string ipAddress, string? userAgent = null);
+        Task<Session> CreateOrUpdateSessionAsync(Guid userId, string deviceFingerprint, string ipAddress, string? userAgent = null);
         Task<Session?> GetSessionByTokenAsync(string sessionToken);
         Task<List<SessionDto>> GetUserSessionsAsync(Guid userId);
         Task<bool> UpdateSessionActivityAsync(Guid sessionId);
@@ -255,6 +256,42 @@ namespace FrenCircle.Data.Repositories
         #endregion
 
         #region Session Management
+
+        public async Task<Session> CreateOrUpdateSessionAsync(Guid userId, string deviceFingerprint, string ipAddress, string? userAgent = null)
+        {
+            var device = await GetOrCreateDeviceAsync(deviceFingerprint, userAgent);
+            
+            // Find existing active session for this user and device
+            var existingSession = await _context.Sessions
+                .Include(s => s.Device)
+                .FirstOrDefaultAsync(s => s.UserId == userId && 
+                                         s.DeviceId == device.Id && 
+                                         s.IsActive && 
+                                         s.ExpiresAt > DateTime.UtcNow);
+
+            if (existingSession != null)
+            {
+                // Update existing session
+                existingSession.SessionToken = GenerateJwtToken();
+                existingSession.IPAddress = ipAddress;
+                existingSession.LastActivityAt = DateTime.UtcNow;
+                existingSession.UpdatedAt = DateTime.UtcNow;
+                existingSession.ExpiresAt = DateTime.UtcNow.AddDays(30);
+
+                await _context.SaveChangesAsync();
+                return existingSession;
+            }
+
+            // Create new session if none exists
+            var newSession = await CreateSessionAsync(userId, deviceFingerprint, ipAddress, userAgent);
+            
+            // Load the Device navigation property
+            await _context.Entry(newSession)
+                .Reference(s => s.Device)
+                .LoadAsync();
+                
+            return newSession;
+        }
 
         public async Task<Session> CreateSessionAsync(Guid userId, string deviceFingerprint, string ipAddress, string? userAgent = null)
         {
@@ -739,6 +776,7 @@ namespace FrenCircle.Data.Repositories
                     DeviceType = ParseDeviceType(userAgent),
                     Browser = ParseBrowser(userAgent),
                     OS = ParseOS(userAgent),
+                    DeviceName = ParseDeviceName(userAgent), // Use parsed name from UserAgent
                     FirstSeenAt = DateTime.UtcNow,
                     LastSeenAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow
@@ -749,6 +787,16 @@ namespace FrenCircle.Data.Repositories
             }
             else
             {
+                // Update device info if UserAgent has changed
+                if (!string.IsNullOrEmpty(userAgent) && device.UserAgent != userAgent)
+                {
+                    device.UserAgent = userAgent;
+                    device.DeviceType = ParseDeviceType(userAgent);
+                    device.Browser = ParseBrowser(userAgent);
+                    device.OS = ParseOS(userAgent);
+                    device.DeviceName = ParseDeviceName(userAgent);
+                }
+                
                 device.LastSeenAt = DateTime.UtcNow;
                 device.UpdatedAt = DateTime.UtcNow;
                 await _context.SaveChangesAsync();
@@ -893,35 +941,103 @@ namespace FrenCircle.Data.Repositories
             };
         }
 
+        private string? ParseDeviceName(string? userAgent)
+        {
+            if (string.IsNullOrEmpty(userAgent))
+                return "Unknown Device";
+            
+            // Extract a meaningful device name from User Agent
+            var browser = ParseBrowser(userAgent);
+            var os = ParseOS(userAgent);
+            var deviceType = ParseDeviceType(userAgent);
+            
+            // Create a descriptive name combining the parsed information
+            var parts = new List<string>();
+            
+            if (!string.IsNullOrEmpty(browser) && browser != "Unknown")
+                parts.Add(browser);
+            
+            if (!string.IsNullOrEmpty(os) && os != "Unknown")
+                parts.Add($"on {os}");
+            
+            if (!string.IsNullOrEmpty(deviceType) && deviceType != "Unknown")
+                parts.Add($"({deviceType})");
+            
+            if (parts.Count == 0)
+                return "Unknown Device";
+            
+            return string.Join(" ", parts);
+        }
+
         private string? ParseDeviceType(string? userAgent)
         {
-            if (string.IsNullOrEmpty(userAgent)) return null;
+            if (string.IsNullOrEmpty(userAgent))
+                return "Unknown";
             
-            if (userAgent.Contains("Mobile")) return "mobile";
-            if (userAgent.Contains("Tablet")) return "tablet";
-            return "desktop";
+            var ua = userAgent.ToLowerInvariant();
+            
+            if (ua.Contains("mobile") || ua.Contains("android") || ua.Contains("iphone") || ua.Contains("ipod"))
+                return "Mobile";
+            if (ua.Contains("tablet") || ua.Contains("ipad"))
+                return "Tablet";
+            if (ua.Contains("tv") || ua.Contains("smart-tv"))
+                return "Smart TV";
+            
+            return "Desktop";
         }
 
         private string? ParseBrowser(string? userAgent)
         {
-            if (string.IsNullOrEmpty(userAgent)) return null;
+            if (string.IsNullOrEmpty(userAgent))
+                return "Unknown";
             
-            if (userAgent.Contains("Chrome")) return "Chrome";
-            if (userAgent.Contains("Firefox")) return "Firefox";
-            if (userAgent.Contains("Safari")) return "Safari";
-            if (userAgent.Contains("Edge")) return "Edge";
+            var ua = userAgent.ToLowerInvariant();
+            
+            // Order matters - check more specific browsers first
+            if (ua.Contains("edg/") || ua.Contains("edge/"))
+                return "Microsoft Edge";
+            if (ua.Contains("chrome/") && !ua.Contains("chromium"))
+                return "Google Chrome";
+            if (ua.Contains("firefox/"))
+                return "Mozilla Firefox";
+            if (ua.Contains("safari/") && !ua.Contains("chrome"))
+                return "Safari";
+            if (ua.Contains("opera/") || ua.Contains("opr/"))
+                return "Opera";
+            if (ua.Contains("chromium/"))
+                return "Chromium";
+            
             return "Unknown";
         }
 
         private string? ParseOS(string? userAgent)
         {
-            if (string.IsNullOrEmpty(userAgent)) return null;
+            if (string.IsNullOrEmpty(userAgent))
+                return "Unknown";
             
-            if (userAgent.Contains("Windows")) return "Windows";
-            if (userAgent.Contains("Mac OS")) return "macOS";
-            if (userAgent.Contains("Linux")) return "Linux";
-            if (userAgent.Contains("Android")) return "Android";
-            if (userAgent.Contains("iOS")) return "iOS";
+            var ua = userAgent.ToLowerInvariant();
+            
+            if (ua.Contains("windows nt 10"))
+                return "Windows 10/11";
+            if (ua.Contains("windows nt 6.3"))
+                return "Windows 8.1";
+            if (ua.Contains("windows nt 6.2"))
+                return "Windows 8";
+            if (ua.Contains("windows nt 6.1"))
+                return "Windows 7";
+            if (ua.Contains("windows"))
+                return "Windows";
+            if (ua.Contains("mac os x") || ua.Contains("macos"))
+                return "macOS";
+            if (ua.Contains("iphone os") || ua.Contains("ios"))
+                return "iOS";
+            if (ua.Contains("android"))
+                return "Android";
+            if (ua.Contains("linux"))
+                return "Linux";
+            if (ua.Contains("ubuntu"))
+                return "Ubuntu";
+            
             return "Unknown";
         }
 

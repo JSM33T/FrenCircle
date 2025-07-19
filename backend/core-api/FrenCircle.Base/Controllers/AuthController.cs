@@ -87,10 +87,19 @@ namespace FrenCircle.Api.Controllers
             if (!loginResult.Success)
                 return Unauthorized(loginResult);
 
-            // Create session and refresh token
+            // Get device fingerprint from cookie or request
             var userAgent = Request.Headers["User-Agent"].ToString();
             var ip = HttpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown";
-            var session = await _repo.CreateSessionAsync(loginResult.UserId!.Value, req.DeviceFingerprint ?? "", ip, userAgent);
+            var deviceFingerprint = req.DeviceFingerprint;
+            
+            // Get fingerprint from cookie if not provided in request
+            if (string.IsNullOrEmpty(deviceFingerprint) && Request.Cookies.TryGetValue("deviceFingerprint", out var cookieFingerprint))
+            {
+                deviceFingerprint = cookieFingerprint;
+            }
+
+            // Create or update session and refresh token
+            var session = await _repo.CreateOrUpdateSessionAsync(loginResult.UserId!.Value, deviceFingerprint ?? "", ip, userAgent);
             var refreshToken = await _repo.CreateRefreshTokenAsync(loginResult.UserId!.Value, session.Id, ip);
 
             // Get user roles and permissions for JWT
@@ -111,6 +120,20 @@ namespace FrenCircle.Api.Controllers
                 Path = "/"
             };
             Response.Cookies.Append("refreshToken", refreshToken.Token, cookieOptions);
+
+            // Set device fingerprint cookie if not already set
+            if (string.IsNullOrEmpty(Request.Cookies["deviceFingerprint"]))
+            {
+                var fingerprintCookieOptions = new CookieOptions
+                {
+                    HttpOnly = false, // Allow JavaScript access for fingerprinting
+                    Secure = true,
+                    SameSite = SameSiteMode.Strict,
+                    Expires = DateTime.UtcNow.AddYears(1), // Long-term cookie
+                    Path = "/"
+                };
+                Response.Cookies.Append("deviceFingerprint", deviceFingerprint ?? session.Device.Fingerprint, fingerprintCookieOptions);
+            }
 
             return Ok(new
             {
@@ -163,17 +186,17 @@ namespace FrenCircle.Api.Controllers
             }
         }
 
-        //// 3. Logout (revoke session)
-        //[HttpPost("logout")]
-        //[Authorize]
-        //public async Task<IActionResult> Logout([FromBody] LogoutRequest req)
-        //{
-        //    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        //    if (!Guid.TryParse(userId, out var guid)) return Unauthorized();
+        // 3. Logout (revoke session)
+        [HttpPost("logout")]
+        [Authorize]
+        public async Task<IActionResult> Logout([FromBody] LogoutRequest req)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (!Guid.TryParse(userId, out var guid)) return Unauthorized();
 
-        //    await _repo.RevokeSessionAsync(req.SessionId, "logout");
-        //    return Ok(new { success = true });
-        //}
+            await _repo.RevokeSessionAsync(req.SessionId, "logout");
+            return Ok(new { success = true });
+        }
 
         // 4. Get current user's sessions
         [HttpGet("sessions")]
@@ -187,17 +210,17 @@ namespace FrenCircle.Api.Controllers
             return Ok(sessions);
         }
 
-        //// 5. Revoke all sessions except current
-        //[HttpPost("revoke-all-sessions")]
-        //[Authorize]
-        //public async Task<IActionResult> RevokeAllSessions([FromBody] RevokeAllSessionsRequest req)
-        //{
-        //    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        //    if (!Guid.TryParse(userId, out var guid)) return Unauthorized();
+        // 5. Revoke all sessions except current
+        [HttpPost("revoke-all-sessions")]
+        [Authorize]
+        public async Task<IActionResult> RevokeAllSessions([FromBody] RevokeAllSessionsRequest req)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (!Guid.TryParse(userId, out var guid)) return Unauthorized();
 
-        //    await _repo.RevokeAllUserSessionsAsync(guid, req.ExceptSessionId);
-        //    return Ok(new { success = true });
-        //}
+            await _repo.RevokeAllUserSessionsAsync(guid, req.ExceptSessionId);
+            return Ok(new { success = true });
+        }
 
         // 6. Start OAuth login (redirect to provider)
         [HttpGet("oauth/{provider}")]
@@ -264,7 +287,15 @@ namespace FrenCircle.Api.Controllers
                 // Create session and tokens
                 var userAgent = Request.Headers["User-Agent"].ToString();
                 var ip = HttpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown";
-                var session = await _repo.CreateSessionAsync(user.Id, req.State ?? "", ip, userAgent);
+                
+                // Get device fingerprint from cookie
+                var deviceFingerprint = req.State ?? "";
+                if (Request.Cookies.TryGetValue("deviceFingerprint", out var cookieFingerprint))
+                {
+                    deviceFingerprint = cookieFingerprint;
+                }
+                
+                var session = await _repo.CreateOrUpdateSessionAsync(user.Id, deviceFingerprint, ip, userAgent);
                 var refreshToken = await _repo.CreateRefreshTokenAsync(user.Id, session.Id, ip);
 
                 // Get user roles and permissions for JWT
@@ -284,6 +315,20 @@ namespace FrenCircle.Api.Controllers
                     Path = "/"
                 };
                 Response.Cookies.Append("refreshToken", refreshToken.Token, cookieOptions);
+
+                // Set device fingerprint cookie if not already set
+                if (string.IsNullOrEmpty(Request.Cookies["deviceFingerprint"]))
+                {
+                    var fingerprintCookieOptions = new CookieOptions
+                    {
+                        HttpOnly = false, // Allow JavaScript access for fingerprinting
+                        Secure = true,
+                        SameSite = SameSiteMode.Strict,
+                        Expires = DateTime.UtcNow.AddYears(1), // Long-term cookie
+                        Path = "/"
+                    };
+                    Response.Cookies.Append("deviceFingerprint", deviceFingerprint, fingerprintCookieOptions);
+                }
 
                 // Log successful OAuth login
                 await _repo.LogLoginAttemptAsync(user.Email, ip, "success", userAgent, null, user.Id);
