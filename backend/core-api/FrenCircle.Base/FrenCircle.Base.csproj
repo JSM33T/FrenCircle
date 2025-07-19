@@ -11,12 +11,19 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.6" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.22.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.6" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.6" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.2.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\FrenCircle.Contracts\FrenCircle.Contracts.csproj" />
+    <ProjectReference Include="..\FrenCircle.Data\FrenCircle.Data.csproj" />
     <ProjectReference Include="..\FrenCircle.Entities\FrenCircle.Entities.csproj" />
     <ProjectReference Include="..\FrenCircle.Helpers\FrenCircle.Helpers.csproj" />
+    <ProjectReference Include="..\FrenCircle.Infra\FrenCircle.Infra.csproj" />
   </ItemGroup>
 
 </Project>

@@ -14,20 +14,20 @@ namespace FrenCircle.Infra.Background
 
         public async Task EnqueueAsync(Func<CancellationToken, Task> taskFunc, string jobName, string? triggeredBy = null, string? metadata = null)
         {
-            using var scope = serviceProvider.CreateScope();
-            var jobHistoryRepo = scope.ServiceProvider.GetRequiredService<IJobHistoryRepository>();
+            //using var scope = serviceProvider.CreateScope();
+            //var jobHistoryRepo = scope.ServiceProvider.GetRequiredService<IJobHistoryRepository>();
 
-            var job = new JobHistory
-            {
-                JobName = jobName,
-                Status = "Pending",
-                ScheduledAt = DateTime.UtcNow,
-                TriggeredBy = triggeredBy,
-                Metadata = metadata
-            };
+            //var job = new JobHistory
+            //{
+            //    JobName = jobName,
+            //    Status = "Pending",
+            //    ScheduledAt = DateTime.UtcNow,
+            //    TriggeredBy = triggeredBy,
+            //    Metadata = metadata
+            //};
 
-            var jobId = await jobHistoryRepo.AddAsync(job);
-            await _queue.Writer.WriteAsync((jobId, taskFunc));
+            //var jobId = await jobHistoryRepo.AddAsync(job);
+            //await _queue.Writer.WriteAsync((jobId, taskFunc));
         }
 
         public async Task<(int JobId, Func<CancellationToken, Task>)> DequeueAsync(CancellationToken cancellationToken)

@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using FrenCircle.Contracts.Shared;
+using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;

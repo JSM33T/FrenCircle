@@ -1,16 +1,17 @@
 
+using FrenCircle.Contracts.Shared;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FrenCircle.Base.Controllers
 {
     [ApiController]
     [Route("/")]
-    public class TestController(ILogger<TestController> logger) : Base.FcBaseController
+    public class AuthController(ILogger<AuthController> logger) : Base.FcBaseController
     {
-        private readonly ILogger<TestController> _logger = logger;
+        private readonly ILogger<AuthController> _logger = logger;
 
         [HttpGet(Name = "system-details")]
-        public ActionResult<FrenCircle.Contracts.Shared.ApiResponse<object>> GetSystemDetails()
+        public ActionResult<ApiResponse<object>> GetSystemDetails()
         {
             var details = new
             {

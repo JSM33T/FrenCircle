@@ -1,5 +1,6 @@
 ﻿using FrenCircle.Contracts.Shared;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
@@ -57,10 +58,10 @@ namespace FrenCircle.Helpers
             };
 
             var customResponse = new ApiResponse<int>(
-                Status: StatusCodes.Status429TooManyRequests,
-                Message: "Rate limit exceeded",
-                Data: 0,
-                Hints: errorMessages
+                status: StatusCodes.Status429TooManyRequests,
+                message: "Rate limit exceeded",
+                data: 0,
+                hints: errorMessages
             );
 
             var customResponseText = JsonConvert.SerializeObject(customResponse, new JsonSerializerSettings

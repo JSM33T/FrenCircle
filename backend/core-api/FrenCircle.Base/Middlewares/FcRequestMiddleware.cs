@@ -1,10 +1,11 @@
 ﻿using FrenCircle.Helpers;
 using FrenCircle.Contracts.Shared;
 using Microsoft.AspNetCore.Components;
+using FrenCircle.Infra;
 
 namespace FrenCircle.Base.Middlewares
 {
-    public class FcRequestMiddleware(RequestDelegate next, ILogger<FcRequestMiddleware> logger, IDispatcher backgroundQueue, ITelegramService telegramService, FcConfig config)
+    public class FcRequestMiddleware(RequestDelegate next, ILogger<FcRequestMiddleware> logger, FcConfig config)
     {
         public async Task InvokeAsync(HttpContext context)
         {
@@ -23,11 +24,11 @@ namespace FrenCircle.Base.Middlewares
                 context.Response.StatusCode = StatusCodes.Status500InternalServerError;
                 logger.LogError(ex, message: ex.Message);
 
-                await backgroundQueue.EnqueueAsync(async token =>
-                {
-                    var msg = $" *Unhandled Exception Occurred*\n\n`{ex.Message}`\n\n`{ex.StackTrace}`";
-                    await telegramService.SendToOneAsync(config?.TeleConfig?.LogChatId.ToString(), msg);
-                }, jobName: "UnhandledException", triggeredBy: "InterceptorMiddleware");
+                //await backgroundQueue.EnqueueAsync(async token =>
+                //{
+                //    var msg = $" *Unhandled Exception Occurred*\n\n`{ex.Message}`\n\n`{ex.StackTrace}`";
+                //    //await telegramService.SendToOneAsync(config?.TeleConfig?.LogChatId.ToString(), msg);
+                //}, jobName: "UnhandledException", triggeredBy: "InterceptorMiddleware");
 
 
                 await ResponseHandlers.HandleInternalServerError(context, originalBodyStream, ex);
