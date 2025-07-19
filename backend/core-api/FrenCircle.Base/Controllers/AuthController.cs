@@ -2,8 +2,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using FrenCircle.Contracts.Auth;
 using FrenCircle.Data.Repositories;
+using FrenCircle.Data.Services;
 using FrenCircle.Data;
 using System.Security.Claims;
+using System.Security;
+using System.Text.Json;
 
 namespace FrenCircle.Api.Controllers
 {
@@ -47,11 +50,15 @@ namespace FrenCircle.Api.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthRepository _repo;
+        private readonly IJwtService _jwtService;
+        private readonly IOAuthService _oauthService;
         private readonly ILogger<AuthController> _logger;
 
-        public AuthController(IAuthRepository repo, ILogger<AuthController> logger)
+        public AuthController(IAuthRepository repo, IJwtService jwtService, IOAuthService oauthService, ILogger<AuthController> logger)
         {
             _repo = repo;
+            _jwtService = jwtService;
+            _oauthService = oauthService;
             _logger = logger;
         }
 
@@ -80,18 +87,80 @@ namespace FrenCircle.Api.Controllers
             if (!loginResult.Success)
                 return Unauthorized(loginResult);
 
-            // Optionally: create session and return tokens
+            // Create session and refresh token
             var userAgent = Request.Headers["User-Agent"].ToString();
             var ip = HttpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown";
             var session = await _repo.CreateSessionAsync(loginResult.UserId!.Value, req.DeviceFingerprint ?? "", ip, userAgent);
             var refreshToken = await _repo.CreateRefreshTokenAsync(loginResult.UserId!.Value, session.Id, ip);
 
+            // Get user roles and permissions for JWT
+            var roles = await _repo.GetUserRolesAsync(loginResult.UserId.Value);
+            var permissions = await _repo.GetUserPermissionsAsync(loginResult.UserId.Value);
+            var user = await _repo.GetUserByIdAsync(loginResult.UserId.Value);
+
+            // Generate JWT access token
+            var accessToken = _jwtService.GenerateAccessToken(user!, roles, permissions);
+
+            // Set refresh token in httpOnly cookie
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true, // Use only in HTTPS
+                SameSite = SameSiteMode.Strict,
+                Expires = DateTime.UtcNow.AddDays(30),
+                Path = "/"
+            };
+            Response.Cookies.Append("refreshToken", refreshToken.Token, cookieOptions);
+
             return Ok(new
             {
-                loginResult.User,
-                SessionToken = session.SessionToken,
-                RefreshToken = refreshToken.Token
+                User = loginResult.User,
+                AccessToken = accessToken,
+                TokenType = "Bearer",
+                ExpiresInMinutes = 30
             });
+        }
+
+        // 3. Refresh Token
+        [HttpPost("refresh")]
+        [AllowAnonymous]
+        public async Task<IActionResult> RefreshToken()
+        {
+            // Get refresh token from cookie
+            if (!Request.Cookies.TryGetValue("refreshToken", out var refreshToken) || string.IsNullOrEmpty(refreshToken))
+            {
+                return Unauthorized(new { message = "Refresh token not found" });
+            }
+
+            try
+            {
+                var ip = HttpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown";
+                var (newAccessToken, newRefreshToken) = await _repo.RefreshTokensAsync(refreshToken, ip);
+
+                // Update refresh token cookie
+                var cookieOptions = new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = true,
+                    SameSite = SameSiteMode.Strict,
+                    Expires = DateTime.UtcNow.AddDays(30),
+                    Path = "/"
+                };
+                Response.Cookies.Append("refreshToken", newRefreshToken, cookieOptions);
+
+                return Ok(new
+                {
+                    AccessToken = newAccessToken,
+                    TokenType = "Bearer",
+                    ExpiresInMinutes = 30
+                });
+            }
+            catch (SecurityException)
+            {
+                // Clear invalid refresh token cookie
+                Response.Cookies.Delete("refreshToken");
+                return Unauthorized(new { message = "Invalid refresh token" });
+            }
         }
 
         //// 3. Logout (revoke session)
@@ -133,11 +202,32 @@ namespace FrenCircle.Api.Controllers
         // 6. Start OAuth login (redirect to provider)
         [HttpGet("oauth/{provider}")]
         [AllowAnonymous]
-        public IActionResult OAuthRedirect(string provider, [FromQuery] string? redirectUri = null)
+        public IActionResult OAuthRedirect(string provider, [FromQuery] string? redirectUri = null, [FromQuery] string? state = null)
         {
-            // This is a placeholder: actual implementation depends on your OAuth workflow
-            // Usually handled on frontend or via a dedicated OAuth middleware
-            return BadRequest(new { message = "OAuth flow not implemented here. Use external OAuth endpoint." });
+            if (provider.ToLowerInvariant() != "google")
+            {
+                return BadRequest(new { message = "Unsupported OAuth provider" });
+            }
+
+            // Generate a secure state parameter if not provided
+            if (string.IsNullOrEmpty(state))
+            {
+                state = Guid.NewGuid().ToString();
+            }
+
+            // Default redirect URI if not provided
+            if (string.IsNullOrEmpty(redirectUri))
+            {
+                redirectUri = $"{Request.Scheme}://{Request.Host}/api/auth/oauth/callback";
+            }
+
+            var authUrl = _oauthService.GetGoogleAuthUrl(redirectUri, state);
+            
+            return Ok(new { 
+                authUrl,
+                state,
+                provider = "google"
+            });
         }
 
         // 7. OAuth callback (provider login)
@@ -145,9 +235,81 @@ namespace FrenCircle.Api.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> OAuthCallback([FromBody] OAuthCallbackRequest req)
         {
-            // Implement provider user resolution, session creation, etc.
-            // Use _repo to link UserProvider and issue tokens
-            return Ok(new { message = "OAuth login logic to be implemented" });
+            try
+            {
+                if (req.Provider.ToLowerInvariant() != "google")
+                {
+                    return BadRequest(new { message = "Unsupported OAuth provider" });
+                }
+
+                // Exchange authorization code for access token
+                var tokenResponse = await ExchangeCodeForTokenAsync(req.Code, req.RedirectUri);
+                
+                if (tokenResponse == null || string.IsNullOrEmpty(tokenResponse.AccessToken))
+                {
+                    return BadRequest(new { message = "Failed to obtain access token" });
+                }
+
+                // Get user info from Google
+                var googleUserInfo = await _oauthService.GetGoogleUserInfoAsync(tokenResponse.AccessToken);
+                
+                // Find or create user
+                var user = await _oauthService.FindOrCreateOAuthUserAsync(googleUserInfo, "google");
+                
+                if (user == null)
+                {
+                    return BadRequest(new { message = "Failed to create or find user" });
+                }
+
+                // Create session and tokens
+                var userAgent = Request.Headers["User-Agent"].ToString();
+                var ip = HttpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown";
+                var session = await _repo.CreateSessionAsync(user.Id, req.State ?? "", ip, userAgent);
+                var refreshToken = await _repo.CreateRefreshTokenAsync(user.Id, session.Id, ip);
+
+                // Get user roles and permissions for JWT
+                var roles = await _repo.GetUserRolesAsync(user.Id);
+                var permissions = await _repo.GetUserPermissionsAsync(user.Id);
+
+                // Generate JWT access token
+                var accessToken = _jwtService.GenerateAccessToken(user, roles, permissions);
+
+                // Set refresh token in httpOnly cookie
+                var cookieOptions = new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = true,
+                    SameSite = SameSiteMode.Strict,
+                    Expires = DateTime.UtcNow.AddDays(30),
+                    Path = "/"
+                };
+                Response.Cookies.Append("refreshToken", refreshToken.Token, cookieOptions);
+
+                // Log successful OAuth login
+                await _repo.LogLoginAttemptAsync(user.Email, ip, "success", userAgent, null, user.Id);
+
+                return Ok(new
+                {
+                    User = new
+                    {
+                        user.Id,
+                        user.Email,
+                        user.Username,
+                        user.FirstName,
+                        user.LastName,
+                        user.Avatar
+                    },
+                    AccessToken = accessToken,
+                    TokenType = "Bearer",
+                    ExpiresInMinutes = 30,
+                    LoginMethod = "oauth_google"
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "OAuth callback failed for provider {Provider}", req.Provider);
+                return BadRequest(new { message = "OAuth login failed", error = ex.Message });
+            }
         }
 
         // 8. Email verification request (send token)
@@ -207,10 +369,30 @@ namespace FrenCircle.Api.Controllers
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (!Guid.TryParse(userId, out var guid)) return Unauthorized();
 
+            var user = await _repo.GetUserByIdAsync(guid);
+            if (user == null) return Unauthorized();
+
             var secret = await _repo.GenerateTwoFactorSecretAsync(guid);
-            return Ok(new { secret });
+            var backupCodes = await _repo.GenerateBackupCodesAsync(guid);
+
+            // Generate QR code URI for authenticator apps
+            var appName = "FrenCircle";
+            var qrCodeUri = $"otpauth://totp/{Uri.EscapeDataString(appName)}:{Uri.EscapeDataString(user.Email)}?secret={secret}&issuer={Uri.EscapeDataString(appName)}";
+
+            return Ok(new TwoFactorSetupResponse
+            {
+                Secret = secret,
+                QrCodeUri = qrCodeUri,
+                BackupCodes = backupCodes
+            });
         }
 
+        [HttpGet("testauth")]
+        [Authorize(Policy = "AdminOnly")]
+        public async Task<IActionResult> Test()
+        {
+            return Ok("ok");
+        }
         // 13. Enable 2FA with code
         [HttpPost("2fa/enable")]
         [Authorize]
@@ -250,5 +432,51 @@ namespace FrenCircle.Api.Controllers
 
             return Ok(new { roles, perms });
         }
+
+        // Helper method to exchange authorization code for access token
+        private async Task<GoogleTokenResponse?> ExchangeCodeForTokenAsync(string code, string? redirectUri)
+        {
+            var configuration = HttpContext.RequestServices.GetRequiredService<IConfiguration>();
+            var googleConfig = configuration.GetSection("Authentication:Google");
+            
+            using var httpClient = new HttpClient();
+            
+            var parameters = new Dictionary<string, string>
+            {
+                {"client_id", googleConfig["ClientId"]!},
+                {"client_secret", googleConfig["ClientSecret"]!},
+                {"code", code},
+                {"grant_type", "authorization_code"},
+                {"redirect_uri", redirectUri ?? $"{Request.Scheme}://{Request.Host}/api/auth/oauth/callback"}
+            };
+
+            var content = new FormUrlEncodedContent(parameters);
+            var response = await httpClient.PostAsync("https://oauth2.googleapis.com/token", content);
+            
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                _logger.LogError("Google token exchange failed: {Error}", errorContent);
+                return null;
+            }
+
+            var jsonContent = await response.Content.ReadAsStringAsync();
+            var tokenResponse = JsonSerializer.Deserialize<GoogleTokenResponse>(jsonContent, new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower
+            });
+
+            return tokenResponse;
+        }
+    }
+
+    // Helper classes for Google OAuth responses
+    public class GoogleTokenResponse
+    {
+        public string AccessToken { get; set; } = string.Empty;
+        public string? RefreshToken { get; set; }
+        public string TokenType { get; set; } = string.Empty;
+        public int ExpiresIn { get; set; }
+        public string? Scope { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
+using System.Security;
 using System.Text;
 using FrenCircle.Contracts.Auth;
 
@@ -28,6 +29,7 @@ namespace FrenCircle.Data.Repositories
         Task<RefreshToken> CreateRefreshTokenAsync(Guid userId, Guid sessionId, string ipAddress);
         Task<RefreshToken?> GetRefreshTokenAsync(string token);
         Task<bool> RevokeRefreshTokenAsync(string token, string reason = "used");
+        Task<(string AccessToken, string RefreshToken)> RefreshTokensAsync(string refreshToken, string ipAddress);
 
         // Email verification
         Task<string> CreateEmailVerificationTokenAsync(Guid userId, string email);
@@ -67,10 +69,12 @@ namespace FrenCircle.Data.Repositories
     public class AuthRepository : IAuthRepository
     {
         private readonly AuthDbContext _context;
+        private readonly IJwtService _jwtService;
 
-        public AuthRepository(AuthDbContext context)
+        public AuthRepository(AuthDbContext context, IJwtService jwtService)
         {
             _context = context;
+            _jwtService = jwtService;
         }
 
         #region User Management
@@ -404,6 +408,53 @@ namespace FrenCircle.Data.Repositories
 
             await _context.SaveChangesAsync();
             return true;
+        }
+
+        public async Task<(string AccessToken, string RefreshToken)> RefreshTokensAsync(string refreshToken, string ipAddress)
+        {
+            var storedToken = await _context.RefreshTokens
+                .Include(rt => rt.User)
+                    .ThenInclude(u => u.UserRoles)
+                        .ThenInclude(ur => ur.Role)
+                            .ThenInclude(r => r.RolePermissions)
+                                .ThenInclude(rp => rp.Permission)
+                .FirstOrDefaultAsync(rt => rt.Token == refreshToken && 
+                                          !rt.IsUsed && 
+                                          !rt.IsRevoked && 
+                                          rt.ExpiresAt > DateTime.UtcNow);
+
+            if (storedToken == null)
+                throw new SecurityException("Invalid refresh token");
+
+            // Mark the old refresh token as used
+            storedToken.IsUsed = true;
+            storedToken.UsedAt = DateTime.UtcNow;
+
+            // Get user roles and permissions
+            var roles = await GetUserRolesAsync(storedToken.UserId);
+            var permissions = await GetUserPermissionsAsync(storedToken.UserId);
+
+            // Generate new tokens
+            var newAccessToken = _jwtService.GenerateAccessToken(storedToken.User, roles, permissions);
+            var newRefreshToken = _jwtService.GenerateRefreshToken();
+
+            // Create new refresh token in database
+            var newRefreshTokenEntity = new RefreshToken
+            {
+                Id = Guid.NewGuid(),
+                UserId = storedToken.UserId,
+                SessionId = storedToken.SessionId,
+                Token = newRefreshToken,
+                ExpiresAt = DateTime.UtcNow.AddDays(30),
+                IPAddress = ipAddress,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
+            };
+
+            _context.RefreshTokens.Add(newRefreshTokenEntity);
+            await _context.SaveChangesAsync();
+
+            return (newAccessToken, newRefreshToken);
         }
 
         #endregion
@@ -803,8 +854,7 @@ namespace FrenCircle.Data.Repositories
 
         private string GenerateJwtToken()
         {
-            // Implement JWT token generation here
-            return GenerateSecureToken();
+            return _jwtService.GenerateRefreshToken();
         }
 
         private string GenerateBackupCode()

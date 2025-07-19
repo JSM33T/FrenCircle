@@ -1,8 +1,11 @@
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 using FrenCircle.Data;
 using FrenCircle.Data.Repositories;
+using FrenCircle.Data.Services;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication.OAuth.Claims;
+using System.Text;
 
 namespace FrenCircle.Base.Extensions
 {
@@ -10,11 +13,13 @@ namespace FrenCircle.Base.Extensions
     {
         public static IServiceCollection AddAuthServices(this IServiceCollection services, IConfiguration configuration)
         {
+         
+
             // Add Entity Framework DbContext
             services.AddDbContext<AuthDbContext>(options =>
             {
                 var connectionString = configuration.GetConnectionString("DefaultConnection");
-                
+
                 // Configure for PostgreSQL (you can change this based on your database)
                 options.UseNpgsql(connectionString, npgsqlOptions =>
                 {
@@ -29,24 +34,40 @@ namespace FrenCircle.Base.Extensions
             });
 
             // Register repositories
+            services.AddScoped<IJwtService, JwtService>();
             services.AddScoped<IAuthRepository, AuthRepository>();
+            services.AddScoped<IOAuthService, OAuthService>();
+            services.AddHttpClient<IOAuthService, OAuthService>();
 
             // Add authentication and JWT support
             services.AddAuthentication("Bearer")
                 .AddJwtBearer("Bearer", options =>
                 {
-                    options.Authority = configuration["Auth:Authority"];
-                    options.RequireHttpsMetadata = !configuration.GetValue<bool>("Auth:DisableHttpsRequirement");
-                    options.Audience = configuration["Auth:Audience"];
-                    
+                    var jwtSettings = configuration.GetSection("JwtSettings");
+                    var secretKey = jwtSettings["SecretKey"];
+
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuer = true,
                         ValidateAudience = true,
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
-                        ClockSkew = TimeSpan.FromMinutes(5)
+                        ValidIssuer = jwtSettings["Issuer"],
+                        ValidAudience = jwtSettings["Audience"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey!)),
+                        ClockSkew = TimeSpan.Zero
                     };
+                })
+                .AddGoogle(GoogleDefaults.AuthenticationScheme, options =>
+                {
+                    var googleConfig = configuration.GetSection("Authentication:Google");
+                    options.ClientId = googleConfig["ClientId"]!;
+                    options.ClientSecret = googleConfig["ClientSecret"]!;
+                    options.SaveTokens = true;
+                    
+                    // Request additional scopes
+                    options.Scope.Add("email");
+                    options.Scope.Add("profile");
                 });
 
             // Add authorization

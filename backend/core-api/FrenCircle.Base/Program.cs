@@ -1,5 +1,6 @@
 using FrenCircle.Base.Extensions;
 using FrenCircle.Base.Middlewares;
+using FrenCircle.Contracts.Auth;
 using FrenCircle.Contracts.Shared;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,7 +12,9 @@ builder.Services.AddSingleton(fcConfig);
 builder.Services.AddControllers();
 
 builder.Services.AddOpenApi();
-
+builder.Services.AddSingleton(sp =>
+             sp.GetRequiredService<IConfiguration>().GetSection("JwtSettings").Get<JwtSettings>()
+         );
 // Add authentication services
 builder.Services.AddAuthServices(builder.Configuration);
 
