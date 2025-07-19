@@ -1,0 +1,7 @@
+# EditorConfig helps maintain consistent coding styles for multiple developers working on the same project
+root = true
+
+# 4-char tab for JS and JSON files
+[*.{js,json}]
+indent_style = tab
+indent_size = 4
