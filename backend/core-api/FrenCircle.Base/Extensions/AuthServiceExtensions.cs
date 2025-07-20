@@ -1,10 +1,9 @@
 using FrenCircle.Data;
 using FrenCircle.Data.Repositories;
 using FrenCircle.Data.Services;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.AspNetCore.Authentication.Google;
-using Microsoft.AspNetCore.Authentication.OAuth.Claims;
 using System.Text;
 
 namespace FrenCircle.Base.Extensions

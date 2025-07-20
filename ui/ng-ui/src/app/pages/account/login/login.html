@@ -1,0 +1,152 @@
+<div class="login-container">
+  <mat-card class="login-card">
+    <mat-card-header>
+      <div class="login-header">
+        <h1>Welcome Back</h1>
+        <p>Sign in to your FrenCircle account</p>
+      </div>
+    </mat-card-header>
+
+    <mat-card-content>
+      <!-- Google OAuth Login -->
+      <div class="oauth-section">
+        <button
+          mat-raised-button
+          class="google-btn"
+          [disabled]="isOAuthLoading() || isLoading()"
+          (click)="onGoogleLogin()">
+          <mat-icon svgIcon="google" *ngIf="!isOAuthLoading()"></mat-icon>
+          <mat-spinner diameter="20" *ngIf="isOAuthLoading()"></mat-spinner>
+          <span>Continue with Google</span>
+        </button>
+      </div>
+
+      <mat-divider class="divider">
+        <span class="divider-text">or</span>
+      </mat-divider>
+
+      <!-- Regular Login Form -->
+      <div class="login-form" *ngIf="!showForgotPassword()">
+        <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Email</mat-label>
+            <input
+              matInput
+              formControlName="email"
+              type="email"
+              autocomplete="email"
+              placeholder="Enter your email">
+            <mat-icon matSuffix>email</mat-icon>
+            <mat-error *ngIf="emailControl?.hasError('required') && emailControl?.touched">
+              Email is required
+            </mat-error>
+            <mat-error *ngIf="emailControl?.hasError('email') && emailControl?.touched">
+              Please enter a valid email
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Password</mat-label>
+            <input
+              matInput
+              formControlName="password"
+              [type]="hidePassword() ? 'password' : 'text'"
+              autocomplete="current-password"
+              placeholder="Enter your password">
+            <mat-icon
+              matSuffix
+              (click)="togglePasswordVisibility()"
+              class="toggle-password">
+              {{ hidePassword() ? 'visibility_off' : 'visibility' }}
+            </mat-icon>
+            <mat-error *ngIf="passwordControl?.hasError('required') && passwordControl?.touched">
+              Password is required
+            </mat-error>
+            <mat-error *ngIf="passwordControl?.hasError('minlength') && passwordControl?.touched">
+              Password must be at least 8 characters
+            </mat-error>
+          </mat-form-field>
+
+          <div class="form-options">
+            <mat-checkbox formControlName="rememberMe">
+              Remember me
+            </mat-checkbox>
+
+            <button
+              type="button"
+              mat-button
+              color="primary"
+              class="forgot-password-btn"
+              (click)="toggleForgotPassword()">
+              Forgot password?
+            </button>
+          </div>
+
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            class="login-btn full-width"
+            [disabled]="loginForm.invalid || isLoading()">
+            <mat-spinner diameter="20" *ngIf="isLoading()"></mat-spinner>
+            <span *ngIf="!isLoading()">Sign In</span>
+            <span *ngIf="isLoading()">Signing In...</span>
+          </button>
+        </form>
+      </div>
+
+      <!-- Forgot Password Form -->
+      <div class="forgot-password-form" *ngIf="showForgotPassword()">
+        <div class="forgot-password-header">
+          <h2>Reset Password</h2>
+          <p>Enter your email address and we'll send you a link to reset your password.</p>
+        </div>
+
+        <form [formGroup]="forgotPasswordForm" (ngSubmit)="onForgotPassword()">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Email</mat-label>
+            <input
+              matInput
+              formControlName="email"
+              type="email"
+              autocomplete="email"
+              placeholder="Enter your email">
+            <mat-icon matSuffix>email</mat-icon>
+            <mat-error *ngIf="forgotEmailControl?.hasError('required') && forgotEmailControl?.touched">
+              Email is required
+            </mat-error>
+            <mat-error *ngIf="forgotEmailControl?.hasError('email') && forgotEmailControl?.touched">
+              Please enter a valid email
+            </mat-error>
+          </mat-form-field>
+
+          <div class="forgot-password-actions">
+            <button
+              mat-button
+              type="button"
+              (click)="toggleForgotPassword()">
+              Back to Login
+            </button>
+
+            <button
+              mat-raised-button
+              color="primary"
+              type="submit"
+              [disabled]="forgotPasswordForm.invalid">
+              Send Reset Link
+            </button>
+          </div>
+        </form>
+      </div>
+    </mat-card-content>
+
+    <mat-card-actions class="card-footer" *ngIf="!showForgotPassword()">
+      <div class="signup-link">
+        <span>Don't have an account?</span>
+        <button mat-button color="primary" (click)="goToRegister()">
+          Sign up
+        </button>
+      </div>
+    </mat-card-actions>
+  </mat-card>
+</div>

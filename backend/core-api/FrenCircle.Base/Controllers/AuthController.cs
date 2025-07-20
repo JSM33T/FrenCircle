@@ -7,76 +7,40 @@ using FrenCircle.Data;
 using System.Security.Claims;
 using System.Security;
 using System.Text.Json;
-using FrenCircle.Infra.Repositories.Interfaces;
-using FrenCircle.Contracts.Mail;
+using FrenCircle.Contracts.Shared;
+using FrenCircle.Base.Controllers.Base;
 
 namespace FrenCircle.Api.Controllers
 {
-    public class LogoutRequest
-    {
-        public Guid SessionId { get; set; }
-    }
-    public class RevokeAllSessionsRequest
-    {
-        public Guid? ExceptSessionId { get; set; }
-    }
-    public class OAuthCallbackRequest
-    {
-        public string Provider { get; set; } = string.Empty;
-        public string Code { get; set; } = string.Empty;
-        public string? RedirectUri { get; set; }
-        public string? State { get; set; }
-    }
-    public class ResetPasswordRequest
-    {
-        public string Email { get; set; } = string.Empty;
-        public string Token { get; set; } = string.Empty;
-        public string NewPassword { get; set; } = string.Empty;
-    }
-    public class TwoFactorEnableRequest
-    {
-        public string Secret { get; set; } = string.Empty;
-        public string Code { get; set; } = string.Empty;
-    }
-    public class VerifyEmailRequest
-    {
-        public string Email { get; set; } = string.Empty;
-        public string Token { get; set; } = string.Empty;
-    }
-    public class EmailRequest
-    {
-        public string Email { get; set; } = string.Empty;
-    }
+    // ...DTOs moved to AuthDtos.cs...
     [ApiController]
     [Route("api/[controller]")]
-    public class AuthController : ControllerBase
+    public class AuthController : FcBaseController
     {
         private readonly IAuthRepository _repo;
         private readonly IJwtService _jwtService;
         private readonly IOAuthService _oauthService;
         private readonly ILogger<AuthController> _logger;
-        private readonly IMailRepository _mailRepository;
 
-        public AuthController(IAuthRepository repo, IJwtService jwtService, IOAuthService oauthService, ILogger<AuthController> logger, IMailRepository mailRepository)
+        public AuthController(IAuthRepository repo, IJwtService jwtService, IOAuthService oauthService, ILogger<AuthController> logger)
         {
             _repo = repo;
             _jwtService = jwtService;
             _oauthService = oauthService;
             _logger = logger;
-            _mailRepository = mailRepository;
         }
 
         // 1. Register (email+password)
         [HttpPost("register")]
         [AllowAnonymous]
-        public async Task<IActionResult> Register([FromBody] RegisterRequest req)
+        public async Task<ActionResult<ApiResponse<object>>> Register([FromBody] RegisterRequest req)
         {
             var ip = HttpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown";
             var userAgent = Request.Headers["User-Agent"].ToString();
             var result = await _repo.CreateUserAsync(req, ip, userAgent);
 
             if (!result.Success)
-                return BadRequest(result);
+                return RESP_BadRequestResponse<object>(result.ErrorMessage ?? "Registration failed");
 
             // Send welcome email with email verification
             try
@@ -99,11 +63,11 @@ namespace FrenCircle.Api.Controllers
                             { "ExpirationHours", "24" }
                         };
 
-                        await _mailRepository.SendTemplateEmailAsync(
-                            EmailTemplateType.EmailVerification,
-                            new EmailRecipient { Email = user.Email, Name = user.FirstName ?? user.Username },
-                            emailVariables
-                        );
+                        //await _mailRepository.SendTemplateEmailAsync(
+                        //    EmailTemplateType.EmailVerification,
+                        //    new EmailRecipient { Email = user.Email, Name = user.FirstName ?? user.Username },
+                        //    emailVariables
+                        //);
 
                         _logger.LogInformation("Welcome email sent to {Email}", user.Email);
                     }
@@ -115,18 +79,18 @@ namespace FrenCircle.Api.Controllers
                 // Don't fail registration if email fails
             }
 
-            return Ok(result);
+            return RESP_Success((object)result, "User registered successfully");
         }
 
         // 2. Login (email+password)
         [HttpPost("login")]
         [AllowAnonymous]
-        public async Task<IActionResult> Login([FromBody] LoginRequest req)
+        public async Task<ActionResult<ApiResponse<object>>> Login([FromBody] LoginRequest req)
         {
             var loginResult = await _repo.AuthenticateUserAsync(req.Email, req.Password);
 
             if (!loginResult.Success)
-                return Unauthorized(loginResult);
+                return RESP_UnauthorizedResponse<object>(loginResult.ErrorMessage ?? "Authentication failed");
 
             // Get device fingerprint from cookie or request
             var userAgent = Request.Headers["User-Agent"].ToString();
@@ -154,46 +118,50 @@ namespace FrenCircle.Api.Controllers
             // Set refresh token in httpOnly cookie
             var cookieOptions = new CookieOptions
             {
-                HttpOnly = true,
-                Secure = true, // Use only in HTTPS
-                SameSite = SameSiteMode.Strict,
+                HttpOnly = true, // Changed to true for security
+                Secure = false, // Allow HTTP for development
+                SameSite = SameSiteMode.Lax, // Allow cross-origin
                 Expires = DateTime.UtcNow.AddDays(30),
                 Path = "/"
             };
             Response.Cookies.Append("refreshToken", refreshToken.Token, cookieOptions);
+            
+            // Log cookie setting for debugging
+            _logger.LogInformation("Setting refresh token cookie for user {UserId}, IsHttps: {IsHttps}, Cookie Length: {Length}", 
+                loginResult.UserId, Request.IsHttps, refreshToken.Token.Length);
 
             // Set device fingerprint cookie if not already set
             if (string.IsNullOrEmpty(Request.Cookies["deviceFingerprint"]))
             {
                 var fingerprintCookieOptions = new CookieOptions
                 {
-                    HttpOnly = false, // Allow JavaScript access for fingerprinting
-                    Secure = true,
-                    SameSite = SameSiteMode.Strict,
-                    Expires = DateTime.UtcNow.AddYears(1), // Long-term cookie
+                    HttpOnly = false,
+                    Secure = false, // Allow HTTP for development
+                    SameSite = SameSiteMode.None, // Allow cross-origin
+                    Expires = DateTime.UtcNow.AddYears(1),
                     Path = "/"
                 };
                 Response.Cookies.Append("deviceFingerprint", deviceFingerprint ?? session.Device.Fingerprint, fingerprintCookieOptions);
             }
 
-            return Ok(new
+            return RESP_Success((object)new
             {
                 User = loginResult.User,
                 AccessToken = accessToken,
                 TokenType = "Bearer",
                 ExpiresInMinutes = 30
-            });
+            }, "Login successful");
         }
 
         // 3. Refresh Token
         [HttpPost("refresh")]
         [AllowAnonymous]
-        public async Task<IActionResult> RefreshToken()
+        public async Task<ActionResult<ApiResponse<object>>> RefreshToken()
         {
             // Get refresh token from cookie
             if (!Request.Cookies.TryGetValue("refreshToken", out var refreshToken) || string.IsNullOrEmpty(refreshToken))
             {
-                return Unauthorized(new { message = "Refresh token not found" });
+                return RESP_UnauthorizedResponse<object>("Refresh token not found");
             }
 
             try
@@ -205,38 +173,73 @@ namespace FrenCircle.Api.Controllers
                 var cookieOptions = new CookieOptions
                 {
                     HttpOnly = true,
-                    Secure = true,
-                    SameSite = SameSiteMode.Strict,
+                    Secure = false, // Allow HTTP for development
+                    SameSite = SameSiteMode.Lax, // Changed to Lax for consistency
                     Expires = DateTime.UtcNow.AddDays(30),
                     Path = "/"
                 };
                 Response.Cookies.Append("refreshToken", newRefreshToken, cookieOptions);
 
-                return Ok(new
+                // Get the refresh token entity to find the user
+                var refreshTokenEntity = await _repo.GetRefreshTokenAsync(newRefreshToken);
+                if (refreshTokenEntity?.Session?.UserId != null)
+                {
+                    // Get user data to include in response
+                    var user = await _repo.GetUserByIdAsync(refreshTokenEntity.Session.UserId);
+                    
+                    if (user != null)
+                    {
+                        return RESP_Success((object)new
+                        {
+                            AccessToken = newAccessToken,
+                            TokenType = "Bearer",
+                            ExpiresInMinutes = 30,
+                            User = new
+                            {
+                                user.Id,
+                                user.Email,
+                                user.Username,
+                                user.FirstName,
+                                user.LastName,
+                                user.Avatar,
+                                user.EmailVerified,
+                                user.TwoFactorEnabled,
+                                user.Timezone,
+                                user.Locale,
+                                user.CreatedAt,
+                                user.LastLoginAt
+                            }
+                        }, "Token refreshed successfully");
+                    }
+                }
+
+                // Fallback if user data can't be retrieved
+                return RESP_Success((object)new
                 {
                     AccessToken = newAccessToken,
                     TokenType = "Bearer",
                     ExpiresInMinutes = 30
-                });
+                }, "Token refreshed successfully");
             }
             catch (SecurityException)
             {
                 // Clear invalid refresh token cookie
                 Response.Cookies.Delete("refreshToken");
-                return Unauthorized(new { message = "Invalid refresh token" });
+                return RESP_UnauthorizedResponse<object>("Invalid refresh token");
             }
         }
 
         // 3. Logout (revoke session)
         [HttpPost("logout")]
         [Authorize]
-        public async Task<IActionResult> Logout([FromBody] LogoutRequest req)
+        public async Task<ActionResult<ApiResponse<object>>> Logout([FromBody] LogoutRequest req)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (!Guid.TryParse(userId, out var guid)) return Unauthorized();
+            if (!Guid.TryParse(userId, out var guid)) 
+                return RESP_UnauthorizedResponse<object>("Invalid user identifier");
 
             await _repo.RevokeSessionAsync(req.SessionId, "logout");
-            return Ok(new { success = true });
+            return RESP_Success((object)new { success = true }, "Logout successful");
         }
 
         // 4. Get current user's sessions
@@ -350,8 +353,8 @@ namespace FrenCircle.Api.Controllers
                 var cookieOptions = new CookieOptions
                 {
                     HttpOnly = true,
-                    Secure = true,
-                    SameSite = SameSiteMode.Strict,
+                    Secure = false, // Allow HTTP for development
+                    SameSite = SameSiteMode.Lax, // Changed to Lax for consistency
                     Expires = DateTime.UtcNow.AddDays(30),
                     Path = "/"
                 };
@@ -362,10 +365,10 @@ namespace FrenCircle.Api.Controllers
                 {
                     var fingerprintCookieOptions = new CookieOptions
                     {
-                        HttpOnly = false, // Allow JavaScript access for fingerprinting
-                        Secure = true,
-                        SameSite = SameSiteMode.Strict,
-                        Expires = DateTime.UtcNow.AddYears(1), // Long-term cookie
+                        HttpOnly = false,
+                        Secure = false, // Allow HTTP for development
+                        SameSite = SameSiteMode.Lax, // Changed to Lax for consistency
+                        Expires = DateTime.UtcNow.AddYears(1),
                         Path = "/"
                     };
                     Response.Cookies.Append("deviceFingerprint", deviceFingerprint, fingerprintCookieOptions);
@@ -383,7 +386,13 @@ namespace FrenCircle.Api.Controllers
                         user.Username,
                         user.FirstName,
                         user.LastName,
-                        user.Avatar
+                        user.Avatar,
+                        user.EmailVerified,
+                        user.TwoFactorEnabled,
+                        user.Timezone,
+                        user.Locale,
+                        user.CreatedAt,
+                        user.LastLoginAt
                     },
                     AccessToken = accessToken,
                     TokenType = "Bearer",
@@ -421,11 +430,11 @@ namespace FrenCircle.Api.Controllers
                     { "ExpirationHours", "24" }
                 };
 
-                await _mailRepository.SendTemplateEmailAsync(
-                    EmailTemplateType.EmailVerification,
-                    new EmailRecipient { Email = user.Email, Name = user.FirstName ?? user.Username },
-                    emailVariables
-                );
+                //await _mailRepository.SendTemplateEmailAsync(
+                //    EmailTemplateType.EmailVerification,
+                //    new EmailRecipient { Email = user.Email, Name = user.FirstName ?? user.Username },
+                //    emailVariables
+                //);
 
                 _logger.LogInformation("Email verification sent to {Email}", user.Email);
             }
@@ -473,11 +482,11 @@ namespace FrenCircle.Api.Controllers
                     { "ExpirationHours", "1" }
                 };
 
-                await _mailRepository.SendTemplateEmailAsync(
-                    EmailTemplateType.PasswordReset,
-                    new EmailRecipient { Email = user.Email, Name = user.FirstName ?? user.Username },
-                    emailVariables
-                );
+                //await _mailRepository.SendTemplateEmailAsync(
+                //    EmailTemplateType.PasswordReset,
+                //    new EmailRecipient { Email = user.Email, Name = user.FirstName ?? user.Username },
+                //    emailVariables
+                //);
 
                 _logger.LogInformation("Password reset email sent to {Email}", user.Email);
             }
@@ -529,7 +538,7 @@ namespace FrenCircle.Api.Controllers
 
         [HttpGet("testauth")]
         [Authorize(Policy = "AdminOnly")]
-        public async Task<IActionResult> Test()
+        public IActionResult Test()
         {
             return Ok("ok");
         }

@@ -30,4 +30,8 @@
     <ProjectReference Include="..\FrenCircle.Infra\FrenCircle.Infra.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
 </Project>

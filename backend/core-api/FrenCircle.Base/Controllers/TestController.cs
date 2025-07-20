@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace FrenCircle.Base.Controllers
 {
     [ApiController]
-    [Route("/")]
+    [Route("/test")]
     public class AuthController(ILogger<AuthController> logger) : Base.FcBaseController
     {
         private readonly ILogger<AuthController> _logger = logger;

@@ -108,6 +108,8 @@ namespace FrenCircle.Data
         public DbSet<PasswordReset> PasswordResets { get; set; }
         public DbSet<LoginAttempt> LoginAttempts { get; set; }
         public DbSet<BackupCode> BackupCodes { get; set; }
+        public DbSet<EmailTemplate> EmailTemplates { get; set; }
+        public DbSet<Job> Jobs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -444,5 +446,86 @@ namespace FrenCircle.Data
                     entry.Property("UpdatedAt").CurrentValue = DateTime.UtcNow;
             }
         }
+    }
+
+    // Email Template entity
+    [Table("EmailTemplates")]
+    public class EmailTemplate
+    {
+        [Key]
+        public int Id { get; set; }
+        
+        [Required]
+        [MaxLength(100)]
+        public string Name { get; set; } = string.Empty;
+        
+        [Required]
+        [MaxLength(500)]
+        public string Subject { get; set; } = string.Empty;
+        
+        [Required]
+        public string Body { get; set; } = string.Empty;
+        
+        [MaxLength(1000)]
+        public string? Description { get; set; }
+        
+        public bool IsActive { get; set; } = true;
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime? UpdatedAt { get; set; }
+        
+        [Required]
+        [MaxLength(100)]
+        public string CreatedBy { get; set; } = string.Empty;
+        
+        [MaxLength(100)]
+        public string? UpdatedBy { get; set; }
+    }
+
+    // Job status enum
+    public enum JobStatus
+    {
+        Pending = 0,
+        Running = 1,
+        Completed = 2,
+        Failed = 3,
+        Cancelled = 4
+    }
+
+    // Job priority enum
+    public enum JobPriority
+    {
+        Low = 0,
+        Normal = 1,
+        High = 2,
+        Critical = 3
+    }
+
+    // Job entity
+    [Table("Jobs")]
+    public class Job
+    {
+        [Key]
+        public int Id { get; set; }
+        
+        [Required]
+        [MaxLength(200)]
+        public string JobName { get; set; } = string.Empty;
+        
+        public JobStatus Status { get; set; } = JobStatus.Pending;
+        public JobPriority Priority { get; set; } = JobPriority.Normal;
+        public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
+        public DateTime? StartedDate { get; set; }
+        public DateTime? CompletionDate { get; set; }
+        
+        [MaxLength(100)]
+        public string? TriggeredBy { get; set; }
+        
+        public string? Metadata { get; set; }
+        
+        [MaxLength(2000)]
+        public string? ErrorMessage { get; set; }
+        
+        public int RetryCount { get; set; } = 0;
+        public int MaxRetries { get; set; } = 3;
     }
 }

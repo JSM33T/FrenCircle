@@ -1,0 +1,275 @@
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.login-card {
+  width: 100%;
+  max-width: 450px;
+  padding: 0;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.login-header {
+  text-align: center;
+  padding: 32px 32px 0;
+
+  h1 {
+    margin: 0 0 8px;
+    font-size: 28px;
+    font-weight: 600;
+    color: #333;
+  }
+
+  p {
+    margin: 0;
+    color: #666;
+    font-size: 16px;
+  }
+}
+
+mat-card-content {
+  padding: 32px !important;
+}
+
+.oauth-section {
+  margin-bottom: 24px;
+}
+
+.google-btn {
+  width: 100%;
+  height: 48px;
+  background: #fff;
+  color: #333;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  transition: all 0.2s ease;
+
+  &:hover:not(:disabled) {
+    background: #f8f9fa;
+    border-color: #d0d0d0;
+    transform: translateY(-1px);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.divider {
+  position: relative;
+  margin: 24px 0;
+
+  .divider-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 0 16px;
+    color: #666;
+    font-size: 14px;
+  }
+}
+
+.login-form,
+.forgot-password-form {
+  .full-width {
+    width: 100%;
+    margin-bottom: 16px;
+  }
+}
+
+.form-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 16px 0 24px;
+
+  .forgot-password-btn {
+    color: #667eea;
+    font-size: 14px;
+    padding: 0;
+    min-width: auto;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.login-btn {
+  height: 48px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+
+  &:disabled {
+    opacity: 0.6;
+  }
+
+  mat-spinner {
+    margin-right: 8px;
+  }
+}
+
+.toggle-password {
+  cursor: pointer;
+  user-select: none;
+
+  &:hover {
+    color: #667eea;
+  }
+}
+
+.forgot-password-header {
+  text-align: center;
+  margin-bottom: 24px;
+
+  h2 {
+    margin: 0 0 8px;
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+  }
+
+  p {
+    margin: 0;
+    color: #666;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+}
+
+.forgot-password-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-top: 24px;
+
+  button[mat-button] {
+    color: #666;
+  }
+
+  button[mat-raised-button] {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 8px;
+    font-weight: 600;
+  }
+}
+
+.card-footer {
+  padding: 0 32px 32px !important;
+  justify-content: center;
+}
+
+.signup-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #666;
+
+  button {
+    padding: 0;
+    min-width: auto;
+    font-size: 14px;
+    font-weight: 600;
+    color: #667eea;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+// Error snackbar styling
+::ng-deep .error-snackbar {
+  background: #f44336 !important;
+  color: white !important;
+}
+
+// Responsive design
+@media (max-width: 480px) {
+  .login-container {
+    padding: 16px;
+  }
+
+  .login-card {
+    max-width: 100%;
+    margin: 0;
+  }
+
+  .login-header {
+    padding: 24px 24px 0;
+
+    h1 {
+      font-size: 24px;
+    }
+
+    p {
+      font-size: 14px;
+    }
+  }
+
+  mat-card-content {
+    padding: 24px !important;
+  }
+
+  .card-footer {
+    padding: 0 24px 24px !important;
+  }
+
+  .form-options {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .forgot-password-actions {
+    flex-direction: column;
+
+    button {
+      width: 100%;
+    }
+  }
+}
+
+// Material form field customizations
+::ng-deep {
+  .mat-mdc-form-field {
+    .mat-mdc-form-field-subscript-wrapper {
+      margin-top: 4px;
+    }
+
+    .mat-mdc-form-field-error {
+      font-size: 12px;
+    }
+  }
+
+  .mat-mdc-outlined-form-field {
+    .mat-mdc-form-field-outline {
+      border-radius: 8px;
+    }
+  }
+}

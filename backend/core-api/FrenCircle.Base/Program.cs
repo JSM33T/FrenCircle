@@ -22,19 +22,24 @@ builder.Services.AddUserServices(builder.Environment, builder.Configuration);
 
 var app = builder.Build();
 
+
+
+app.UseHttpsRedirection();
+
+app.UseStaticFiles();
+
+app.UseMiddleware<RequestTimerMiddleware>();
+app.UseMiddleware<FcRequestMiddleware>();
+app.UseAuthentication();
+app.UseAuthServices();
+app.UseAuthorization();
+
+app.MapControllers();
+app.MapFallbackToFile("index.html", "text/html");
+
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
-
-app.UseHttpsRedirection();
-
-// Use authentication services (must be before UseAuthorization)
-app.UseAuthServices();
-
-app.UseMiddleware<RequestTimerMiddleware>();
-app.UseMiddleware<FcRequestMiddleware>();
-
-app.MapControllers();
 
 app.Run();

@@ -2,6 +2,45 @@ using System.ComponentModel.DataAnnotations;
 
 namespace FrenCircle.Contracts.Auth
 {
+    // Request DTOs moved from AuthController
+    public class LogoutRequest
+    {
+        public Guid SessionId { get; set; }
+    }
+
+    public class RevokeAllSessionsRequest
+    {
+        public Guid? ExceptSessionId { get; set; }
+    }
+
+    public class OAuthCallbackRequest
+    {
+        public string Provider { get; set; } = string.Empty;
+        public string Code { get; set; } = string.Empty;
+        public string? RedirectUri { get; set; }
+        public string? State { get; set; }
+    }
+
+    public class TwoFactorEnableRequest
+    {
+        public string Secret { get; set; } = string.Empty;
+        public string Code { get; set; } = string.Empty;
+    }
+
+    public class EmailRequest
+    {
+        public string Email { get; set; } = string.Empty;
+    }
+
+    // GoogleTokenResponse is a helper class for OAuth
+    public class GoogleTokenResponse
+    {
+        public string AccessToken { get; set; } = string.Empty;
+        public string? RefreshToken { get; set; }
+        public string TokenType { get; set; } = string.Empty;
+        public int ExpiresIn { get; set; }
+        public string? Scope { get; set; }
+    }
     // Request DTOs
     public class RegisterRequest
     {
