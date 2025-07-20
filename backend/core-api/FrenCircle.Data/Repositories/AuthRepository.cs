@@ -6,16 +6,70 @@ using FrenCircle.Contracts.Auth;
 
 namespace FrenCircle.Data.Repositories
 {
+    /// <summary>
+    /// Repository interface for authentication-related operations including user management, 
+    /// session handling, token management, email verification, password reset, two-factor authentication,
+    /// security logging, device management, and role/permission management.
+    /// </summary>
     public interface IAuthRepository
     {
-        // User management
+        #region User Management
+        
+        /// <summary>
+        /// Creates a new user account with the provided registration details.
+        /// </summary>
+        /// <param name="request">Registration request containing user details</param>
+        /// <param name="ipAddress">IP address of the registration request</param>
+        /// <param name="userAgent">User agent string from the client browser</param>
+        /// <returns>Result indicating success/failure and user ID if successful</returns>
         Task<CreateUserResult> CreateUserAsync(RegisterRequest request, string ipAddress, string? userAgent = null);
+        
+        /// <summary>
+        /// Authenticates a user with email and password credentials.
+        /// </summary>
+        /// <param name="email">User's email address</param>
+        /// <param name="password">User's password</param>
+        /// <returns>Login result with user information if successful</returns>
         Task<LoginResult> AuthenticateUserAsync(string email, string password);
+        
+        /// <summary>
+        /// Retrieves a user by their unique identifier.
+        /// </summary>
+        /// <param name="userId">The unique user identifier</param>
+        /// <returns>User entity if found, otherwise null</returns>
         Task<User?> GetUserByIdAsync(Guid userId);
+        
+        /// <summary>
+        /// Retrieves a user by their email address.
+        /// </summary>
+        /// <param name="email">The user's email address</param>
+        /// <returns>User entity if found, otherwise null</returns>
         Task<User?> GetUserByEmailAsync(string email);
+        
+        /// <summary>
+        /// Retrieves a user by their username.
+        /// </summary>
+        /// <param name="username">The user's username</param>
+        /// <returns>User entity if found, otherwise null</returns>
         Task<User?> GetUserByUsernameAsync(string username);
+        
+        /// <summary>
+        /// Updates an existing user's information.
+        /// </summary>
+        /// <param name="user">User entity with updated information</param>
+        /// <returns>True if update was successful, otherwise false</returns>
         Task<bool> UpdateUserAsync(User user);
+        
+        /// <summary>
+        /// Changes a user's password after verifying the current password.
+        /// </summary>
+        /// <param name="userId">The user's unique identifier</param>
+        /// <param name="currentPassword">The user's current password</param>
+        /// <param name="newPassword">The new password to set</param>
+        /// <returns>True if password change was successful, otherwise false</returns>
         Task<bool> ChangePasswordAsync(Guid userId, string currentPassword, string newPassword);
+        
+        #endregion
 
         // Session management
         Task<Session> CreateSessionAsync(Guid userId, string deviceFingerprint, string ipAddress, string? userAgent = null);

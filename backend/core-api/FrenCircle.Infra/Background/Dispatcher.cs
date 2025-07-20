@@ -1,4 +1,5 @@
 ﻿using FrenCircle.Data;
+using FrenCircle.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -49,15 +50,9 @@ namespace FrenCircle.Infra.Background
                 if (_taskQueue.TryDequeue(out var item))
                 {
                     using var scope = _serviceProvider.CreateScope();
-                    var dbContext = scope.ServiceProvider.GetRequiredService<AuthDbContext>();
+                    var jobRepository = scope.ServiceProvider.GetRequiredService<IJobRepository>();
 
-                    var job = await dbContext.Jobs.FindAsync(item.JobId);
-                    if (job != null)
-                    {
-                        job.Status = JobStatus.Running;
-                        job.StartedDate = DateTime.UtcNow;
-                        await dbContext.SaveChangesAsync();
-                    }
+                    await jobRepository.UpdateJobOnStartAsync(item.JobId);
 
                     return item;
                 }

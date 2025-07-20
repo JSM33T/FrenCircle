@@ -1,4 +1,5 @@
 using FrenCircle.Data;
+using FrenCircle.Data.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -49,9 +50,9 @@ namespace FrenCircle.Infra.Background
         private async Task ProcessJobAsync(int jobId, Func<CancellationToken, Task> taskFunc, CancellationToken cancellationToken)
         {
             using var scope = _serviceProvider.CreateScope();
-            var dbContext = scope.ServiceProvider.GetRequiredService<AuthDbContext>();
+            var jobRepository = scope.ServiceProvider.GetRequiredService<IJobRepository>();
 
-            var job = await dbContext.Jobs.FindAsync(jobId);
+            var job = await jobRepository.GetJobByIdAsync(jobId);
             if (job == null)
             {
                 _logger.LogWarning("Job not found: {JobId}", jobId);
@@ -64,8 +65,7 @@ namespace FrenCircle.Infra.Background
                 
                 await taskFunc(cancellationToken);
                 
-                job.Status = FrenCircle.Data.JobStatus.Completed;
-                job.CompletionDate = DateTime.UtcNow;
+                await jobRepository.UpdateJobOnCompletionAsync(jobId, JobStatus.Completed);
                 
                 _logger.LogInformation("Job completed successfully: {JobName} (ID: {JobId})", job.JobName, jobId);
             }
@@ -73,23 +73,17 @@ namespace FrenCircle.Infra.Background
             {
                 _logger.LogError(ex, "Job failed: {JobName} (ID: {JobId})", job.JobName, jobId);
                 
-                job.Status = JobStatus.Failed;
-                job.ErrorMessage = ex.Message;
-                job.CompletionDate = DateTime.UtcNow;
-                job.RetryCount++;
-
                 if (job.RetryCount < job.MaxRetries)
                 {
                     _logger.LogInformation("Retrying job: {JobName} (ID: {JobId}), Attempt: {RetryCount}/{MaxRetries}", 
-                        job.JobName, jobId, job.RetryCount, job.MaxRetries);
+                        job.JobName, jobId, job.RetryCount + 1, job.MaxRetries);
                     
-                    job.Status = JobStatus.Pending;
-                    job.CompletionDate = null;
+                    await jobRepository.UpdateJobOnRetryAsync(jobId, ex.Message);
                 }
-            }
-            finally
-            {
-                await dbContext.SaveChangesAsync();
+                else
+                {
+                    await jobRepository.UpdateJobOnCompletionAsync(jobId, FrenCircle.Data.JobStatus.Failed, ex.Message);
+                }
             }
         }
     }
