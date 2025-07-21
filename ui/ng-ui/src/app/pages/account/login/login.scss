@@ -2,9 +2,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
-  padding: 20px;
+  height: 100%;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 .login-card {
@@ -217,7 +218,6 @@ mat-card-content {
 
   .login-card {
     max-width: 100%;
-    margin: 0;
   }
 
   .login-header {
@@ -253,9 +253,7 @@ mat-card-content {
       width: 100%;
     }
   }
-}
-
-// Material form field customizations
+}// Material form field customizations
 ::ng-deep {
   .mat-mdc-form-field {
     .mat-mdc-form-field-subscript-wrapper {

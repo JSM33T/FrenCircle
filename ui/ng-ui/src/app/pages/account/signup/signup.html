@@ -1,0 +1,171 @@
+<div class="signup-container">
+  <mat-card class="signup-card">
+    <mat-card-header>
+      <div class="signup-header">
+        <h1>Create Account</h1>
+        <p>Join FrenCircle and connect with friends</p>
+      </div>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="signupForm" (ngSubmit)="onSignup()" novalidate>
+        <div class="name-row">
+          <mat-form-field appearance="outline" class="half-width">
+            <mat-label>First Name</mat-label>
+            <input
+              matInput
+              formControlName="firstName"
+              type="text"
+              autocomplete="given-name"
+              placeholder="Enter your first name">
+            <mat-icon matSuffix>badge</mat-icon>
+            <mat-error *ngIf="firstNameControl?.hasError('required') && firstNameControl?.touched">
+              First name is required
+            </mat-error>
+            <mat-error *ngIf="firstNameControl?.hasError('minlength') && firstNameControl?.touched">
+              First name must be at least 2 characters
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="half-width">
+            <mat-label>Last Name</mat-label>
+            <input
+              matInput
+              formControlName="lastName"
+              type="text"
+              autocomplete="family-name"
+              placeholder="Enter your last name">
+            <mat-icon matSuffix>badge</mat-icon>
+            <mat-error *ngIf="lastNameControl?.hasError('required') && lastNameControl?.touched">
+              Last name is required
+            </mat-error>
+            <mat-error *ngIf="lastNameControl?.hasError('minlength') && lastNameControl?.touched">
+              Last name must be at least 2 characters
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Email</mat-label>
+          <input
+            matInput
+            formControlName="email"
+            type="email"
+            autocomplete="email"
+            placeholder="Enter your email address">
+          <mat-icon matSuffix>email</mat-icon>
+          <mat-error *ngIf="emailControl?.hasError('required') && emailControl?.touched">
+            Email is required
+          </mat-error>
+          <mat-error *ngIf="emailControl?.hasError('email') && emailControl?.touched">
+            Please enter a valid email address
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Username</mat-label>
+          <input
+            matInput
+            formControlName="username"
+            type="text"
+            autocomplete="username"
+            placeholder="Choose a unique username">
+          <mat-icon matSuffix>person</mat-icon>
+          <mat-hint>Username must be unique and at least 2 characters</mat-hint>
+          <mat-error *ngIf="usernameControl?.hasError('required') && usernameControl?.touched">
+            Username is required
+          </mat-error>
+          <mat-error *ngIf="usernameControl?.hasError('minlength') && usernameControl?.touched">
+            Username must be at least 2 characters
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Password</mat-label>
+          <input
+            matInput
+            formControlName="password"
+            [type]="hidePassword() ? 'password' : 'text'"
+            autocomplete="new-password"
+            placeholder="Create a strong password">
+          <mat-icon
+            matSuffix
+            (click)="togglePasswordVisibility()"
+            class="toggle-password"
+            [attr.aria-label]="hidePassword() ? 'Show password' : 'Hide password'"
+            [attr.aria-pressed]="!hidePassword()">
+            {{ hidePassword() ? 'visibility_off' : 'visibility' }}
+          </mat-icon>
+          <mat-hint>Password must be at least 8 characters long</mat-hint>
+          <mat-error *ngIf="passwordControl?.hasError('required') && passwordControl?.touched">
+            Password is required
+          </mat-error>
+          <mat-error *ngIf="passwordControl?.hasError('minlength') && passwordControl?.touched">
+            Password must be at least 8 characters long
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Confirm Password</mat-label>
+          <input
+            matInput
+            formControlName="confirmPassword"
+            [type]="hideConfirmPassword() ? 'password' : 'text'"
+            autocomplete="new-password"
+            placeholder="Confirm your password">
+          <mat-icon
+            matSuffix
+            (click)="toggleConfirmPasswordVisibility()"
+            class="toggle-password"
+            [attr.aria-label]="hideConfirmPassword() ? 'Show password' : 'Hide password'"
+            [attr.aria-pressed]="!hideConfirmPassword()">
+            {{ hideConfirmPassword() ? 'visibility_off' : 'visibility' }}
+          </mat-icon>
+          <mat-error *ngIf="confirmPasswordControl?.hasError('required') && confirmPasswordControl?.touched">
+            Please confirm your password
+          </mat-error>
+          <mat-error *ngIf="signupForm.hasError('passwordsMismatch') && confirmPasswordControl?.touched">
+            Passwords do not match
+          </mat-error>
+        </mat-form-field>
+
+        <div class="form-options">
+          <mat-checkbox formControlName="agreeTerms" required>
+            I agree to the
+            <a href="/terms" target="_blank" class="terms-link">Terms & Conditions</a>
+            and
+            <a href="/privacy" target="_blank" class="terms-link">Privacy Policy</a>
+          </mat-checkbox>
+          <mat-error *ngIf="agreeTermsControl?.hasError('required') && agreeTermsControl?.touched" class="terms-error">
+            You must agree to the terms and conditions
+          </mat-error>
+        </div>
+
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          class="signup-btn full-width"
+          [disabled]="signupForm.invalid || isLoading()"
+          [attr.aria-label]="isLoading() ? 'Creating account...' : 'Create account'">
+          <mat-spinner diameter="20" *ngIf="isLoading()" aria-hidden="true"></mat-spinner>
+          <span *ngIf="!isLoading()">Create Account</span>
+          <span *ngIf="isLoading()">Creating Account...</span>
+        </button>
+      </form>
+    </mat-card-content>
+
+    <mat-card-actions class="card-footer">
+      <div class="login-link">
+        <span>Already have an account?</span>
+        <button
+          mat-button
+          color="primary"
+          (click)="goToLogin()"
+          aria-label="Go to sign in page">
+          Sign In
+        </button>
+      </div>
+    </mat-card-actions>
+  </mat-card>
+</div>

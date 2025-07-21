@@ -1,44 +1,6 @@
-<!-- Desktop Navigation -->
-<mat-toolbar color="primary" *ngIf="!isHandset" class="desktop-toolbar">
-  <span class="logo">{{ title }}</span>
-  <span class="spacer"></span>
-  <button mat-button routerLink="/stream">
-    <mat-icon>live_tv</mat-icon>
-    Stream
-  </button>
-  <button mat-button routerLink="/parties">
-    <mat-icon>group</mat-icon>
-    Parties
-  </button>
-
-  <!-- Avatar/name trigger for dropdown -->
-  <button mat-button [matMenuTriggerFor]="userMenu" class="user-avatar-btn">
-    <mat-icon>{{ user.avatar }}</mat-icon>
-    <span>{{ user.name }}</span>
-  </button>
-  <mat-menu #userMenu="matMenu">
-    <button mat-menu-item routerLink="/account">
-      <mat-icon>account_circle</mat-icon>
-      Account
-    </button>
-    <button mat-menu-item>
-      <mat-icon>settings</mat-icon>
-      Settings
-    </button>
-    <button mat-menu-item>
-      <mat-icon>help</mat-icon>
-      Help
-    </button>
-    <button mat-menu-item *ngIf="user.loggedIn">
-      <mat-icon>logout</mat-icon>
-      Logout
-    </button>
-  </mat-menu>
-</mat-toolbar>
-
-<!-- Mobile Navigation -->
-<mat-sidenav-container class="sidenav-container" *ngIf="isHandset">
-  <mat-sidenav #drawer class="sidenav" fixedInViewport mode="over">
+<mat-sidenav-container class="sidenav-container">
+  <!-- Mobile Side Navigation -->
+  <mat-sidenav #drawer class="sidenav" fixedInViewport mode="over" *ngIf="isHandset">
     <mat-toolbar color="primary">
       <mat-icon>{{ user.avatar }}</mat-icon>
       <span>{{ user.name }}</span>
@@ -73,28 +35,68 @@
   </mat-sidenav>
 
   <mat-sidenav-content>
-    <mat-toolbar color="primary">
+    <!-- Top Toolbar for both mobile and desktop -->
+    <mat-toolbar color="primary" class="toolbar">
+      <!-- Mobile menu button -->
       <button
+        *ngIf="isHandset"
         type="button"
         aria-label="Toggle sidenav"
         mat-icon-button
         (click)="drawer.toggle()">
-        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+        <mat-icon>menu</mat-icon>
       </button>
+
+      <!-- Logo -->
       <span class="logo">{{ title }}</span>
       <span class="spacer"></span>
-      <mat-icon>{{ user.avatar }}</mat-icon>
-      <span>{{ user.name }}</span>
+
+      <!-- Desktop navigation buttons -->
+      <ng-container *ngIf="!isHandset">
+        <button mat-button routerLink="/stream">
+          <mat-icon>live_tv</mat-icon>
+          Stream
+        </button>
+        <button mat-button routerLink="/parties">
+          <mat-icon>group</mat-icon>
+          Parties
+        </button>
+
+        <!-- Desktop user menu -->
+        <button mat-button [matMenuTriggerFor]="userMenu" class="user-avatar-btn">
+          <mat-icon>{{ user.avatar }}</mat-icon>
+          <span>{{ user.name }}</span>
+        </button>
+        <mat-menu #userMenu="matMenu">
+          <button mat-menu-item routerLink="/account">
+            <mat-icon>account_circle</mat-icon>
+            Account
+          </button>
+          <button mat-menu-item>
+            <mat-icon>settings</mat-icon>
+            Settings
+          </button>
+          <button mat-menu-item>
+            <mat-icon>help</mat-icon>
+            Help
+          </button>
+          <button mat-menu-item *ngIf="user.loggedIn">
+            <mat-icon>logout</mat-icon>
+            Logout
+          </button>
+        </mat-menu>
+      </ng-container>
+
+      <!-- Mobile user info -->
+      <ng-container *ngIf="isHandset">
+        <mat-icon>{{ user.avatar }}</mat-icon>
+        <span>{{ user.name }}</span>
+      </ng-container>
     </mat-toolbar>
 
-    <!-- Content area -->
-    <div class="content">
+    <!-- Main content area -->
+    <main class="main-content">
       <ng-content></ng-content>
-    </div>
+    </main>
   </mat-sidenav-content>
 </mat-sidenav-container>
-
-<!-- Desktop Content -->
-<div class="content" *ngIf="!isHandset">
-  <ng-content></ng-content>
-</div>

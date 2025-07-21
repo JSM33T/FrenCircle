@@ -1,0 +1,301 @@
+.signup-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.signup-card {
+  width: 100%;
+  max-width: 440px;
+  padding: 0;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  margin: auto;
+  max-height: 100%;
+  overflow-y: auto;
+}.signup-header {
+  text-align: center;
+  padding: 24px 24px 0;
+
+  h1 {
+    margin: 0 0 4px;
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+  }
+
+  p {
+    margin: 0;
+    color: #666;
+    font-size: 14px;
+  }
+}
+
+mat-card-content {
+  padding: 24px !important;
+}
+
+// Form styling
+form {
+  .full-width {
+    width: 100%;
+    margin-bottom: 12px;
+  }
+
+  .half-width {
+    width: calc(50% - 8px);
+    margin-bottom: 12px;
+  }
+
+  .name-row {
+    display: flex;
+    gap: 16px;
+    width: 100%;
+
+    .half-width {
+      flex: 1;
+    }
+  }
+
+  .form-options {
+    margin: 12px 0 20px;
+
+    mat-checkbox {
+      font-size: 13px;
+      color: #666;
+
+      .terms-link {
+        color: #667eea;
+        text-decoration: none;
+        font-weight: 500;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+
+      ::ng-deep .mdc-checkbox {
+        .mdc-checkbox__native-control:enabled:checked ~ .mdc-checkbox__background {
+          background-color: #667eea;
+          border-color: #667eea;
+        }
+      }
+    }
+
+    .terms-error {
+      font-size: 11px;
+      color: #f44336;
+      margin-top: 6px;
+      display: block;
+    }
+  }
+}
+
+// Button styling
+.signup-btn {
+  height: 44px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  transition: all 0.2s ease;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+  }
+
+  mat-spinner {
+    margin-right: 8px;
+  }
+}
+
+// Password visibility toggle
+.toggle-password {
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: #667eea;
+  }
+}
+
+// Card footer
+.card-footer {
+  padding: 0 24px 20px !important;
+  justify-content: center;
+}
+
+.login-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #666;
+
+  button {
+    padding: 0;
+    min-width: auto;
+    font-size: 13px;
+    font-weight: 600;
+    color: #667eea;
+    transition: all 0.2s ease;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+// Error snackbar styling
+::ng-deep .error-snackbar {
+  background: #f44336 !important;
+  color: white !important;
+}
+
+// Success snackbar styling
+::ng-deep .success-snackbar {
+  background: #4caf50 !important;
+  color: white !important;
+}
+
+// Responsive design
+@media (max-width: 480px) {
+  .signup-container {
+    padding: 16px;
+  }
+
+  .signup-card {
+    max-width: 100%;
+  }
+
+  .signup-header {
+    padding: 24px 24px 0;
+
+    h1 {
+      font-size: 24px;
+    }
+
+    p {
+      font-size: 14px;
+    }
+  }
+
+  mat-card-content {
+    padding: 24px !important;
+  }
+
+  .card-footer {
+    padding: 0 24px 24px !important;
+  }
+
+  .signup-btn {
+    height: 44px;
+    font-size: 15px;
+  }
+
+  // Stack name fields on mobile
+  .name-row {
+    flex-direction: column;
+    gap: 0;
+
+    .half-width {
+      width: 100%;
+    }
+  }
+}// Material form field customizations
+::ng-deep {
+  .mat-mdc-form-field {
+    .mat-mdc-form-field-subscript-wrapper {
+      margin-top: 4px;
+    }
+
+    .mat-mdc-form-field-error {
+      font-size: 12px;
+      color: #f44336;
+    }
+
+    .mat-mdc-form-field-hint {
+      font-size: 12px;
+      color: #666;
+    }
+  }
+
+  .mat-mdc-outlined-form-field {
+    .mat-mdc-form-field-outline {
+      border-radius: 8px;
+    }
+
+    &.mat-focused {
+      .mat-mdc-form-field-outline-thick {
+        color: #667eea;
+      }
+    }
+  }
+
+  // Input field styling
+  .mat-mdc-input-element {
+    caret-color: #667eea;
+  }
+
+  // Icon styling
+  .mat-icon {
+    color: #666;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: #667eea;
+    }
+  }
+
+  // Checkbox styling
+  .mat-mdc-checkbox {
+    .mdc-checkbox__native-control:enabled:checked ~ .mdc-checkbox__background,
+    .mdc-checkbox__native-control:enabled:indeterminate ~ .mdc-checkbox__background {
+      background-color: #667eea;
+      border-color: #667eea;
+    }
+
+    .mdc-checkbox__native-control:enabled ~ .mdc-checkbox__background .mdc-checkbox__checkmark {
+      color: white;
+    }
+  }
+}
+
+// Form validation enhancements
+.mat-mdc-form-field.mat-form-field-invalid {
+  ::ng-deep {
+    .mat-mdc-form-field-outline-thick {
+      color: #f44336;
+    }
+  }
+}
+
+// Loading state
+.signup-btn[disabled] {
+  cursor: not-allowed;
+
+  span {
+    opacity: 0.7;
+  }
+}
+
+// Focus states
+.mat-mdc-raised-button:focus {
+  outline: 2px solid #667eea;
+  outline-offset: 2px;
+}
+
+// Smooth transitions
+* {
+  transition: all 0.2s ease;
+}

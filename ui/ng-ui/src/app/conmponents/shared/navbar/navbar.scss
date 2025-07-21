@@ -1,13 +1,18 @@
-// Navbar styles
-.desktop-toolbar {
+// Main sidenav container
+.sidenav-container {
+  height: 100vh;
+}
+
+// Sidenav drawer
+.sidenav {
+  width: 250px;
+}
+
+// Main toolbar
+.toolbar {
   position: sticky;
   top: 0;
-  z-index: 2;
-
-  // Ensure primary color toolbar has proper elevation shadow
-  &[color="primary"] {
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1), 0 8px 16px rgba(0,0,0,0.1);
-  }
+  z-index: 1000;
 
   .logo {
     font-weight: 600;
@@ -27,39 +32,8 @@
   }
 }
 
-// Mobile navigation styles
-.sidenav-container {
-  height: 100vh;
-}
-
-.sidenav {
-  width: 250px;
-}
-
-.sidenav .mat-toolbar {
-  background: inherit;
-}
-
-// Content area
-.content {
-  padding: 20px;
-  min-height: calc(100vh - 64px); // Subtract toolbar height
-
-  @media (max-width: 768px) {
-    padding: 16px;
-    min-height: calc(100vh - 56px); // Smaller toolbar on mobile
-  }
-}
-
-// Responsive adjustments
-@media (max-width: 768px) {
-  .desktop-toolbar {
-    display: none !important;
-  }
-}
-
-@media (min-width: 769px) {
-  .sidenav-container {
-    display: none !important;
-  }
+// Main content area
+.main-content {
+  height: calc(100vh - 64px);
+  overflow-y: auto;
 }
