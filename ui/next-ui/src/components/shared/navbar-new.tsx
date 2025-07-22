@@ -65,7 +65,7 @@ export function Navbar() {
 
     return (
         <header className="sticky top-0 z-50 w-full border-b border-border/20 bg-background/80 backdrop-blur-xl backdrop-saturate-150 supports-[backdrop-filter]:bg-background/20 dark:border-border/20 dark:bg-background/40">
-            <div className="container flex h-16 max-w-screen-2xl items-center px-4 md:px-6">
+            <div className="container flex h-16 max-w-screen-2xl items-center">
                 {/* Brand Logo */}
                 <div className="mr-4 hidden md:flex">
                     <Link href={navigationData.brand.href} className="mr-6 flex items-center space-x-2">
@@ -127,7 +127,10 @@ export function Navbar() {
                 </div>
 
                 {/* Right side actions */}
-                <div className="flex items-center space-x-2 ml-auto">
+                <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
+                    <div className="w-full flex-1 md:w-auto md:flex-none">
+                        {/* Search can be added here */}
+                    </div>
                     <nav className="flex items-center space-x-2">
                         {/* Search Button */}
                         <Button variant="ghost" size="icon" className="h-9 w-9">
