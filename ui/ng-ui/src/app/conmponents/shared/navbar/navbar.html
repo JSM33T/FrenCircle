@@ -1,33 +1,40 @@
 <mat-sidenav-container class="sidenav-container">
   <!-- Mobile Side Navigation -->
   <mat-sidenav #drawer class="sidenav" fixedInViewport mode="over" *ngIf="isHandset">
-    <mat-toolbar color="primary">
-      <mat-icon>{{ user.avatar }}</mat-icon>
-      <span>{{ user.name }}</span>
+    <mat-toolbar color="primary" class="sidenav-header">
+      <div class="sidenav-user-info">
+        <mat-icon class="user-avatar-icon">{{ user.avatar }}</mat-icon>
+        <span class="user-name">{{ user.name }}</span>
+      </div>
     </mat-toolbar>
-    <mat-nav-list>
-      <a mat-list-item routerLink="/stream" (click)="drawer.close()">
+    <mat-nav-list class="sidenav-nav">
+      <a mat-list-item routerLink="/stream" routerLinkActive="active-nav-item" (click)="onNavigate()">
         <mat-icon matListItemIcon>live_tv</mat-icon>
         <span matListItemTitle>Stream</span>
       </a>
-      <a mat-list-item routerLink="/parties" (click)="drawer.close()">
+      <a mat-list-item routerLink="/parties" routerLinkActive="active-nav-item" (click)="onNavigate()">
         <mat-icon matListItemIcon>group</mat-icon>
         <span matListItemTitle>Parties</span>
       </a>
-      <mat-divider></mat-divider>
-      <a mat-list-item routerLink="/account" (click)="drawer.close()">
+      <mat-divider class="nav-divider"></mat-divider>
+      <a mat-list-item routerLink="/account" routerLinkActive="active-nav-item" (click)="onNavigate()">
         <mat-icon matListItemIcon>account_circle</mat-icon>
         <span matListItemTitle>Account</span>
       </a>
-      <a mat-list-item (click)="drawer.close()">
+      <a mat-list-item (click)="onNavigate()" class="nav-action-item">
         <mat-icon matListItemIcon>settings</mat-icon>
         <span matListItemTitle>Settings</span>
       </a>
-      <a mat-list-item (click)="drawer.close()">
+      <a mat-list-item (click)="onNavigate()" class="nav-action-item">
         <mat-icon matListItemIcon>help</mat-icon>
         <span matListItemTitle>Help</span>
       </a>
-      <a mat-list-item *ngIf="user.loggedIn" (click)="drawer.close()">
+      <a mat-list-item (click)="onToggleTheme()" class="nav-action-item theme-toggle-item">
+        <mat-icon matListItemIcon>{{ themeIcon }}</mat-icon>
+        <span matListItemTitle>{{ themeService.currentAppliedTheme() === 'light' ? 'Dark Mode' : 'Light Mode' }}</span>
+      </a>
+      <mat-divider class="nav-divider" *ngIf="user.loggedIn"></mat-divider>
+      <a mat-list-item *ngIf="user.loggedIn" (click)="onLogout()" class="nav-action-item logout-item">
         <mat-icon matListItemIcon>logout</mat-icon>
         <span matListItemTitle>Logout</span>
       </a>
@@ -36,62 +43,96 @@
 
   <mat-sidenav-content>
     <!-- Top Toolbar for both mobile and desktop -->
-    <mat-toolbar color="primary" class="toolbar">
+    <mat-toolbar color="primary" class="main-toolbar" role="banner">
       <!-- Mobile menu button -->
       <button
         *ngIf="isHandset"
         type="button"
-        aria-label="Toggle sidenav"
+        aria-label="Toggle navigation menu"
         mat-icon-button
+        class="menu-toggle-btn"
         (click)="drawer.toggle()">
         <mat-icon>menu</mat-icon>
       </button>
 
       <!-- Logo -->
-      <span class="logo">{{ title }}</span>
-      <span class="spacer"></span>
+      <div class="logo-container">
+        <span class="logo mat-headline-6">{{ title }}</span>
+      </div>
+
+      <div class="toolbar-spacer"></div>
 
       <!-- Desktop navigation buttons -->
-      <ng-container *ngIf="!isHandset">
-        <button mat-button routerLink="/stream">
+      <nav *ngIf="!isHandset" class="desktop-nav" role="navigation">
+        <button
+          mat-button
+          routerLink="/stream"
+          routerLinkActive="active-nav-btn"
+          class="nav-btn"
+          aria-label="Go to Stream">
           <mat-icon>live_tv</mat-icon>
-          Stream
+          <span>Stream</span>
         </button>
-        <button mat-button routerLink="/parties">
+        <button
+          mat-button
+          routerLink="/parties"
+          routerLinkActive="active-nav-btn"
+          class="nav-btn"
+          aria-label="Go to Parties">
           <mat-icon>group</mat-icon>
-          Parties
+          <span>Parties</span>
+        </button>
+
+        <!-- Theme toggle button -->
+        <button
+          mat-icon-button
+          (click)="onToggleTheme()"
+          class="theme-toggle-btn"
+          [matTooltip]="themeTooltip"
+          aria-label="Toggle theme">
+          <mat-icon>{{ themeIcon }}</mat-icon>
         </button>
 
         <!-- Desktop user menu -->
-        <button mat-button [matMenuTriggerFor]="userMenu" class="user-avatar-btn">
-          <mat-icon>{{ user.avatar }}</mat-icon>
-          <span>{{ user.name }}</span>
+        <button
+          mat-button
+          [matMenuTriggerFor]="userMenu"
+          class="user-menu-btn"
+          aria-label="User menu">
+          <mat-icon class="user-avatar-icon">{{ user.avatar }}</mat-icon>
+          <span class="user-name">{{ user.name }}</span>
+          <mat-icon class="dropdown-icon">keyboard_arrow_down</mat-icon>
         </button>
-        <mat-menu #userMenu="matMenu">
-          <button mat-menu-item routerLink="/account">
+        <mat-menu #userMenu="matMenu" class="user-dropdown-menu">
+          <button mat-menu-item routerLink="/account" class="menu-item">
             <mat-icon>account_circle</mat-icon>
-            Account
+            <span>Account</span>
           </button>
-          <button mat-menu-item>
+          <button mat-menu-item class="menu-item">
             <mat-icon>settings</mat-icon>
-            Settings
+            <span>Settings</span>
           </button>
-          <button mat-menu-item>
+          <button mat-menu-item class="menu-item">
             <mat-icon>help</mat-icon>
-            Help
+            <span>Help</span>
           </button>
-          <button mat-menu-item *ngIf="user.loggedIn">
+          <button mat-menu-item (click)="onToggleTheme()" class="menu-item theme-toggle-item">
+            <mat-icon>{{ themeIcon }}</mat-icon>
+            <span>{{ themeService.currentAppliedTheme() === 'light' ? 'Dark Mode' : 'Light Mode' }}</span>
+          </button>
+          <mat-divider *ngIf="user.loggedIn"></mat-divider>
+          <button mat-menu-item *ngIf="user.loggedIn" class="menu-item logout-item" (click)="onLogout()">
             <mat-icon>logout</mat-icon>
-            Logout
+            <span>Logout</span>
           </button>
         </mat-menu>
-      </ng-container>
+      </nav>
 
       <!-- Mobile user info -->
-      <ng-container *ngIf="isHandset">
-        <mat-icon>{{ user.avatar }}</mat-icon>
-        <span>{{ user.name }}</span>
-      </ng-container>
+      <div *ngIf="isHandset" class="mobile-user-info">
+        <mat-icon class="user-avatar-icon">{{ user.avatar }}</mat-icon>
+        <span class="user-name">{{ user.name }}</span>
+      </div>
     </mat-toolbar>
 
     <!-- Main content area -->

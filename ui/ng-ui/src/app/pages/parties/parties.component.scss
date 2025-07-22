@@ -1,95 +1,371 @@
-.page-container {
+@use '@angular/material' as mat;
+
+// Parties Container
+.parties-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 24px;
+  background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+  min-height: 100vh;
 }
 
-.parties-section {
-  margin-top: 30px;
-}
-
-.party-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 20px;
-  margin-top: 20px;
-}
-
-.party-card {
-  background: var(--surface-color, #ffffff);
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.party-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 16px rgba(0,0,0,0.12);
-}
-
-.party-header {
+// Header Section
+.parties-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
+  align-items: flex-start;
+  margin-bottom: 32px;
+  gap: 24px;
+
+  .header-content {
+    flex: 1;
+
+    h1 {
+      color: var(--mat-sys-on-surface);
+      margin: 0 0 8px 0;
+      font-weight: 600;
+    }
+
+    .header-subtitle {
+      color: var(--mat-sys-on-surface-variant);
+      margin: 0;
+    }
+  }
+
+  .create-party-btn {
+    background-color: var(--mat-sys-primary);
+    color: var(--mat-sys-on-primary);
+    box-shadow: var(--mat-sys-elevation-3);
+
+    &:hover {
+      box-shadow: var(--mat-sys-elevation-4);
+    }
+
+    .mat-icon {
+      margin-right: 8px;
+    }
+  }
 }
 
-.party-date {
-  background: #667eea;
-  color: #fff;
-  padding: 4px 12px;
-  border-radius: 6px;
-  font-size: 0.95rem;
+// Section Header
+.parties-section {
+  .section-header {
+    margin-bottom: 24px;
+
+    h2 {
+      color: var(--mat-sys-on-surface);
+      margin: 0 0 4px 0;
+      font-weight: 500;
+    }
+
+    .section-subtitle {
+      color: var(--mat-sys-on-surface-variant);
+      margin: 0;
+    }
+  }
 }
 
-.party-details {
-  margin-bottom: 15px;
+// Parties Grid
+.parties-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 24px;
+  margin-bottom: 32px;
 }
 
-.party-description {
-  color: var(--text-secondary-color, #757575);
-  margin-top: 8px;
+// Party Card
+.party-card {
+  background-color: var(--mat-sys-surface-container-low);
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--mat-sys-elevation-4);
+    border-color: var(--mat-sys-primary);
+  }
+
+  // Party Image
+  .party-image-container {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .image-overlay {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      right: 16px;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    &:hover img {
+      transform: scale(1.05);
+    }
+  }
+
+  // Card Header
+  .mat-mdc-card-header {
+    padding: 16px 16px 8px 16px;
+
+    .party-title {
+      color: var(--mat-sys-on-surface);
+      font: var(--mat-sys-headline-6);
+      font-weight: 600;
+      margin: 0;
+      line-height: 1.2;
+    }
+
+    .party-host {
+      color: var(--mat-sys-on-surface-variant);
+      font: var(--mat-sys-body-2);
+      margin: 4px 0 0 0;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+
+      .host-icon {
+        font-size: 16px;
+        width: 16px;
+        height: 16px;
+      }
+    }
+  }
+
+  // Card Content
+  .mat-mdc-card-content {
+    padding: 0 16px 16px 16px;
+
+    .party-details {
+      margin-bottom: 16px;
+
+      .detail-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 8px;
+        color: var(--mat-sys-on-surface-variant);
+
+        .detail-icon {
+          font-size: 18px;
+          width: 18px;
+          height: 18px;
+          color: var(--mat-sys-primary);
+        }
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
+
+    .attendance-progress {
+      margin-bottom: 16px;
+
+      .progress-bar {
+        width: 100%;
+        height: 6px;
+        background-color: var(--mat-sys-surface-variant);
+        border-radius: 3px;
+        overflow: hidden;
+        margin-bottom: 4px;
+
+        .progress-fill {
+          height: 100%;
+          background-color: var(--mat-sys-primary);
+          border-radius: 3px;
+          transition: width 300ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+      }
+
+      .progress-text {
+        color: var(--mat-sys-on-surface-variant);
+        font-size: 12px;
+      }
+    }
+
+    .party-description {
+      color: var(--mat-sys-on-surface-variant);
+      margin: 0 0 16px 0;
+      line-height: 1.5;
+    }
+
+    .party-tags {
+      margin-bottom: 16px;
+
+      .party-tag {
+        background-color: var(--mat-sys-secondary-container);
+        color: var(--mat-sys-on-secondary-container);
+        font-size: 12px;
+        height: 28px;
+        border-radius: 14px;
+
+        &:hover {
+          background-color: var(--mat-sys-secondary-container);
+        }
+      }
+    }
+  }
+
+  // Card Actions
+  .party-actions {
+    padding: 8px 16px 16px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+
+    button {
+      flex: 1;
+      font: var(--mat-sys-label-large);
+      font-weight: 500;
+
+      .mat-icon {
+        margin-right: 4px;
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+      }
+
+      &[disabled] {
+        background-color: var(--mat-sys-surface-variant) !important;
+        color: var(--mat-sys-on-surface-variant) !important;
+      }
+    }
+  }
 }
 
-.party-actions {
+// Empty State
+.empty-state {
   display: flex;
-  gap: 10px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 24px;
+  text-align: center;
+  color: var(--mat-sys-on-surface-variant);
+
+  .empty-icon {
+    font-size: 64px;
+    width: 64px;
+    height: 64px;
+    color: var(--mat-sys-outline);
+    margin-bottom: 16px;
+  }
+
+  h3 {
+    color: var(--mat-sys-on-surface);
+    margin: 0 0 8px 0;
+  }
+
+  p {
+    margin: 0 0 24px 0;
+    max-width: 400px;
+  }
+
+  button .mat-icon {
+    margin-right: 8px;
+  }
 }
 
-.join-btn, .info-btn {
-  padding: 8px 20px;
-  border-radius: 5px;
-  border: none;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s, color 0.2s;
+// Responsive Design
+@media (max-width: 768px) {
+  .parties-container {
+    padding: 16px;
+  }
+
+  .parties-header {
+    flex-direction: column;
+    align-items: stretch;
+
+    .create-party-btn {
+      align-self: flex-start;
+    }
+  }
+
+  .parties-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .party-card {
+    .party-actions {
+      flex-direction: column;
+
+      button {
+        width: 100%;
+      }
+    }
+  }
 }
 
-.join-btn {
-  background: #667eea;
-  color: #fff;
+@media (max-width: 480px) {
+  .parties-container {
+    padding: 12px;
+  }
+
+  .parties-header {
+    margin-bottom: 24px;
+
+    .header-content h1 {
+      font-size: 1.75rem;
+    }
+  }
+
+  .party-card {
+    .party-image-container {
+      height: 160px;
+    }
+
+    .mat-mdc-card-header,
+    .mat-mdc-card-content,
+    .party-actions {
+      padding-left: 12px;
+      padding-right: 12px;
+    }
+  }
 }
 
-.join-btn:hover {
-  background: #5a67d8;
+// High Contrast Support
+@media (prefers-contrast: high) {
+  .party-card {
+    border-width: 2px;
+
+    &:hover {
+      border-width: 2px;
+    }
+  }
+
+  .progress-bar {
+    border: 1px solid var(--mat-sys-outline);
+  }
 }
 
-.info-btn {
-  background: #fff;
-  color: #667eea;
-  border: 2px solid #667eea;
-}
+// Reduced Motion Support
+@media (prefers-reduced-motion: reduce) {
+  .party-card,
+  .party-card img,
+  .progress-fill {
+    transition: none;
+  }
 
-.info-btn:hover {
-  background: #f0f0f0;
-}
+  .party-card:hover {
+    transform: none;
+  }
 
-h1, h2, h3 {
-  color: var(--text-color, #212121);
-}
-
-p {
-  color: var(--text-secondary-color, #757575);
-  margin-bottom: 10px;
+  .party-image-container:hover img {
+    transform: none;
+  }
 }

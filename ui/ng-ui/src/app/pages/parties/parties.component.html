@@ -1,26 +1,117 @@
-<div class="page-container">
-  <h1>Parties</h1>
-  <p>Join parties and events happening around you.</p>
-
-  <div class="parties-section">
-    <h2>Upcoming Parties</h2>
-    <div class="party-grid">
-      <div class="party-card" *ngFor="let party of parties">
-        <div class="party-header">
-          <h3>{{ party.name }}</h3>
-          <span class="party-date">{{ party.date }}</span>
-        </div>
-        <div class="party-details">
-          <p><strong>Location:</strong> {{ party.location }}</p>
-          <p><strong>Host:</strong> {{ party.host }}</p>
-          <p><strong>Attendees:</strong> {{ party.attendees }}</p>
-          <p class="party-description">{{ party.description }}</p>
-        </div>
-        <div class="party-actions">
-          <button class="join-btn">Join Party</button>
-          <button class="info-btn">More Info</button>
-        </div>
-      </div>
+<div class="parties-container">
+  <!-- Header Section -->
+  <header class="parties-header">
+    <div class="header-content">
+      <h1 class="mat-headline-4">Parties & Events</h1>
+      <p class="mat-body-1 header-subtitle">Discover and join exciting events happening around you</p>
     </div>
+    <button mat-fab extended color="primary" class="create-party-btn" aria-label="Create new party">
+      <mat-icon>add</mat-icon>
+      Create Party
+    </button>
+  </header>
+
+  <!-- Parties Grid Section -->
+  <section class="parties-section" role="main">
+    <div class="section-header">
+      <h2 class="mat-headline-6">Upcoming Events</h2>
+      <p class="mat-body-2 section-subtitle">{{ parties.length }} events available</p>
+    </div>
+
+    <div class="parties-grid">
+      <mat-card *ngFor="let party of parties; trackBy: trackByPartyId" class="party-card" appearance="outlined">
+        <!-- Party Image (if available) -->
+        <div class="party-image-container" *ngIf="party.image">
+          <img mat-card-image [src]="party.image" [alt]="party.name" loading="lazy">
+          <div class="image-overlay">
+            <mat-chip-set class="party-tags">
+              <mat-chip *ngFor="let tag of party.tags" class="party-tag">{{ tag }}</mat-chip>
+            </mat-chip-set>
+          </div>
+        </div>
+
+        <!-- Party Content -->
+        <mat-card-header>
+          <mat-card-title class="party-title">{{ party.name }}</mat-card-title>
+          <mat-card-subtitle class="party-host">
+            <mat-icon class="host-icon">person</mat-icon>
+            Hosted by {{ party.host }}
+          </mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+          <!-- Party Details -->
+          <div class="party-details">
+            <div class="detail-item">
+              <mat-icon class="detail-icon">event</mat-icon>
+              <span class="mat-body-2">{{ party.date }} at {{ party.time }}</span>
+            </div>
+            <div class="detail-item">
+              <mat-icon class="detail-icon">location_on</mat-icon>
+              <span class="mat-body-2">{{ party.location }}</span>
+            </div>
+            <div class="detail-item">
+              <mat-icon class="detail-icon">group</mat-icon>
+              <span class="mat-body-2">{{ party.attendees }}/{{ party.maxAttendees }} attending</span>
+            </div>
+          </div>
+
+          <!-- Attendance Progress -->
+          <div class="attendance-progress">
+            <div class="progress-bar">
+              <div
+                class="progress-fill"
+                [style.width.%]="(party.attendees / party.maxAttendees) * 100">
+              </div>
+            </div>
+            <span class="mat-caption progress-text">
+              {{ party.maxAttendees - party.attendees }} spots left
+            </span>
+          </div>
+
+          <!-- Description -->
+          <p class="mat-body-2 party-description">{{ party.description }}</p>
+
+          <!-- Tags (if no image) -->
+          <mat-chip-set class="party-tags" *ngIf="!party.image">
+            <mat-chip *ngFor="let tag of party.tags" class="party-tag">{{ tag }}</mat-chip>
+          </mat-chip-set>
+        </mat-card-content>
+
+        <mat-divider></mat-divider>
+
+        <!-- Party Actions -->
+        <mat-card-actions class="party-actions">
+          <button
+            mat-button
+            color="primary"
+            (click)="onViewDetails(party.id)"
+            aria-label="View party details">
+            <mat-icon>info</mat-icon>
+            Details
+          </button>
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="onJoinParty(party.id)"
+            [disabled]="party.attendees >= party.maxAttendees"
+            [attr.aria-label]="party.attendees >= party.maxAttendees ? 'Party is full' : 'Join party'">
+            <mat-icon>{{ party.attendees >= party.maxAttendees ? 'event_busy' : 'add' }}</mat-icon>
+            {{ party.attendees >= party.maxAttendees ? 'Full' : 'Join Party' }}
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </section>
+
+  <!-- Empty State (if no parties) -->
+  <div class="empty-state" *ngIf="parties.length === 0">
+    <mat-icon class="empty-icon">event_note</mat-icon>
+    <h3 class="mat-headline-6">No parties yet</h3>
+    <p class="mat-body-1">Be the first to create an amazing event!</p>
+    <button mat-raised-button color="primary">
+      <mat-icon>add</mat-icon>
+      Create Your First Party
+    </button>
   </div>
 </div>
