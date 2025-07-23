@@ -1,3 +1,5 @@
+"use client"
+
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,10 +12,18 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { DatePickerWithRange } from "@/components/ui/date-range-picker";
 import { ArrowRight, Shield, Zap, Users, BarChart3 } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
+import { DateRange } from "react-day-picker";
 
 export default function Home() {
+	const [date, setDate] = useState<DateRange | undefined>({
+		from: new Date(),
+		to: undefined,
+	});
+
 	return (
 		<div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950">
 			{/* Hero Section */}
@@ -32,6 +42,16 @@ export default function Home() {
 					<p className="mb-8 text-xl text-gray-600 dark:text-gray-300 sm:text-2xl">
 						The ultimate platform for building meaningful connections and driving collaboration across teams and communities.
 					</p>
+
+					{/* Date Range Picker */}
+					<div className="mb-8 flex justify-center">
+						<DatePickerWithRange
+							date={date}
+							onDateChange={setDate}
+							placeholder="Select date range for events"
+						/>
+					</div>
+
 					<div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
 						<Button size="lg" className="text-md">
 							Get Started Free

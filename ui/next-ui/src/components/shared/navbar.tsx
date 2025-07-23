@@ -65,7 +65,7 @@ export function Navbar() {
 
 	return (
 		<header className="sticky top-0 z-50 w-full border-b border-border/20 bg-background/80 backdrop-blur-xl backdrop-saturate-150 supports-[backdrop-filter]:bg-background/20 dark:border-border/20 dark:bg-background/40">
-			<div className="flex h-16 w-full items-center px-10 md:px-12 lg:px-16">
+			<div className="flex h-16 w-full items-center px-4 md:px-12 lg:px-16">
 				{/* Brand Logo */}
 				<div className="mr-4 hidden md:flex">
 					<Link href={navigationData.brand.href} className="mr-6 flex items-center space-x-2">
@@ -141,43 +141,42 @@ export function Navbar() {
 							<span className="sr-only">Shopping Cart</span>
 						</Button>
 
-						{/* Theme Toggle */}
-						<ThemeToggle />
-
-						{/* User Menu */}
-						<DropdownMenu>
-							<DropdownMenuTrigger asChild>
-								<Button variant="ghost" className="relative h-9 w-9 rounded-full">
-									<Avatar className="h-8 w-8">
-										<AvatarImage src="/placeholder-avatar.jpg" alt="@user" />
-										<AvatarFallback>FC</AvatarFallback>
-									</Avatar>
-								</Button>
-							</DropdownMenuTrigger>
-							<DropdownMenuContent className="w-56" align="end" forceMount>
-								<DropdownMenuLabel className="font-normal">
-									<div className="flex flex-col space-y-1">
-										<p className="text-sm font-medium leading-none">John Doe</p>
-										<p className="text-xs leading-none text-muted-foreground">
-											john.doe@example.com
-										</p>
-									</div>
-								</DropdownMenuLabel>
-								<DropdownMenuSeparator />
-								{navigationData.userMenu.map((item) => (
-									<DropdownMenuItem key={item.title} asChild>
-										<Link href={item.href}>{item.title}</Link>
-									</DropdownMenuItem>
-								))}
-							</DropdownMenuContent>
-						</DropdownMenu>
 					</nav>
+					{/* Theme Toggle always visible */}
+					<ThemeToggle />
+					{/* User Menu */}
+					<DropdownMenu>
+						<DropdownMenuTrigger asChild>
+							<Button variant="ghost" className="relative h-9 w-9 rounded-full">
+								<Avatar className="h-8 w-8">
+									<AvatarImage src="/placeholder-avatar.jpg" alt="@user" />
+									<AvatarFallback>FC</AvatarFallback>
+								</Avatar>
+							</Button>
+						</DropdownMenuTrigger>
+						<DropdownMenuContent className="w-56" align="end" forceMount>
+							<DropdownMenuLabel className="font-normal">
+								<div className="flex flex-col space-y-1">
+									<p className="text-sm font-medium leading-none">John Doe</p>
+									<p className="text-xs leading-none text-muted-foreground">
+										john.doe@example.com
+									</p>
+								</div>
+							</DropdownMenuLabel>
+							<DropdownMenuSeparator />
+							{navigationData.userMenu.map((item) => (
+								<DropdownMenuItem key={item.title} asChild>
+									<Link href={item.href}>{item.title}</Link>
+								</DropdownMenuItem>
+							))}
+						</DropdownMenuContent>
+					</DropdownMenu>
 				</div>
 
 				{/* Mobile Navigation */}
 				{isOpen && (
-					<div className="absolute top-16 left-0 right-0 z-50 border-b border-border/20 bg-background/90 backdrop-blur-xl p-4 shadow-lg md:hidden">
-						<nav className="flex flex-col space-y-3">
+					<div className="absolute top-16 left-0 right-0 z-50 border-b border-border/20 bg-background/90 backdrop-blur-xl shadow-lg md:hidden px-4 py-6 min-h-[calc(100vh-4rem)] flex flex-col">
+						<nav className="flex flex-col space-y-3 flex-1">
 							{navigationData.mainNav.map((item: NavItem) => (
 								<div key={item.title}>
 									{item.items ? (
@@ -219,11 +218,6 @@ export function Navbar() {
 									)}
 								</div>
 							))}
-							{/* Mobile Theme Toggle */}
-							<div className="flex items-center justify-between pt-2 border-t border-border/20">
-								<span className="text-sm font-medium">Theme</span>
-								<ThemeToggle />
-							</div>
 						</nav>
 					</div>
 				)}
