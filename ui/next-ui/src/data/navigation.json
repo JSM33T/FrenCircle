@@ -9,104 +9,18 @@
 			"href": "/"
 		},
 		{
-			"title": "Products",
-			"href": "/products",
-			"items": [
-				{
-					"title": "All Products",
-					"href": "/products",
-					"description": "Browse our complete product catalog"
-				},
-				{
-					"title": "New Arrivals",
-					"href": "/products/new",
-					"description": "Latest products added to our collection"
-				},
-				{
-					"title": "Best Sellers",
-					"href": "/products/bestsellers",
-					"description": "Our most popular products"
-				},
-				{
-					"title": "Sale Items",
-					"href": "/products/sale",
-					"description": "Special offers and discounted items"
-				}
-			]
-		},
-		{
-			"title": "Services",
-			"href": "/services",
-			"items": [
-				{
-					"title": "Consulting",
-					"href": "/services/consulting",
-					"description": "Expert advice and strategic guidance"
-				},
-				{
-					"title": "Support",
-					"href": "/services/support",
-					"description": "24/7 customer support and assistance"
-				},
-				{
-					"title": "Training",
-					"href": "/services/training",
-					"description": "Professional training and workshops"
-				},
-				{
-					"title": "Maintenance",
-					"href": "/services/maintenance",
-					"description": "Ongoing maintenance and updates"
-				}
-			]
-		},
-		{
-			"title": "Company",
-			"href": "/company",
-			"items": [
-				{
-					"title": "About Us",
-					"href": "/company/about",
-					"description": "Learn more about our story and mission"
-				},
-				{
-					"title": "Team",
-					"href": "/company/team",
-					"description": "Meet our talented team members"
-				},
-				{
-					"title": "Careers",
-					"href": "/company/careers",
-					"description": "Join our growing team"
-				},
-				{
-					"title": "Contact",
-					"href": "/company/contact",
-					"description": "Get in touch with us"
-				}
-			]
-		},
-		{
-			"title": "Blog",
-			"href": "/blog"
+			"title": "About",
+			"href": "/about"
 		}
 	],
 	"userMenu": [
 		{
-			"title": "Profile",
-			"href": "/profile"
+			"title": "Log In",
+			"href": "#"
 		},
 		{
-			"title": "Settings",
-			"href": "/settings"
-		},
-		{
-			"title": "Billing",
-			"href": "/billing"
-		},
-		{
-			"title": "Sign out",
-			"href": "/signout"
+			"title": "Faq",
+			"href": "#"
 		}
 	]
 }
