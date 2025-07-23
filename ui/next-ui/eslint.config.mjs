@@ -6,11 +6,18 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const compat = new FlatCompat({
-  baseDirectory: __dirname,
+	baseDirectory: __dirname,
 });
 
 const eslintConfig = [
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
+	...compat.extends('next/core-web-vitals', 'next/typescript'),
+	{
+		rules: {
+			strict: ["error", "global"],
+			indent: ["error", "tab", { SwitchCase: 1 }],
+			"no-tabs": ["error", { allowIndentationTabs: true }]
+		},
+	},
 ];
 
 export default eslintConfig;
