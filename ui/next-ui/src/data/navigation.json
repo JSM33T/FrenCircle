@@ -16,11 +16,11 @@
 	"userMenu": [
 		{
 			"title": "Log In",
-			"href": "#"
+			"href": "/"
 		},
 		{
 			"title": "Faq",
-			"href": "#"
+			"href": "/"
 		}
 	]
 }

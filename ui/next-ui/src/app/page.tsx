@@ -11,12 +11,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ArrowRight, Shield, Zap, Users, BarChart3 } from "lucide-react";
+import Link from "next/link";
 
 export default function Home() {
 	return (
 		<div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950">
 			{/* Hero Section */}
-			<section className="container mx-auto px-4 py-20 text-center">
+			{/* <section className="container mx-auto px-4 py-20 text-center"> */}
+			<section className="container mx-auto py-20 text-center">
 				<div className="mx-auto max-w-4xl">
 					<Badge className="mb-6" variant="secondary">
 						FrenCircle
@@ -31,13 +33,16 @@ export default function Home() {
 						The ultimate platform for building meaningful connections and driving collaboration across teams and communities.
 					</p>
 					<div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
-						<Button size="lg" className="text-lg">
+						<Button size="lg" className="text-md">
 							Get Started Free
 							<ArrowRight className="ml-2 h-5 w-5" />
 						</Button>
-						<Button size="lg" variant="outline" className="text-lg">
-							Watch Demo
-						</Button>
+
+						<Link href="/about">
+							<Button size="lg" variant="outline" className="text-md">
+								About
+							</Button>
+						</Link>
 					</div>
 				</div>
 			</section>

@@ -44,7 +44,7 @@ const ListItem = React.forwardRef<
 				<a
 					ref={ref}
 					className={cn(
-						"block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+						"block select-none space-y-1none p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
 						className
 					)}
 					{...props}
@@ -65,11 +65,11 @@ export function Navbar() {
 
 	return (
 		<header className="sticky top-0 z-50 w-full border-b border-border/20 bg-background/80 backdrop-blur-xl backdrop-saturate-150 supports-[backdrop-filter]:bg-background/20 dark:border-border/20 dark:bg-background/40">
-			<div className="container flex h-16 max-w-screen-2xl items-center px-4 md:px-6">
+			<div className="flex h-16 w-full items-center px-10 md:px-12 lg:px-16">
 				{/* Brand Logo */}
 				<div className="mr-4 hidden md:flex">
 					<Link href={navigationData.brand.href} className="mr-6 flex items-center space-x-2">
-						<div className="h-8 w-8 rounded-lg bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center shadow-lg">
+						<div className="h-8 w-8 rounded-none bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center shadow-lg">
 							<span className="text-sm font-bold text-white">FC</span>
 						</div>
 						<span className="hidden font-bold sm:inline-block">
@@ -211,7 +211,7 @@ export function Navbar() {
 									) : (
 										<Link
 											href={item.href}
-											className="block px-0 py-2 text-sm font-medium transition-colors hover:text-foreground/80"
+											className="block px-0 py-2 text-sm font-medium transition-colors hover:text-foreground/80 rounded-none"
 											onClick={() => setIsOpen(false)}
 										>
 											{item.title}

@@ -2,7 +2,7 @@ import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
-const Card = React.forwardRef<
+const Card_bak = React.forwardRef<
 	HTMLDivElement,
 	React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
@@ -10,6 +10,21 @@ const Card = React.forwardRef<
 		ref={ref}
 		className={cn(
 			"rounded-xl border bg-card text-card-foreground shadow-sm",
+			className
+		)}
+		{...props}
+	/>
+))
+Card_bak.displayName = "Card"
+
+const Card = React.forwardRef<
+	HTMLDivElement,
+	React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+	<div
+		ref={ref}
+		className={cn(
+			"rounded-none border bg-card text-card-foreground shadow-sm", // changed here
 			className
 		)}
 		{...props}
