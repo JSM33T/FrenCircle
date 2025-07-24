@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { ChevronDown, Menu, User, Search, ShoppingCart } from "lucide-react"
+import { ChevronDown, Menu, Search, ShoppingCart } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -34,31 +34,39 @@ interface NavItem {
 	items?: NavItem[]
 }
 
-const ListItem = React.forwardRef<
-	React.ElementRef<"a">,
-	React.ComponentPropsWithoutRef<"a"> & { title: string; children: React.ReactNode }
->(({ className, title, children, ...props }, ref) => {
-	return (
-		<li>
-			<NavigationMenuLink asChild>
-				<a
-					ref={ref}
-					className={cn(
-						"block select-none space-y-1none p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
-						className
-					)}
-					{...props}
-				>
-					<div className="text-sm font-medium leading-none">{title}</div>
-					<p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-						{children}
-					</p>
-				</a>
-			</NavigationMenuLink>
-		</li>
-	)
-})
-ListItem.displayName = "ListItem"
+
+interface ListItemProps extends React.ComponentPropsWithoutRef<"a"> {
+	title: string;
+	children: React.ReactNode;
+	href: string;
+}
+
+const ListItem = React.forwardRef<React.ElementRef<"a">, ListItemProps>(
+	({ className, title, children, href, ...props }, ref) => {
+		return (
+			<li>
+				<NavigationMenuLink asChild>
+					<Link href={href} passHref legacyBehavior>
+						<a
+							ref={ref}
+							className={cn(
+								"block select-none space-y-1none p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+								className
+							)}
+							{...props}
+						>
+							<div className="text-sm font-medium leading-none">{title}</div>
+							<p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+								{children}
+							</p>
+						</a>
+					</Link>
+				</NavigationMenuLink>
+			</li>
+		);
+	}
+);
+ListItem.displayName = "ListItem";
 
 export function Navbar() {
 	const [isOpen, setIsOpen] = React.useState(false)

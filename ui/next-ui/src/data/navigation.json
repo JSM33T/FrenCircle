@@ -11,6 +11,22 @@
 		{
 			"title": "About",
 			"href": "/about"
+		},
+		{
+			"title": "About",
+			"href": "/about",
+			"items": [
+				{
+					"title": "/",
+					"href": "/about",
+					"description": "Browse our complete product catalog"
+				},
+				{
+					"title": "FAQ",
+					"href": "/about/faq",
+					"description": "Latest products added to our collection"
+				}
+			]
 		}
 	],
 	"userMenu": [
