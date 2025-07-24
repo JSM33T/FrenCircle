@@ -114,7 +114,7 @@ export function Navbar() {
 											</NavigationMenuContent>
 										</>
 									) : (
-										<Link href={item.href} legacyBehavior passHref>
+										<Link href={item.href} passHref>
 											<NavigationMenuLink className={navigationMenuTriggerStyle()}>
 												{item.title}
 											</NavigationMenuLink>

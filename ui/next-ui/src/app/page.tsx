@@ -2,10 +2,7 @@
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-<<<<<<< HEAD
 
-import { ArrowRight } from "lucide-react";
-=======
 import {
 	Card,
 	CardContent,
@@ -18,7 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { DatePickerWithRange } from "@/components/ui/date-range-picker";
 import { ArrowRight, Shield, Zap, Users, BarChart3 } from "lucide-react";
->>>>>>> 9697cb0f616128246a627be7ab1c887eaeb321d2
+
 import Link from "next/link";
 import { useState } from "react";
 import { DateRange } from "react-day-picker";
@@ -63,7 +60,7 @@ export default function Home() {
 							<ArrowRight className="ml-2 h-5 w-5" />
 						</Button>
 
-						<Link href="/about" legacyBehavior>
+						<Link href="/about">
 							<Button size="lg" variant="outline" className="text-md">
 								About
 							</Button>
