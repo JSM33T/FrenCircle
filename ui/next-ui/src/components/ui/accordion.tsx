@@ -9,27 +9,6 @@ export interface AccordionItem {
 	answer: string
 }
 
-// Sample FAQ items
-export const sampleAccordionItems: AccordionItem[] = [
-	{
-		question: "What is FrenCircle?",
-		answer: "FrenCircle is a social platform to connect and collaborate with your friends and communities.",
-	},
-	{
-		question: "How do I join a circle?",
-		answer: "You can join a circle by accepting an invite or searching for public circles in the app.",
-	},
-	{
-		question: "Is FrenCircle free to use?",
-		answer: "Yes, FrenCircle offers a free plan with optional premium features.",
-	},
-	{
-		question: "How do I reset my password?",
-		answer: "Go to your account settings and click on 'Reset Password'. Follow the instructions sent to your email.",
-	},
-]
-
-
 interface AccordionProps {
 	items: AccordionItem[]
 	openIndexes?: number[]

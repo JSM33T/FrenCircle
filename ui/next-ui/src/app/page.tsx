@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { DatePickerWithRange } from "@/components/ui/date-range-picker";
 import { ArrowRight, Shield, Zap, Users, BarChart3 } from "lucide-react";
+import { useLanguage } from "@/contexts/language-context";
 
 import Link from "next/link";
 import { useState } from "react";
@@ -26,6 +27,7 @@ export default function Home() {
 		from: new Date(),
 		to: undefined,
 	});
+	const { t } = useLanguage();
 
 	return (
 		<div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950">
@@ -56,30 +58,11 @@ export default function Home() {
 							}}
 							style={{ display: "inline-block", marginRight: 8 }}
 						>
-							Connect,
-						</motion.span>
-						<motion.span
-							variants={{
-								hidden: { opacity: 0, y: 40 },
-								visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
-							}}
-							style={{ display: "inline-block", marginRight: 8 }}
-						>
-							Collaborate,
-						</motion.span>
-						<motion.span
-							className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
-							variants={{
-								hidden: { opacity: 0, y: 40 },
-								visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
-							}}
-							style={{ display: "inline-block" }}
-						>
-							Create Together
+							{t('welcome')}
 						</motion.span>
 					</motion.h1>
 					<p className="mb-8 text-xl text-gray-600 dark:text-gray-300 sm:text-2xl">
-						The ultimate platform for building meaningful connections and driving collaboration across teams and communities.
+						{t('description')}
 					</p>
 
 					{/* Date Range Picker */}
@@ -99,7 +82,7 @@ export default function Home() {
 
 						<Link href="/about">
 							<Button size="lg" variant="outline" className="text-md">
-								About
+								{t('about')}
 							</Button>
 						</Link>
 					</div>

@@ -24,13 +24,15 @@ import {
 } from "@/components/ui/navigation-menu"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { ThemeToggle } from "@/components/theme-toggle"
+import { LanguageSwitcher } from "@/components/language-switcher"
+import { useLanguage } from "@/contexts/language-context"
 import { cn } from "@/lib/utils"
 import navigationData from "@/data/navigation"
 
 interface NavItem {
-	title: string
+	titleKey: string
 	href: string
-	description?: string
+	descriptionKey?: string
 	items?: NavItem[]
 }
 
@@ -70,6 +72,7 @@ ListItem.displayName = "ListItem";
 
 export function Navbar() {
 	const [isOpen, setIsOpen] = React.useState(false)
+	const { t } = useLanguage()
 
 	return (
 		<header className="sticky top-0 z-50 w-full border-b border-border/20 bg-background/80 backdrop-blur-xl backdrop-saturate-150 supports-[backdrop-filter]:bg-background/20 dark:border-border/20 dark:bg-background/40">
@@ -105,22 +108,22 @@ export function Navbar() {
 				<div className="hidden md:flex flex-1">
 					<NavigationMenu>
 						<NavigationMenuList>
-							{navigationData.mainNav.map((item: NavItem) => (
-								<NavigationMenuItem key={item.title}>
+							{navigationData.mainNav.map((item) => (
+								<NavigationMenuItem key={item.titleKey}>
 									{item.items ? (
 										<>
 											<NavigationMenuTrigger className="h-10">
-												{item.title}
+												{t(item.titleKey)}
 											</NavigationMenuTrigger>
 											<NavigationMenuContent>
 												<ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
 													{item.items.map((subItem) => (
 														<ListItem
-															key={subItem.title}
-															title={subItem.title}
+															key={subItem.titleKey}
+															title={t(subItem.titleKey)}
 															href={subItem.href}
 														>
-															{subItem.description}
+															{t(subItem.descriptionKey)}
 														</ListItem>
 													))}
 												</ul>
@@ -129,7 +132,7 @@ export function Navbar() {
 									) : (
 										<NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
 											<Link href={item.href}>
-												{item.title}
+												{t(item.titleKey)}
 											</Link>
 										</NavigationMenuLink>
 									)}
@@ -155,6 +158,8 @@ export function Navbar() {
 						</Button>
 
 					</nav>
+					{/* Language Switcher */}
+					<LanguageSwitcher />
 					{/* Theme Toggle always visible */}
 					<ThemeToggle />
 					{/* User Menu */}
@@ -178,8 +183,8 @@ export function Navbar() {
 							</DropdownMenuLabel>
 							<DropdownMenuSeparator />
 							{navigationData.userMenu.map((item) => (
-								<DropdownMenuItem key={item.title} asChild>
-									<Link href={item.href}>{item.title}</Link>
+								<DropdownMenuItem key={item.titleKey} asChild>
+									<Link href={item.href}>{t(item.titleKey)}</Link>
 								</DropdownMenuItem>
 							))}
 						</DropdownMenuContent>
@@ -190,8 +195,8 @@ export function Navbar() {
 				{isOpen && (
 					<div className="absolute top-16 left-0 right-0 z-50 border-b border-border/20 bg-background/90 backdrop-blur-xl shadow-lg md:hidden px-4 py-6 min-h-[calc(100vh-4rem)] flex flex-col">
 						<nav className="flex flex-col space-y-3 flex-1">
-							{navigationData.mainNav.map((item: NavItem) => (
-								<div key={item.title}>
+							{navigationData.mainNav.map((item) => (
+								<div key={item.titleKey}>
 									{item.items ? (
 										<DropdownMenu>
 											<DropdownMenuTrigger asChild>
@@ -199,19 +204,19 @@ export function Navbar() {
 													variant="ghost"
 													className="w-full justify-between px-0 py-2 h-auto font-medium"
 												>
-													{item.title}
+													{t(item.titleKey)}
 													<ChevronDown className="h-4 w-4" />
 												</Button>
 											</DropdownMenuTrigger>
 											<DropdownMenuContent className="w-56">
 												{item.items.map((subItem) => (
-													<DropdownMenuItem key={subItem.title} asChild>
+													<DropdownMenuItem key={subItem.titleKey} asChild>
 														<Link href={subItem.href} className="w-full">
 															<div>
-																<div className="font-medium">{subItem.title}</div>
-																{subItem.description && (
+																<div className="font-medium">{t(subItem.titleKey)}</div>
+																{subItem.descriptionKey && (
 																	<div className="text-sm text-muted-foreground">
-																		{subItem.description}
+																		{t(subItem.descriptionKey)}
 																	</div>
 																)}
 															</div>
@@ -226,7 +231,7 @@ export function Navbar() {
 											className="block px-0 py-2 text-sm font-medium transition-colors hover:text-foreground/80 rounded-md"
 											onClick={() => setIsOpen(false)}
 										>
-											{item.title}
+											{t(item.titleKey)}
 										</Link>
 									)}
 								</div>

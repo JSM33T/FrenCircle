@@ -1,6 +1,7 @@
 'use client';
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/contexts/language-context";
 import {
 	Card,
 	CardContent,
@@ -14,23 +15,25 @@ const tilt = { rotate: 2, scale: 1.03 };
 const lift = { y: -5, scale: 1.05 };
 
 export default function About() {
+	const { t } = useLanguage();
+
 	return (
 		<div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950">
 			<section className="container mx-auto px-4 py-20">
 				<div className="mx-auto max-w-6xl">
 					<div className="mb-16 text-center">
 						<h2 className="mb-4 text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
-							Why choose FrenCircle?
+							{t('aboutUs')}
 						</h2>
 						<p className="text-xl text-gray-600 dark:text-gray-300">
-							Modern SaaS features to help you grow and succeed
+							{t('aboutDescription')}
 						</p>
 					</div>
 					<div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
 						{[
 							{
-								title: "FAQs",
-								desc: "Frequently asked quesitons.",
+								title: t('faq'),
+								desc: t('faqDescription'),
 								features: [
 									"REST & GraphQL APIs",
 									"Webhooks",

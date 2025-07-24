@@ -1,38 +1,62 @@
-const navigationData = {
+import { TranslationKey } from '@/lib/i18n';
+
+interface NavigationItem {
+	titleKey: TranslationKey;
+	href: string;
+	items?: {
+		titleKey: TranslationKey;
+		href: string;
+		descriptionKey: TranslationKey;
+	}[];
+}
+
+interface NavigationData {
+	brand: {
+		name: string;
+		href: string;
+	};
+	mainNav: NavigationItem[];
+	userMenu: {
+		titleKey: TranslationKey;
+		href: string;
+	}[];
+}
+
+const navigationData: NavigationData = {
 	brand: {
 		name: "FrenCircle",
 		href: "/"
 	},
 	mainNav: [
 		{
-			title: "Home",
+			titleKey: "home",
 			href: "/"
 		},
 		{
-			title: "About",
+			titleKey: "about",
 			href: "/about",
 			items: [
 				{
-					title: "/",
+					titleKey: "aboutUs",
 					href: "/about",
-					description: "Browse our complete product catalog"
+					descriptionKey: "aboutDescription"
 				},
 				{
-					title: "FAQ",
+					titleKey: "faq",
 					href: "/about/faq",
-					description: "Latest products added to our collection"
+					descriptionKey: "faqDescription"
 				}
 			]
 		}
 	],
 	userMenu: [
 		{
-			title: "Log In",
+			titleKey: "login",
 			href: "/"
 		},
 		{
-			title: "Faq",
-			href: "/"
+			titleKey: "faq",
+			href: "/about/faq"
 		}
 	]
 };
