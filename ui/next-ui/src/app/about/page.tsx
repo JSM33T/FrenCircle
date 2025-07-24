@@ -27,9 +27,9 @@ export default function About() {
 					<div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
 						<Card className="w-full max-w-sm mx-auto">
 							<CardHeader>
-								<CardTitle>Developer Friendly</CardTitle>
+								<CardTitle>FAQs</CardTitle>
 								<CardDescription>
-									Built with modern APIs, docs, and integrations for easy development.
+									Frequently asked quesitons.
 								</CardDescription>
 							</CardHeader>
 							<CardContent>
@@ -40,7 +40,7 @@ export default function About() {
 								</ul>
 							</CardContent>
 							<CardFooter>
-								<Button variant="link">View Docs</Button>
+								<Button variant="outline">View Docs</Button>
 							</CardFooter>
 						</Card>
 						<Card className="w-full max-w-sm mx-auto">
