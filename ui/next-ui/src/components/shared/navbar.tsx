@@ -68,12 +68,17 @@ export function Navbar() {
 			<div className="flex h-16 w-full items-center px-10 md:px-12 lg:px-16">
 				{/* Brand Logo */}
 				<div className="mr-4 hidden md:flex">
-					<Link href={navigationData.brand.href} className="mr-6 flex items-center space-x-2">
-						<div className="h-8 w-8 rounded-none bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center shadow-lg">
-							<span className="text-sm font-bold text-white">FC</span>
-						</div>
-						<span className="hidden font-bold sm:inline-block">
-							{navigationData.brand.name}
+					<Link
+						href={navigationData.brand.href}
+						className="mr-6 flex items-center space-x-2"
+					>
+						<span className="flex items-center space-x-2">
+							<div className="h-8 w-8 rounded-none bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center shadow-lg">
+								<span className="text-sm font-bold text-white">FC</span>
+							</div>
+							<span className="hidden font-bold sm:inline-block">
+								{navigationData.brand.name}
+							</span>
 						</span>
 					</Link>
 				</div>
@@ -114,11 +119,11 @@ export function Navbar() {
 											</NavigationMenuContent>
 										</>
 									) : (
-										<Link href={item.href} legacyBehavior passHref>
-											<NavigationMenuLink className={navigationMenuTriggerStyle()}>
+										<NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+											<Link href={item.href}>
 												{item.title}
-											</NavigationMenuLink>
-										</Link>
+											</Link>
+										</NavigationMenuLink>
 									)}
 								</NavigationMenuItem>
 							))}
@@ -229,5 +234,5 @@ export function Navbar() {
 				)}
 			</div>
 		</header>
-	)
+	);
 }

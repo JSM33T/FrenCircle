@@ -1,16 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardFooter,
-	CardHeader,
-	CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { ArrowRight, Shield, Zap, Users, BarChart3 } from "lucide-react";
+
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 export default function Home() {
@@ -38,7 +29,7 @@ export default function Home() {
 							<ArrowRight className="ml-2 h-5 w-5" />
 						</Button>
 
-						<Link href="/about">
+						<Link href="/about" legacyBehavior>
 							<Button size="lg" variant="outline" className="text-md">
 								About
 							</Button>
