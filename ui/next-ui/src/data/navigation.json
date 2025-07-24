@@ -10,10 +10,6 @@
 		},
 		{
 			"title": "About",
-			"href": "/about"
-		},
-		{
-			"title": "About",
 			"href": "/about",
 			"items": [
 				{

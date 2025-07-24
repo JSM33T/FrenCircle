@@ -25,7 +25,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { cn } from "@/lib/utils"
-import navigationData from "@/data/navigation.json"
+import navigationData from "@/data/navigation"
 
 interface NavItem {
 	title: string
@@ -41,31 +41,31 @@ interface ListItemProps extends React.ComponentPropsWithoutRef<"a"> {
 	href: string;
 }
 
-const ListItem = React.forwardRef<React.ElementRef<"a">, ListItemProps>(
+const ListItem = React.forwardRef<HTMLAnchorElement, ListItemProps>(
 	({ className, title, children, href, ...props }, ref) => {
 		return (
 			<li>
 				<NavigationMenuLink asChild>
-					<Link href={href} passHref legacyBehavior>
-						<a
-							ref={ref}
-							className={cn(
-								"block select-none space-y-1none p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
-								className
-							)}
-							{...props}
-						>
-							<div className="text-sm font-medium leading-none">{title}</div>
-							<p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-								{children}
-							</p>
-						</a>
+					<Link
+						href={href}
+						ref={ref}
+						className={cn(
+							"block select-none space-y-1none p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+							className
+						)}
+						{...props}
+					>
+						<div className="text-sm font-medium leading-none">{title}</div>
+						<p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+							{children}
+						</p>
 					</Link>
 				</NavigationMenuLink>
 			</li>
 		);
 	}
 );
+
 ListItem.displayName = "ListItem";
 
 export function Navbar() {
@@ -81,7 +81,7 @@ export function Navbar() {
 						className="mr-6 flex items-center space-x-2"
 					>
 						<span className="flex items-center space-x-2">
-							<div className="h-8 w-8 rounded-none bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center shadow-lg">
+							<div className="h-8 w-8 rounded-md bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center shadow-lg">
 								<span className="text-sm font-bold text-white">FC</span>
 							</div>
 							<span className="hidden font-bold sm:inline-block">
@@ -223,7 +223,7 @@ export function Navbar() {
 									) : (
 										<Link
 											href={item.href}
-											className="block px-0 py-2 text-sm font-medium transition-colors hover:text-foreground/80 rounded-none"
+											className="block px-0 py-2 text-sm font-medium transition-colors hover:text-foreground/80 rounded-md"
 											onClick={() => setIsOpen(false)}
 										>
 											{item.title}

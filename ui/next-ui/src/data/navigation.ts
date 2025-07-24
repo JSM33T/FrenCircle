@@ -1,0 +1,40 @@
+const navigationData = {
+	brand: {
+		name: "FrenCircle",
+		href: "/"
+	},
+	mainNav: [
+		{
+			title: "Home",
+			href: "/"
+		},
+		{
+			title: "About",
+			href: "/about",
+			items: [
+				{
+					title: "/",
+					href: "/about",
+					description: "Browse our complete product catalog"
+				},
+				{
+					title: "FAQ",
+					href: "/about/faq",
+					description: "Latest products added to our collection"
+				}
+			]
+		}
+	],
+	userMenu: [
+		{
+			title: "Log In",
+			href: "/"
+		},
+		{
+			title: "Faq",
+			href: "/"
+		}
+	]
+};
+
+export default navigationData;

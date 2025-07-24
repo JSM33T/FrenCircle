@@ -18,6 +18,7 @@ import { ArrowRight, Shield, Zap, Users, BarChart3 } from "lucide-react";
 
 import Link from "next/link";
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { DateRange } from "react-day-picker";
 
 export default function Home() {
@@ -35,12 +36,48 @@ export default function Home() {
 					<Badge className="mb-6" variant="secondary">
 						FrenCircle
 					</Badge>
-					<h1 className="mb-6 text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-6xl">
-						Connect, Collaborate,{" "}
-						<span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+					<motion.h1
+						className="mb-6 text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-6xl"
+						initial="hidden"
+						animate="visible"
+						variants={{
+							hidden: {},
+							visible: {
+								transition: {
+									staggerChildren: 0.18
+								}
+							}
+						}}
+					>
+						<motion.span
+							variants={{
+								hidden: { opacity: 0, y: 40 },
+								visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+							}}
+							style={{ display: "inline-block", marginRight: 8 }}
+						>
+							Connect,
+						</motion.span>
+						<motion.span
+							variants={{
+								hidden: { opacity: 0, y: 40 },
+								visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+							}}
+							style={{ display: "inline-block", marginRight: 8 }}
+						>
+							Collaborate,
+						</motion.span>
+						<motion.span
+							className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
+							variants={{
+								hidden: { opacity: 0, y: 40 },
+								visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+							}}
+							style={{ display: "inline-block" }}
+						>
 							Create Together
-						</span>
-					</h1>
+						</motion.span>
+					</motion.h1>
 					<p className="mb-8 text-xl text-gray-600 dark:text-gray-300 sm:text-2xl">
 						The ultimate platform for building meaningful connections and driving collaboration across teams and communities.
 					</p>
