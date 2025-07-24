@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/shared/navbar";
 import { ThemeProvider } from "@/components/theme-provider";
+import OffcanvasSidebar from "@/components/ui/offcanvas-sidebar";
 
 const geistSans = Geist({
 	variable: "--font-geist-sans",
@@ -31,9 +32,8 @@ export default function RootLayout({
 			>
 				<ThemeProvider>
 					<Navbar />
-					<main className="min-h-screen">
-						{children}
-					</main>
+					<main className="min-h-screen">{children}</main>
+					<OffcanvasSidebar />
 				</ThemeProvider>
 			</body>
 		</html>
