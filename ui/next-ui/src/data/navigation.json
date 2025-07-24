@@ -23,6 +23,10 @@
 					"description": "Latest products added to our collection"
 				}
 			]
+		},
+		{
+			"title": "Theme Showcase",
+			"href": "/theme-showcase"
 		}
 	],
 	"userMenu": [

@@ -6,8 +6,12 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  --font-mono: var(--font-jetbrains-mono), 'Fira Code', 'Monaco', 'Cascadia Code', 'Roboto Mono', monospace;
+  --font-serif: Georgia, 'Times New Roman', Times, serif;
+  --font-system: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  --font-montserrat: var(--font-montserrat), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-inter: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -25,6 +29,7 @@
   --color-input: var(--input);
   --color-border: var(--border);
   --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
   --color-accent-foreground: var(--accent-foreground);
   --color-accent: var(--accent);
   --color-muted-foreground: var(--muted-foreground);
@@ -37,13 +42,19 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+  --radius-none: 0px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+  --radius: var(--radius-md);
 }
 
 :root {
+  /* Ensure fonts are properly loaded */
+  font-family: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.129 0.042 264.695);
@@ -60,6 +71,7 @@
   --accent: oklch(0.968 0.007 247.896);
   --accent-foreground: oklch(0.208 0.042 265.755);
   --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.984 0.003 247.858);
   --border: oklch(0.929 0.013 255.508);
   --input: oklch(0.929 0.013 255.508);
   --ring: oklch(0.704 0.04 256.788);
@@ -94,6 +106,7 @@
   --accent: oklch(0.279 0.041 260.031);
   --accent-foreground: oklch(0.984 0.003 247.858);
   --destructive: oklch(0.704 0.191 22.216);
+  --destructive-foreground: oklch(0.984 0.003 247.858);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.551 0.027 264.364);
@@ -112,6 +125,137 @@
   --sidebar-ring: oklch(0.551 0.027 264.364);
 }
 
+/* Accent Color Themes */
+[data-accent="blue"] {
+  --primary: oklch(0.539 0.233 264.376);
+  --primary-foreground: oklch(0.984 0.003 247.858);
+  --ring: oklch(0.539 0.233 264.376);
+}
+
+[data-accent="green"] {
+  --primary: oklch(0.608 0.23 142.495);
+  --primary-foreground: oklch(0.984 0.003 247.858);
+  --ring: oklch(0.608 0.23 142.495);
+}
+
+[data-accent="purple"] {
+  --primary: oklch(0.584 0.292 292.84);
+  --primary-foreground: oklch(0.984 0.003 247.858);
+  --ring: oklch(0.584 0.292 292.84);
+}
+
+[data-accent="red"] {
+  --primary: oklch(0.637 0.237 25.331);
+  --primary-foreground: oklch(0.984 0.003 247.858);
+  --ring: oklch(0.637 0.237 25.331);
+}
+
+[data-accent="orange"] {
+  --primary: oklch(0.705 0.218 70.67);
+  --primary-foreground: oklch(0.984 0.003 247.858);
+  --ring: oklch(0.705 0.218 70.67);
+}
+
+[data-accent="yellow"] {
+  --primary: oklch(0.769 0.188 70.08);
+  --primary-foreground: oklch(0.208 0.042 265.755);
+  --ring: oklch(0.769 0.188 70.08);
+}
+
+[data-accent="pink"] {
+  --primary: oklch(0.670 0.235 342.55);
+  --primary-foreground: oklch(0.984 0.003 247.858);
+  --ring: oklch(0.670 0.235 342.55);
+}
+
+[data-accent="emerald"] {
+  --primary: oklch(0.626 0.194 166.11);
+  --primary-foreground: oklch(0.984 0.003 247.858);
+  --ring: oklch(0.626 0.194 166.11);
+}
+
+[data-accent="cyan"] {
+  --primary: oklch(0.681 0.139 200.75);
+  --primary-foreground: oklch(0.984 0.003 247.858);
+  --ring: oklch(0.681 0.139 200.75);
+}
+
+[data-accent="violet"] {
+  --primary: oklch(0.608 0.292 275.75);
+  --primary-foreground: oklch(0.984 0.003 247.858);
+  --ring: oklch(0.608 0.292 275.75);
+}
+
+/* Border Radius Themes */
+[data-radius="none"] {
+  --radius: 0px;
+}
+
+[data-radius="sm"] {
+  --radius: 4px;
+}
+
+[data-radius="md"] {
+  --radius: 8px;
+}
+
+[data-radius="lg"] {
+  --radius: 12px;
+}
+
+[data-radius="xl"] {
+  --radius: 16px;
+}
+
+[data-radius="full"] {
+  --radius: 9999px;
+}
+
+/* Font Family Themes */
+[data-font="inter"] {
+  font-family: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+}
+
+[data-font="system"] {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+}
+
+[data-font="mono"] {
+  font-family: var(--font-jetbrains-mono), 'Fira Code', 'Monaco', 'Cascadia Code', 'Roboto Mono', monospace;
+}
+
+[data-font="montserrat"] {
+  font-family: var(--font-montserrat), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* Accessibility Themes */
+[data-reduced-motion="true"] * {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+[data-high-contrast="true"] {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0 0 0);
+  --border: oklch(0 0 0);
+  --ring: oklch(0 0 0);
+}
+
+[data-high-contrast="true"].dark {
+  --background: oklch(0 0 0);
+  --foreground: oklch(1 0 0);
+  --border: oklch(1 0 0);
+  --ring: oklch(1 0 0);
+}
+
+[data-colorblind-friendly="true"] {
+  /* Use patterns and shapes alongside colors for better accessibility */
+  --primary: oklch(0.208 0.042 265.755);
+  --destructive: oklch(0.577 0.245 27.325);
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -119,6 +263,24 @@
 
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    font-feature-settings: 'rlig' 1, 'calt' 1;
+  }
+
+  .font-sans {
+    font-family: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  }
+
+  .font-montserrat {
+    font-family: var(--font-montserrat), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+
+  .font-mono {
+    font-family: var(--font-jetbrains-mono), 'Fira Code', 'Monaco', 'Cascadia Code', 'Roboto Mono', monospace;
+  }
+
+  .font-system {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
   }
 }
 

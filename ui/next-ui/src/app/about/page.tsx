@@ -11,11 +11,14 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 
+import { useRouter } from "next/navigation";
+
 const tilt = { rotate: 2, scale: 1.03 };
 const lift = { y: -5, scale: 1.05 };
 
 export default function About() {
 	const { t } = useLanguage();
+	const router = useRouter();
 
 	return (
 		<div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950">
@@ -39,7 +42,7 @@ export default function About() {
 									"Webhooks",
 									"SDKs for popular languages",
 								],
-								button: <Button variant="outline">View Docs</Button>,
+								link: "/about/faq",
 							},
 							{
 								title: "Free Forever",
@@ -92,7 +95,14 @@ export default function About() {
 									</CardContent>
 									<CardFooter>
 										<motion.div whileHover={lift} className="w-full">
-											{item.button}
+											{/* FAQ card: show link or button based on link value */}
+											{i === 0
+												? (typeof item.link === 'string' && item.link.startsWith('https')
+													? <a href={item.link} className="ml-2 text-blue-600 underline dark:text-blue-400" target="_blank" rel="noopener noreferrer">Learn more</a>
+													: typeof item.link === 'string'
+														? <Button variant="outline" onClick={() => router.push(item.link)}>View Docs</Button>
+														: null)
+												: item.button}
 										</motion.div>
 									</CardFooter>
 								</Card>
